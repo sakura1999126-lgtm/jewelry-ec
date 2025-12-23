@@ -497,10 +497,8 @@ function selectCategory(category) {
         }
     });
     
-    // サイドバーを閉じる（モバイル用）
-    if (window.innerWidth <= 768) {
-        sidebar.classList.remove('active');
-    }
+    // サイドバーを閉じる（全画面サイズ）
+    closeSidebar();
     
     // 商品を再表示
     displayProducts();
