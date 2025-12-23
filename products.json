@@ -1,0 +1,165 @@
+{
+  "products": [
+    {
+      "id": "prod_earring_001",
+      "name": "Diamond Earrings 10K Gold",
+      "category": "earrings",
+      "price": 29900,
+      "currency": "JPY",
+      "image": "https://via.placeholder.com/400x400?text=Diamond+Earrings",
+      "images": [
+        "https://via.placeholder.com/800x800?text=Diamond+Earrings+1",
+        "https://via.placeholder.com/800x800?text=Diamond+Earrings+2",
+        "https://via.placeholder.com/800x800?text=Diamond+Earrings+3"
+      ],
+      "description": "10Kゴールドの美しいダイヤモンドイヤリング。エレガントなデザインで、どんなスタイルにも合わせられます。",
+      "detailedDescription": "10Kゴールドを使用したプレミアムダイヤモンドイヤリング。クラシックなデザインでありながら、現代的な洗練された雰囲気を演出します。\n\n【素材】\n- メタル: 10Kゴールド\n- ストーン: ダイヤモンド\n- 重量: 約2.5g\n- メンテナンス: 定期的なクリーニング推奨\n\n【特徴】\n- エレガントで上品なデザイン\n- 日常使いから特別な日のアクセントまで対応\n- アレルギーを起こしにくい素材使用\n- 職人が一つひとつ丁寧に仕上げたハンドメイド",
+      "sizes": [
+        {"name": "S (直径15mm)", "price": 29900, "stock": 5},
+        {"name": "M (直径18mm)", "price": 32900, "stock": 3},
+        {"name": "L (直径21mm)", "price": 35900, "stock": 2}
+      ],
+      "stock": 10
+    },
+    {
+      "id": "prod_earring_002",
+      "name": "Moissanite Earrings Silver",
+      "category": "earrings",
+      "price": 15900,
+      "currency": "JPY",
+      "image": "https://via.placeholder.com/400x400?text=Moissanite+Earrings",
+      "images": [
+        "https://via.placeholder.com/800x800?text=Moissanite+Earrings+1",
+        "https://via.placeholder.com/800x800?text=Moissanite+Earrings+2"
+      ],
+      "description": "モアッサナイトの美しい輝きが特徴のシルバーイヤリング。ダイヤモンドのような輝きで知られています。",
+      "detailedDescription": "モアッサナイトの美しい輝きが特徴のシルバーイヤリング。ダイヤモンドよりも強い輝きを放つモアッサナイトを使用し、上質な印象を与えます。\n\n【素材】\n- メタル: シルバー925\n- ストーン: モアッサナイト\n- 重量: 約3.0g\n- コーティング: ロジウムメッキ加工\n\n【特徴】\n- ダイヤモンド以上の輝きを持つモアッサナイト\n- アンティークシルバーの上品な質感\n- 手頃な価格でプレミアムな輝きを実現\n- 長期間使用できる耐久性",
+      "sizes": [
+        {"name": "フリーサイズ", "price": 15900, "stock": 15}
+      ],
+      "stock": 15
+    },
+    {
+      "id": "prod_earring_003",
+      "name": "Gold Hoop Earrings 14K",
+      "category": "earrings",
+      "price": 44900,
+      "currency": "JPY",
+      "image": "https://via.placeholder.com/400x400?text=Gold+Hoop+Earrings",
+      "description": "14Kゴールドのクラシックなフープデザイン。シンプルでありながら存在感があります。",
+      "stock": 8
+    },
+    {
+      "id": "prod_earring_004",
+      "name": "Diamond Stud Earrings",
+      "category": "earrings",
+      "price": 39900,
+      "currency": "JPY",
+      "image": "https://via.placeholder.com/400x400?text=Stud+Earrings",
+      "description": "洗練されたダイヤモンドスタッドイヤリング。日常使いから特別な日まで、どんなシーンにも最適です。",
+      "stock": 12
+    },
+    {
+      "id": "prod_necklace_001",
+      "name": "Diamond Necklace 10K Gold",
+      "category": "necklace",
+      "price": 89900,
+      "currency": "JPY",
+      "image": "https://via.placeholder.com/400x400?text=Diamond+Necklace",
+      "images": [
+        "https://via.placeholder.com/800x800?text=Diamond+Necklace+1",
+        "https://via.placeholder.com/800x800?text=Diamond+Necklace+2",
+        "https://via.placeholder.com/800x800?text=Diamond+Necklace+3",
+        "https://via.placeholder.com/800x800?text=Diamond+Necklace+4"
+      ],
+      "description": "10Kゴールドのプレミアムダイヤモンドネックレス。エレガントで印象的な輝きが特徴です。",
+      "detailedDescription": "10Kゴールドを使用したプレミアムダイヤモンドネックレス。中央に配置された美しいダイヤモンドが、あなたの首元を上品に彩ります。\n\n【素材】\n- メタル: 10Kゴールド\n- ストーン: ダイヤモンド（中央0.5ct）\n- チェーン: 約45cm（調節可能）\n- 重量: 約8.5g\n\n【特徴】\n- 高品質なダイヤモンドを使用\n- ゴールドの温かみのある輝き\n- フォーマルからカジュアルまで幅広く対応\n- プレゼントにも最適なエレガントなデザイン\n- 専用ケース付き",
+      "sizes": [
+        {"name": "40cm", "price": 89900, "stock": 2},
+        {"name": "45cm", "price": 89900, "stock": 2},
+        {"name": "50cm", "price": 94900, "stock": 1}
+      ],
+      "stock": 5
+    },
+    {
+      "id": "prod_necklace_002",
+      "name": "Cuban Chain Necklace Silver",
+      "category": "necklace",
+      "price": 49900,
+      "currency": "JPY",
+      "image": "https://via.placeholder.com/400x400?text=Cuban+Chain",
+      "description": "大胆なキューバンチェーンデザイン。スタイリッシュな印象で強い存在感を放ちます。",
+      "stock": 7
+    },
+    {
+      "id": "prod_necklace_003",
+      "name": "Moissanite Pendant Necklace",
+      "category": "necklace",
+      "price": 59900,
+      "currency": "JPY",
+      "image": "https://via.placeholder.com/400x400?text=Moissanite+Pendant",
+      "description": "美しいモアッサナイトペンダントネックレス。特別な日の贈り物に最適です。",
+      "stock": 9
+    },
+    {
+      "id": "prod_necklace_004",
+      "name": "Layer Necklace Gold",
+      "category": "necklace",
+      "price": 34900,
+      "currency": "JPY",
+      "image": "https://via.placeholder.com/400x400?text=Layer+Necklace",
+      "description": "複数のチェーンを重ねたレイヤーデザイン。トレンディでファッショナブルなスタイルです。",
+      "stock": 11
+    },
+    {
+      "id": "prod_necklace_005",
+      "name": "Rope Chain Necklace 14K",
+      "category": "necklace",
+      "price": 79900,
+      "currency": "JPY",
+      "image": "https://via.placeholder.com/400x400?text=Rope+Chain",
+      "description": "14Kゴールドのクラシックなロープチェーンデザイン。長く愛用できる時代を超えた一品です。",
+      "stock": 6
+    },
+    {
+      "id": "prod_bracelet_001",
+      "name": "Diamond Bracelet 10K Gold",
+      "category": "bracelet",
+      "price": 69900,
+      "currency": "JPY",
+      "image": "https://via.placeholder.com/400x400?text=Diamond+Bracelet",
+      "description": "10Kゴールドの美しく輝くダイヤモンドブレスレット。手首にエレガントな輝きを添えます。",
+      "stock": 8
+    },
+    {
+      "id": "prod_bracelet_002",
+      "name": "Tennis Bracelet Moissanite",
+      "category": "bracelet",
+      "price": 54900,
+      "currency": "JPY",
+      "image": "https://via.placeholder.com/400x400?text=Tennis+Bracelet",
+      "description": "連続したモアッサナイトストーンが並ぶテニスブレスレット。エレガントで洗練された印象です。",
+      "stock": 10
+    },
+    {
+      "id": "prod_bracelet_003",
+      "name": "Chain Bracelet Silver",
+      "category": "bracelet",
+      "price": 24900,
+      "currency": "JPY",
+      "image": "https://via.placeholder.com/400x400?text=Chain+Bracelet",
+      "description": "シルバーのシンプルなチェーンデザイン。カジュアルからフォーマルまで、どんなシーンにも対応します。",
+      "stock": 14
+    },
+    {
+      "id": "prod_bracelet_004",
+      "name": "Gold Bangle Bracelet",
+      "category": "bracelet",
+      "price": 39900,
+      "currency": "JPY",
+      "image": "https://via.placeholder.com/400x400?text=Gold+Bangle",
+      "description": "大胆なバングルデザイン。スタイリッシュな印象で強い存在感を放ちます。",
+      "stock": 9
+    }
+  ]
+}

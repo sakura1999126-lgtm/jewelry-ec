@@ -1,0 +1,22 @@
+{
+  "name": "jewelry-ec",
+  "version": "1.0.0",
+  "description": "ジュエリーECサイト - Stripe決済対応準備済み",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "jewelry",
+    "ecommerce",
+    "stripe",
+    "nodejs"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
+
