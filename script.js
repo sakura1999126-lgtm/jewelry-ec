@@ -508,10 +508,14 @@ function selectCategory(category) {
 function displayProducts() {
     if (!productsContainer) return;
     
-    // フィルタリング
-    const filteredProducts = currentCategory === 'all' 
-        ? products 
-        : products.filter(p => p.category === currentCategory);
+    // トップ画面（すべて）の場合はジャンルごとの横スライド形式
+    if (currentCategory === 'all') {
+        displayProductsByCategory();
+        return;
+    }
+    
+    // カテゴリが選択されている場合は従来通り
+    const filteredProducts = products.filter(p => p.category === currentCategory);
     
     if (filteredProducts.length === 0) {
         productsContainer.innerHTML = '<p class="loading">商品が見つかりません</p>';
@@ -541,6 +545,44 @@ function displayProducts() {
         attachProductCardListeners();
         displayProductsCallCount = 1; // 次回からはアニメーションなし
     }
+}
+
+// ジャンルごとの横スライド形式で商品を表示（トップ画面のみ）
+function displayProductsByCategory() {
+    if (!productsContainer) return;
+    
+    const categories = [
+        { id: 'earrings', name: 'イヤリング' },
+        { id: 'necklace', name: 'ネックレス' },
+        { id: 'bracelet', name: 'ブレスレット' }
+    ];
+    
+    let html = '';
+    
+    categories.forEach(category => {
+        const categoryProducts = products.filter(p => p.category === category.id);
+        
+        if (categoryProducts.length === 0) return;
+        
+        html += `
+            <div class="category-products-section">
+                <h2 class="category-section-title">${category.name}</h2>
+                <div class="category-products-scroll">
+                    <div class="category-products-container">
+                        ${categoryProducts.map((product, index) => createProductCard(product, index)).join('')}
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    if (html === '') {
+        productsContainer.innerHTML = '<p class="loading">商品が見つかりません</p>';
+        return;
+    }
+    
+    productsContainer.innerHTML = html;
+    attachProductCardListeners();
 }
 
 // 商品カードのイベントリスナーを設定（重複を防ぐため別関数に）

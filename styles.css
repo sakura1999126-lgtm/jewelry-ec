@@ -369,6 +369,60 @@ body.element-selection-mode * {
     transition: opacity 0.15s ease;
 }
 
+/* ジャンルごとの横スライド形式（トップ画面のみ） */
+.category-products-section {
+    margin-bottom: 4rem;
+}
+
+.category-section-title {
+    font-family: 'Shippori Mincho', 'Noto Serif JP', serif;
+    font-size: 2rem;
+    font-weight: 400;
+    color: #ffd700;
+    margin-bottom: 2rem;
+    padding-left: 1rem;
+    letter-spacing: 3px;
+}
+
+.category-products-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0 1rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 215, 0, 0.5) rgba(255, 255, 255, 0.1);
+}
+
+.category-products-scroll::-webkit-scrollbar {
+    height: 6px;
+}
+
+.category-products-scroll::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.category-products-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255, 215, 0, 0.5);
+    border-radius: 3px;
+}
+
+.category-products-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 215, 0, 0.7);
+}
+
+.category-products-container {
+    display: flex;
+    gap: 2rem;
+    padding-bottom: 1rem;
+}
+
+.category-products-container .product-card {
+    flex: 0 0 280px;
+    min-width: 280px;
+    max-width: 280px;
+}
+
 .loading {
     grid-column: 1 / -1;
     text-align: center;
@@ -1390,6 +1444,32 @@ body.element-selection-mode * {
         grid-template-columns: repeat(2, 1fr);
         gap: 0.75rem;
         padding: 1rem 0;
+    }
+
+    /* ジャンルごとの横スライド形式（モバイル） */
+    .category-products-section {
+        margin-bottom: 2.5rem;
+    }
+
+    .category-section-title {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        padding-left: 0.5rem;
+        letter-spacing: 2px;
+    }
+
+    .category-products-scroll {
+        padding: 0 0.5rem;
+    }
+
+    .category-products-container {
+        gap: 1rem;
+    }
+
+    .category-products-container .product-card {
+        flex: 0 0 200px;
+        min-width: 200px;
+        max-width: 200px;
     }
 
     /* 商品カード */
