@@ -2,8 +2,7 @@
   "name": "jewelry-ec",
   "compatibility_date": "2024-12-23",
   "assets": {
-    "directory": ".",
-    "binding": "ASSETS"
+    "directory": "."
   }
 }
 
