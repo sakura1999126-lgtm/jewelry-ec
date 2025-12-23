@@ -1357,8 +1357,8 @@ body.element-selection-mode * {
     }
     
     .logo-img {
-        height: 100px;
-        max-width: 400px;
+        height: 30px;
+        max-width: 200px;
     }
     
     .header {
@@ -1366,7 +1366,9 @@ body.element-selection-mode * {
     }
 
     .products-container {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        padding: 2rem 0;
     }
 
     .cart-panel {
