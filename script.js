@@ -587,9 +587,8 @@ function displayProductsByCategory() {
 
 // 商品カードのイベントリスナーを設定（重複を防ぐため別関数に）
 function attachProductCardListeners() {
-    
-    // 商品カードクリックで詳細表示
-    const productCards = productsContainer.querySelectorAll('.product-card');
+    // コンテナ内の全ての.product-cardを取得（横スライド形式でもグリッド形式でも対応）
+    const productCards = document.querySelectorAll('.product-card');
     productCards.forEach((card) => {
         card.addEventListener('click', (e) => {
             // カート追加ボタンをクリックした場合は詳細表示しない

@@ -415,12 +415,14 @@ body.element-selection-mode * {
     display: flex;
     gap: 2rem;
     padding-bottom: 1rem;
+    width: max-content;
 }
 
 .category-products-container .product-card {
     flex: 0 0 280px;
     min-width: 280px;
     max-width: 280px;
+    width: 280px;
 }
 
 .loading {
@@ -1464,12 +1466,14 @@ body.element-selection-mode * {
 
     .category-products-container {
         gap: 1rem;
+        width: max-content;
     }
 
     .category-products-container .product-card {
         flex: 0 0 200px;
         min-width: 200px;
         max-width: 200px;
+        width: 200px;
     }
 
     /* 商品カード */
