@@ -607,7 +607,7 @@ function attachProductCardListeners() {
     });
     
     // カート追加ボタンのイベントリスナーを設定
-    const addToCartButtons = productsContainer.querySelectorAll('.add-to-cart-btn');
+    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
     addToCartButtons.forEach((btn) => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation(); // カードクリックイベントの伝播を防ぐ
