@@ -1398,7 +1398,8 @@ body.element-selection-mode * {
     }
 
     .product-image {
-        height: 180px;
+        aspect-ratio: 1;
+        height: auto;
     }
 
     .product-info {
@@ -1473,6 +1474,10 @@ body.element-selection-mode * {
 
     .product-detail-image-main {
         height: 300px;
+    }
+
+    .product-detail-image-thumbnails {
+        padding: 0.25rem 1rem 0.25rem 0;
     }
 }
 
