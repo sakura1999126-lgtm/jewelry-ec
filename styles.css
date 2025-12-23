@@ -390,6 +390,11 @@ body.element-selection-mode * {
     position: relative;
 }
 
+/* アニメーションなしの状態（インラインスタイルで上書きされる） */
+.product-card[style*="animation: none"] {
+    opacity: 1 !important;
+}
+
 .product-card::before {
     content: '';
     position: absolute;

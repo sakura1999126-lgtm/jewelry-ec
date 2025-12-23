@@ -523,9 +523,11 @@ function displayProducts() {
     // 既存の商品カードをフェードアウト（アニメーションを防ぐため）
     const existingCards = productsContainer.querySelectorAll('.product-card');
     if (existingCards.length > 0) {
+        // 2回目以降の表示
+        displayProductsCallCount++;
         productsContainer.style.opacity = '0';
         setTimeout(() => {
-            // 商品カードを生成
+            // 商品カードを生成（アニメーションなし）
             productsContainer.innerHTML = filteredProducts.map((product, index) => {
                 return createProductCard(product, index);
             }).join('');
@@ -533,11 +535,13 @@ function displayProducts() {
             attachProductCardListeners();
         }, 150);
     } else {
-        // 初回表示時はアニメーションあり
+        // 初回表示時のみアニメーションあり
+        displayProductsCallCount = 0;
         productsContainer.innerHTML = filteredProducts.map((product, index) => {
             return createProductCard(product, index);
         }).join('');
         attachProductCardListeners();
+        displayProductsCallCount = 1; // 次回からはアニメーションなし
     }
 }
 
@@ -577,11 +581,18 @@ function attachProductCardListeners() {
     });
 }
 
+// 商品を表示した回数を追跡
+let displayProductsCallCount = 0;
+
 // 商品カードの生成
 function createProductCard(product, index) {
-    const delay = index * 0.1;
+    // 初回のみアニメーション遅延を適用、2回目以降は即座に表示
+    const delay = displayProductsCallCount === 0 ? index * 0.1 : 0;
+    const animationStyle = displayProductsCallCount === 0 
+        ? `animation-delay: ${delay}s;` 
+        : `opacity: 1; animation: none;`;
     return `
-        <div class="product-card" style="animation-delay: ${delay}s" data-product-id="${product.id}">
+        <div class="product-card" style="${animationStyle}" data-product-id="${product.id}">
             <img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.src='https://via.placeholder.com/400x400?text=No+Image'">
             <div class="product-info">
                 <h3 class="product-name">${product.name}</h3>
