@@ -49,7 +49,7 @@ async function initializeApp() {
     // カートをローカルストレージから読み込み
     loadCart();
     
-    // 商品データを取得
+    // 商品データを取得（この中でdisplayProductsが呼ばれる）
     await fetchProducts();
     
     // イベントリスナーの設定
@@ -57,9 +57,6 @@ async function initializeApp() {
     
     // アニメーション開始
     startAnimations();
-    
-    // 商品を表示
-    displayProducts();
 }
 
 // 商品データを取得
