@@ -69,7 +69,8 @@ async function fetchProducts() {
         }
         const data = await response.json();
         products = data.products || [];
-        displayProducts(products);
+        // displayProductsは引数を受け取らないので、呼び出しのみ
+        displayProducts();
     } catch (error) {
         console.error('Failed to fetch product data:', error);
         productsContainer.innerHTML = '<p class="loading">商品の読み込みに失敗しました</p>';
@@ -519,13 +520,32 @@ function displayProducts() {
         return;
     }
     
-    // 商品カードを生成
-    productsContainer.innerHTML = filteredProducts.map((product, index) => {
-        return createProductCard(product, index);
-    }).join('');
+    // 既存の商品カードをフェードアウト（アニメーションを防ぐため）
+    const existingCards = productsContainer.querySelectorAll('.product-card');
+    if (existingCards.length > 0) {
+        productsContainer.style.opacity = '0';
+        setTimeout(() => {
+            // 商品カードを生成
+            productsContainer.innerHTML = filteredProducts.map((product, index) => {
+                return createProductCard(product, index);
+            }).join('');
+            productsContainer.style.opacity = '1';
+            attachProductCardListeners();
+        }, 150);
+    } else {
+        // 初回表示時はアニメーションあり
+        productsContainer.innerHTML = filteredProducts.map((product, index) => {
+            return createProductCard(product, index);
+        }).join('');
+        attachProductCardListeners();
+    }
+}
+
+// 商品カードのイベントリスナーを設定（重複を防ぐため別関数に）
+function attachProductCardListeners() {
     
     // 商品カードクリックで詳細表示
-    const productCards = document.querySelectorAll('.product-card');
+    const productCards = productsContainer.querySelectorAll('.product-card');
     productCards.forEach((card) => {
         card.addEventListener('click', (e) => {
             // カート追加ボタンをクリックした場合は詳細表示しない
@@ -544,7 +564,7 @@ function displayProducts() {
     });
     
     // カート追加ボタンのイベントリスナーを設定
-    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+    const addToCartButtons = productsContainer.querySelectorAll('.add-to-cart-btn');
     addToCartButtons.forEach((btn) => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation(); // カードクリックイベントの伝播を防ぐ

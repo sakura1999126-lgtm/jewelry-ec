@@ -366,6 +366,7 @@ body.element-selection-mode * {
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 2.5rem;
     padding: 3rem 0;
+    transition: opacity 0.15s ease;
 }
 
 .loading {
