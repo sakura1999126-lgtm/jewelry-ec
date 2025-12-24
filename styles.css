@@ -44,16 +44,16 @@ body.element-selection-mode * {
 }
 
 .splash-logo {
-    max-width: 200px;
-    max-height: 150px;
+    max-width: 150px;
+    max-height: 112px;
     width: auto;
     height: auto;
     object-fit: contain;
     opacity: 1;
     position: relative;
-    animation: logoSubtleNoise 3s ease-in-out infinite,
-               logoGlowPulse 4s ease-in-out infinite;
-    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
+    animation: logoLuxuryFloat 6s ease-in-out infinite,
+               logoLuxuryGlow 5s ease-in-out infinite;
+    filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.35)) drop-shadow(0 0 24px rgba(255, 215, 0, 0.15));
 }
 
 @keyframes splashFadeIn {
@@ -74,31 +74,35 @@ body.element-selection-mode * {
     }
 }
 
-@keyframes logoSubtleNoise {
+@keyframes logoLuxuryFloat {
     0%, 100% {
-        transform: translate(0, 0);
-        filter: brightness(1) drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
-    }
-    25% {
-        transform: translate(0.2px, -0.1px);
-        filter: brightness(1.01) drop-shadow(0 0 16px rgba(255, 215, 0, 0.42));
+        transform: translateY(0px) scale(1);
     }
     50% {
-        transform: translate(-0.15px, 0.2px);
-        filter: brightness(0.99) drop-shadow(0 0 14px rgba(255, 215, 0, 0.38));
-    }
-    75% {
-        transform: translate(0.1px, 0.15px);
-        filter: brightness(1.005) drop-shadow(0 0 15.5px rgba(255, 215, 0, 0.41));
+        transform: translateY(-3px) scale(1.01);
     }
 }
 
-@keyframes logoGlowPulse {
+@keyframes logoLuxuryGlow {
     0%, 100% {
-        filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4)) drop-shadow(0 0 30px rgba(255, 215, 0, 0.2));
+        filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.35)) 
+                drop-shadow(0 0 24px rgba(255, 215, 0, 0.15))
+                brightness(1);
+    }
+    25% {
+        filter: drop-shadow(0 0 14px rgba(255, 215, 0, 0.4)) 
+                drop-shadow(0 0 28px rgba(255, 215, 0, 0.2))
+                brightness(1.02);
     }
     50% {
-        filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 40px rgba(255, 215, 0, 0.3));
+        filter: drop-shadow(0 0 16px rgba(255, 215, 0, 0.45)) 
+                drop-shadow(0 0 32px rgba(255, 215, 0, 0.25))
+                brightness(1.04);
+    }
+    75% {
+        filter: drop-shadow(0 0 14px rgba(255, 215, 0, 0.4)) 
+                drop-shadow(0 0 28px rgba(255, 215, 0, 0.2))
+                brightness(1.02);
     }
 }
 
@@ -1517,9 +1521,21 @@ body.element-selection-mode * {
     }
 
     .category-btn {
-        padding: 0.9rem 1.2rem;
-        font-size: 0.85rem;
-        letter-spacing: 1px;
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+        letter-spacing: 1.5px;
+        color: rgba(255, 255, 255, 0.95);
+        font-weight: 400;
+        background: linear-gradient(135deg, rgba(45, 45, 45, 0.6) 0%, rgba(30, 30, 30, 0.7) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+    
+    .category-btn.active {
+        color: #ffd700;
+        background: rgba(255, 215, 0, 0.2);
+        border-color: rgba(255, 215, 0, 0.7);
+        font-weight: 500;
     }
 
     /* カートパネル */
