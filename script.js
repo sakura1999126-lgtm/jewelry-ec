@@ -586,7 +586,7 @@ function createProductCard(product, index) {
     // 初回のみアニメーション遅延を適用、2回目以降は即座に表示
     const delay = displayProductsCallCount === 0 ? index * 0.1 : 0;
     const animationStyle = displayProductsCallCount === 0 
-        ? `animation-delay: ${delay}s;` 
+        ? `animation: fadeInUp 0.6s ease ${delay}s forwards;` 
         : `opacity: 1; animation: none;`;
     return `
         <div class="product-card" style="${animationStyle}" data-product-id="${product.id}">
