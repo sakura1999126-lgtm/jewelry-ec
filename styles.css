@@ -44,11 +44,14 @@ body.element-selection-mode * {
 }
 
 .splash-logo {
-    max-width: 80%;
-    max-height: 60%;
+    max-width: 200px;
+    max-height: 150px;
     width: auto;
     height: auto;
     object-fit: contain;
+    opacity: 0;
+    transform: scale(0.8);
+    animation: logoFadeInScale 1s ease 0.3s forwards, logoShine 2s ease 1.5s infinite;
 }
 
 @keyframes splashFadeIn {
@@ -66,6 +69,26 @@ body.element-selection-mode * {
     }
     to {
         opacity: 0;
+    }
+}
+
+@keyframes logoFadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes logoShine {
+    0%, 100% {
+        filter: brightness(1) drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
+    }
+    50% {
+        filter: brightness(1.2) drop-shadow(0 0 20px rgba(255, 215, 0, 0.6));
     }
 }
 
