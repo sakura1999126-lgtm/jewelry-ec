@@ -46,6 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // アプリケーションの初期化
 async function initializeApp() {
+    // スプラッシュスクリーンの表示（初回セッションのみ）
+    showSplashScreen();
+    
     // カートをローカルストレージから読み込み
     loadCart();
     
@@ -57,6 +60,35 @@ async function initializeApp() {
     
     // アニメーション開始
     startAnimations();
+}
+
+// スプラッシュスクリーンを表示
+function showSplashScreen() {
+    // sessionStorageでセッション中にすでに表示したかチェック
+    if (sessionStorage.getItem('splashShown')) {
+        // すでに表示済みの場合はスプラッシュスクリーンを非表示にして終了
+        const splashScreen = document.getElementById('splashScreen');
+        if (splashScreen) {
+            splashScreen.style.display = 'none';
+        }
+        return;
+    }
+    
+    // 初回セッションの場合のみ表示
+    const splashScreen = document.getElementById('splashScreen');
+    if (!splashScreen) return;
+    
+    // セッションストレージに表示済みフラグを設定
+    sessionStorage.setItem('splashShown', 'true');
+    
+    // 3秒後にフェードアウト
+    setTimeout(() => {
+        splashScreen.classList.add('hide');
+        // フェードアウトアニメーション後に要素を削除
+        setTimeout(() => {
+            splashScreen.style.display = 'none';
+        }, 500); // アニメーション時間と同じ
+    }, 3000); // 3秒表示
 }
 
 // 商品データを取得
