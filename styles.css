@@ -1427,9 +1427,14 @@ body.element-selection-mode * {
     }
 
     .add-to-cart-btn {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.7rem;
-        letter-spacing: 0.5px;
+        width: 32px;
+        height: 32px;
+        padding: 0.4rem;
+    }
+
+    .add-to-cart-btn svg {
+        width: 16px;
+        height: 16px;
     }
 
     /* サイドバー */
