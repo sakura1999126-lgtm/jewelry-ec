@@ -787,7 +787,10 @@ function closeProductDetail() {
     // スクロールを再有効化（モバイル対応）
     document.body.style.overflow = '';
     document.body.style.position = '';
+    document.body.style.top = '';
     document.body.style.width = '';
+    // スクロール位置を復元
+    window.scrollTo(0, savedScrollPosition);
     currentDetailProduct = null;
 }
 

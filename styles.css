@@ -86,8 +86,10 @@ body.element-selection-mode * {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: 1400px;
+    max-width: 428px;
     margin: 0 auto;
+    width: 100%;
+    padding: 0 1rem;
 }
 
 .sidebar-toggle {
@@ -284,16 +286,19 @@ body.element-selection-mode * {
 .main-content {
     background: rgba(20, 20, 20, 0.35);
     min-height: 100vh;
-    padding: 100px 2rem 2rem;
+    padding: 65px 1rem 1.5rem;
     position: relative;
     z-index: 1;
     width: 100%;
     overflow-x: hidden;
+    max-width: 428px;
+    margin: 0 auto;
 }
 
 .content-wrapper {
-    max-width: 1400px;
+    max-width: 428px;
     margin: 0 auto;
+    width: 100%;
 }
 
 /* ヒーローセクション */
@@ -495,9 +500,6 @@ body.element-selection-mode * {
     padding: 0.5rem;
     border-radius: 8px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: visible;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -510,32 +512,6 @@ body.element-selection-mode * {
     height: 20px;
 }
 
-.add-to-cart-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.3), transparent);
-    transition: left 0.5s ease;
-}
-
-.add-to-cart-btn:hover {
-    transform: scale(1.05);
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.3) 0%, rgba(255, 215, 0, 0.2) 100%);
-    border-color: rgba(255, 215, 0, 0.8);
-    box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
-    color: #ffed4e;
-}
-
-.add-to-cart-btn:hover::before {
-    left: 100%;
-}
-
-.add-to-cart-btn:active {
-    transform: scale(0.95);
-}
 
 /* カートパネル */
 /* 商品詳細モーダル */
