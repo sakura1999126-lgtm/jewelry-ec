@@ -581,6 +581,9 @@ function attachProductCardListeners() {
 // 商品を表示した回数を追跡
 let displayProductsCallCount = 0;
 
+// スクロール位置を保存する変数
+let savedScrollPosition = 0;
+
 // 商品カードの生成
 function createProductCard(product, index) {
     // 初回のみアニメーション遅延を適用、2回目以降は即座に表示
@@ -612,6 +615,9 @@ function createProductCard(product, index) {
 // 商品詳細を表示
 function showProductDetail(product) {
     if (!productModal || !product) return;
+    
+    // 現在のスクロール位置を保存
+    savedScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
     
     currentDetailProduct = product;
     currentDetailImageIndex = 0;
@@ -663,6 +669,7 @@ function showProductDetail(product) {
     // スクロールを無効化（モバイル対応）
     document.body.style.overflow = 'hidden';
     document.body.style.position = 'fixed';
+    document.body.style.top = `-${savedScrollPosition}px`;
     document.body.style.width = '100%';
 }
 
