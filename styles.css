@@ -410,11 +410,6 @@ body.element-selection-mode * {
     transition: margin-left 0.3s ease;
 }
 
-@media (min-width: 769px) {
-    .sidebar.active ~ .main-content {
-        margin-left: 300px;
-    }
-}
 
 .content-wrapper {
     max-width: 1400px;

@@ -507,6 +507,8 @@ function startAnimations() {
 function toggleSidebar() {
     if (sidebar) {
         sidebar.classList.toggle('active');
+        // デスクトップ用: bodyにクラスを追加してメインコンテンツのマージンを制御
+        document.body.classList.toggle('sidebar-open', sidebar.classList.contains('active'));
     }
 }
 
