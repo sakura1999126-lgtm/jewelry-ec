@@ -680,6 +680,13 @@ body.element-selection-mode * {
     -webkit-overflow-scrolling: touch;
 }
 
+@media (min-width: 769px) {
+    .product-modal-content {
+        max-width: 1200px;
+        padding: 3rem;
+    }
+}
+
 @keyframes modalSlideIn {
     from {
         opacity: 0;
