@@ -408,6 +408,14 @@ body.element-selection-mode * {
     overflow-x: hidden;
     margin-left: 0;
     transition: margin-left 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+}
+
+body.splash-complete .main-content {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, margin-left 0.3s ease;
 }
 
 

@@ -71,12 +71,18 @@ function showSplashScreen() {
         if (splashScreen) {
             splashScreen.style.display = 'none';
         }
+        // メインコンテンツを即座に表示
+        document.body.classList.add('splash-complete');
         return;
     }
     
     // 初回セッションの場合のみ表示
     const splashScreen = document.getElementById('splashScreen');
-    if (!splashScreen) return;
+    if (!splashScreen) {
+        // スプラッシュスクリーンが存在しない場合もメインコンテンツを表示
+        document.body.classList.add('splash-complete');
+        return;
+    }
     
     // セッションストレージに表示済みフラグを設定
     sessionStorage.setItem('splashShown', 'true');
@@ -84,9 +90,10 @@ function showSplashScreen() {
     // 3秒後にフェードアウト
     setTimeout(() => {
         splashScreen.classList.add('hide');
-        // フェードアウトアニメーション後に要素を削除
+        // フェードアウトアニメーション後に要素を削除し、メインコンテンツを表示
         setTimeout(() => {
             splashScreen.style.display = 'none';
+            document.body.classList.add('splash-complete');
         }, 500); // アニメーション時間と同じ
     }, 3000); // 3秒表示
 }
