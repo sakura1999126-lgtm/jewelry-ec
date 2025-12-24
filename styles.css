@@ -150,15 +150,13 @@ body.element-selection-mode * {
 .header {
     position: fixed;
     top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
     width: 100%;
-    max-width: 428px;
     z-index: 100;
     background: rgba(15, 35, 28, 0.6);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
-    padding: 0.75rem 1rem;
+    padding: 1.25rem 2rem;
     border-bottom: 1px solid rgba(255, 215, 0, 0.15);
     transition: all 0.3s ease;
 }
@@ -172,10 +170,10 @@ body.element-selection-mode * {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: 428px;
+    max-width: 1400px;
     margin: 0 auto;
     width: 100%;
-    padding: 0 1rem;
+    padding: 0 2rem;
 }
 
 .sidebar-toggle {
@@ -216,6 +214,12 @@ body.element-selection-mode * {
     padding: 0;
     transition: all 0.3s ease;
     object-fit: contain;
+}
+
+@media (min-width: 769px) {
+    .logo-img {
+        height: 45px;
+    }
 }
 
 .logo-link:hover .logo-img {
@@ -283,13 +287,28 @@ body.element-selection-mode * {
     box-shadow: 2px 0 30px rgba(0, 0, 0, 0.5);
     z-index: 99;
     transition: left 0.3s ease;
-    padding: 90px 2rem 2rem;
+    padding: 100px 2rem 2rem;
     overflow-y: auto;
     border-right: 1px solid rgba(255, 215, 0, 0.2);
 }
 
 .sidebar.active {
     left: 0;
+}
+
+@media (min-width: 769px) {
+    .sidebar {
+        left: 0;
+        padding: 100px 2.5rem 2rem;
+    }
+    
+    .main-content {
+        margin-left: 300px;
+    }
+    
+    .sidebar-toggle {
+        display: none;
+    }
 }
 
 .sidebar-content {
@@ -372,17 +391,17 @@ body.element-selection-mode * {
 .main-content {
     background: rgba(20, 20, 20, 0.35);
     min-height: 100vh;
-    padding: 80px 1rem 2rem;
+    padding: 100px 2rem 3rem;
     position: relative;
     z-index: 1;
     width: 100%;
     overflow-x: hidden;
-    max-width: 428px;
-    margin: 0 auto;
+    margin-left: 0;
+    transition: margin-left 0.3s ease;
 }
 
 .content-wrapper {
-    max-width: 428px;
+    max-width: 1400px;
     margin: 0 auto;
     width: 100%;
 }
@@ -454,10 +473,17 @@ body.element-selection-mode * {
 
 .products-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1.5rem;
-    padding: 1.5rem 0;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    padding: 2rem 0;
     transition: opacity 0.15s ease;
+}
+
+@media (min-width: 769px) {
+    .products-container {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2.5rem;
+    }
 }
 
 
