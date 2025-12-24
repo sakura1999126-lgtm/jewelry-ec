@@ -1508,22 +1508,22 @@ body.element-selection-mode * {
     .sidebar {
         width: 240px;
         left: -240px;
-        padding: 80px 1rem 1.5rem;
+        padding: 80px 0.75rem 1.5rem;
     }
     
     .sidebar.active {
-        left: -50px;
+        left: -20px;
     }
 
     .sidebar-content {
         padding-top: 0;
-        gap: 1rem;
+        gap: 0.85rem;
     }
 
     .category-btn {
-        padding: 0.8rem 0.9rem;
-        font-size: 0.85rem;
-        letter-spacing: 0.5px;
+        padding: 0.75rem 0.8rem;
+        font-size: 0.8rem;
+        letter-spacing: 0.3px;
         color: rgba(255, 255, 255, 0.95);
         font-weight: 400;
         background: linear-gradient(135deg, rgba(45, 45, 45, 0.6) 0%, rgba(30, 30, 30, 0.7) 100%);
