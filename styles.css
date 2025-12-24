@@ -489,20 +489,25 @@ body.element-selection-mode * {
 }
 
 .add-to-cart-btn {
-    font-family: 'Shippori Mincho', 'Noto Serif JP', serif;
     background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 215, 0, 0.1) 100%);
     border: 1px solid rgba(255, 215, 0, 0.5);
     color: #ffd700;
-    padding: 0.6rem 1.2rem;
+    padding: 0.5rem;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 0.75rem;
-    font-weight: 300;
-    letter-spacing: 1px;
-    text-transform: none;
     transition: all 0.3s ease;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+.add-to-cart-btn svg {
+    width: 20px;
+    height: 20px;
 }
 
 .add-to-cart-btn::before {
