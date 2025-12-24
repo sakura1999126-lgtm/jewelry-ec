@@ -51,37 +51,9 @@ body.element-selection-mode * {
     object-fit: contain;
     opacity: 1;
     position: relative;
-    animation: logoNoiseGlitch 0.15s steps(2, end) infinite,
-               logoGlowPulse 2s ease-in-out infinite;
+    animation: logoSubtleNoise 3s ease-in-out infinite,
+               logoGlowPulse 4s ease-in-out infinite;
     filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
-}
-
-.splash-logo::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: inherit;
-    opacity: 0;
-    animation: logoNoiseGlitchBefore 0.12s steps(3, end) infinite;
-    mix-blend-mode: screen;
-    pointer-events: none;
-}
-
-.splash-logo::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: inherit;
-    opacity: 0;
-    animation: logoNoiseGlitchAfter 0.18s steps(2, end) infinite;
-    mix-blend-mode: multiply;
-    pointer-events: none;
 }
 
 @keyframes splashFadeIn {
@@ -102,92 +74,22 @@ body.element-selection-mode * {
     }
 }
 
-@keyframes logoNoiseGlitch {
-    0% {
+@keyframes logoSubtleNoise {
+    0%, 100% {
         transform: translate(0, 0);
-        filter: brightness(1) contrast(1) hue-rotate(0deg);
-    }
-    10% {
-        transform: translate(-1px, 1px);
-        filter: brightness(1.05) contrast(1.02) hue-rotate(2deg);
-    }
-    20% {
-        transform: translate(1px, -1px);
-        filter: brightness(0.98) contrast(1.05) hue-rotate(-2deg);
-    }
-    30% {
-        transform: translate(-1px, -1px);
-        filter: brightness(1.08) contrast(0.98) hue-rotate(3deg);
-    }
-    40% {
-        transform: translate(1px, 1px);
-        filter: brightness(0.95) contrast(1.03) hue-rotate(-3deg);
-    }
-    50% {
-        transform: translate(-0.5px, 1.5px);
-        filter: brightness(1.02) contrast(1.01) hue-rotate(1deg);
-    }
-    60% {
-        transform: translate(1.5px, -0.5px);
-        filter: brightness(1.06) contrast(0.99) hue-rotate(-1deg);
-    }
-    70% {
-        transform: translate(-1.5px, 0.5px);
-        filter: brightness(0.97) contrast(1.04) hue-rotate(2.5deg);
-    }
-    80% {
-        transform: translate(0.5px, -1.5px);
-        filter: brightness(1.04) contrast(1.02) hue-rotate(-2.5deg);
-    }
-    90% {
-        transform: translate(-0.5px, -0.5px);
-        filter: brightness(1.01) contrast(1.01) hue-rotate(1.5deg);
-    }
-    100% {
-        transform: translate(0, 0);
-        filter: brightness(1) contrast(1) hue-rotate(0deg);
-    }
-}
-
-@keyframes logoNoiseGlitchBefore {
-    0% {
-        transform: translate(0, 0);
-        opacity: 0;
+        filter: brightness(1) drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
     }
     25% {
-        transform: translate(-2px, 2px);
-        opacity: 0.3;
+        transform: translate(0.2px, -0.1px);
+        filter: brightness(1.01) drop-shadow(0 0 16px rgba(255, 215, 0, 0.42));
     }
     50% {
-        transform: translate(2px, -2px);
-        opacity: 0;
+        transform: translate(-0.15px, 0.2px);
+        filter: brightness(0.99) drop-shadow(0 0 14px rgba(255, 215, 0, 0.38));
     }
     75% {
-        transform: translate(-1px, -2px);
-        opacity: 0.25;
-    }
-    100% {
-        transform: translate(0, 0);
-        opacity: 0;
-    }
-}
-
-@keyframes logoNoiseGlitchAfter {
-    0% {
-        transform: translate(0, 0);
-        opacity: 0;
-    }
-    33% {
-        transform: translate(2px, 1px);
-        opacity: 0.2;
-    }
-    66% {
-        transform: translate(-2px, -1px);
-        opacity: 0;
-    }
-    100% {
-        transform: translate(0, 0);
-        opacity: 0;
+        transform: translate(0.1px, 0.15px);
+        filter: brightness(1.005) drop-shadow(0 0 15.5px rgba(255, 215, 0, 0.41));
     }
 }
 
@@ -196,7 +98,7 @@ body.element-selection-mode * {
         filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4)) drop-shadow(0 0 30px rgba(255, 215, 0, 0.2));
     }
     50% {
-        filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.7)) drop-shadow(0 0 50px rgba(255, 215, 0, 0.4));
+        filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 40px rgba(255, 215, 0, 0.3));
     }
 }
 
@@ -466,7 +368,7 @@ body.element-selection-mode * {
 .main-content {
     background: rgba(20, 20, 20, 0.35);
     min-height: 100vh;
-    padding: 65px 1rem 1.5rem;
+    padding: 80px 1rem 2rem;
     position: relative;
     z-index: 1;
     width: 100%;
@@ -1600,9 +1502,13 @@ body.element-selection-mode * {
 
     /* サイドバー */
     .sidebar {
-        width: 100%;
-        left: -100%;
-        padding: 70px 1.5rem 1.5rem;
+        width: 240px;
+        left: -240px;
+        padding: 80px 1.5rem 1.5rem;
+    }
+    
+    .sidebar.active {
+        left: 0;
     }
 
     .sidebar-content {
