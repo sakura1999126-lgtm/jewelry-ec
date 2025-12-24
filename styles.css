@@ -1508,11 +1508,11 @@ body.element-selection-mode * {
     .sidebar {
         width: 240px;
         left: -240px;
-        padding: 80px 1.5rem 1.5rem;
+        padding: 80px 1rem 1.5rem;
     }
     
     .sidebar.active {
-        left: -80px;
+        left: -50px;
     }
 
     .sidebar-content {
@@ -1521,9 +1521,9 @@ body.element-selection-mode * {
     }
 
     .category-btn {
-        padding: 0.85rem 1rem;
-        font-size: 0.9rem;
-        letter-spacing: 1px;
+        padding: 0.8rem 0.9rem;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
         color: rgba(255, 255, 255, 0.95);
         font-weight: 400;
         background: linear-gradient(135deg, rgba(45, 45, 45, 0.6) 0%, rgba(30, 30, 30, 0.7) 100%);
