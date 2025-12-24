@@ -1512,7 +1512,7 @@ body.element-selection-mode * {
     }
     
     .sidebar.active {
-        left: -140px;
+        left: -80px;
     }
 
     .sidebar-content {
