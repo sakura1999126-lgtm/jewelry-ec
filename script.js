@@ -516,6 +516,7 @@ function toggleSidebar() {
 function closeSidebar() {
     if (sidebar) {
         sidebar.classList.remove('active');
+        document.body.classList.remove('sidebar-open');
     }
 }
 
