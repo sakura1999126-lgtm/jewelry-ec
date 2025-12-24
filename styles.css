@@ -1479,7 +1479,7 @@ body.element-selection-mode * {
     }
 
     .product-detail-image-thumbnails {
-        padding: 0.25rem 1rem 0.25rem 0;
+        padding: 0.25rem 1rem 0.25rem 1.5rem;
     }
 }
 
