@@ -1521,14 +1521,16 @@ body.element-selection-mode * {
     }
 
     .category-btn {
-        padding: 1rem 1.5rem;
-        font-size: 1rem;
-        letter-spacing: 1.5px;
+        padding: 0.85rem 1rem;
+        font-size: 0.9rem;
+        letter-spacing: 1px;
         color: rgba(255, 255, 255, 0.95);
         font-weight: 400;
         background: linear-gradient(135deg, rgba(45, 45, 45, 0.6) 0%, rgba(30, 30, 30, 0.7) 100%);
         border: 1px solid rgba(255, 255, 255, 0.15);
         box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        white-space: nowrap;
+        overflow: visible;
     }
     
     .category-btn.active {
