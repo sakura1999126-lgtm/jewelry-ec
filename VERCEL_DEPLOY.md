@@ -16,10 +16,26 @@
 
 1. **ブラウザで https://vercel.com/signup にアクセス**
 2. **GitHubアカウントでログイン**（推奨）
+   - 「Continue with GitHub」をクリック
+   - GitHubの認証画面で「Authorize Vercel」をクリック
+   - リポジトリへのアクセス権限を許可
 
 ---
 
-### ステップ2: Vercelにデプロイ
+### ステップ2: GitHubとVercelを接続（初回のみ）
+
+1. **Vercelダッシュボードにアクセス**
+   - https://vercel.com/dashboard
+
+2. **GitHubとの接続を確認**
+   - 初回の場合、「Continue with GitHub」をクリック
+   - または、右上のプロフィールアイコン → 「Settings」→ 「Git」でGitHubアカウントを接続
+
+3. **権限を許可**
+   - GitHubの認証画面で「Authorize Vercel」をクリック
+   - リポジトリへのアクセス権限を許可
+
+### ステップ3: Vercelにデプロイ
 
 1. **Vercelダッシュボードにアクセス**
    - https://vercel.com/dashboard
@@ -27,7 +43,27 @@
 2. **「Add New...」→「Project」をクリック**
 
 3. **GitHubリポジトリを選択**
-   - `jewelry-ec` を選択
+   
+   **リポジトリが表示されない場合:**
+   
+   a. **「Configure GitHub App」をクリック**
+      - または「Settings」→「Git」でGitHub接続を確認
+   
+   b. **GitHubアプリの設定を開く**
+      - 「Configure」または「Install Vercel for GitHub」をクリック
+      - GitHubの認証画面が開きます
+   
+   c. **アクセス権限を設定**
+      - 「Only select repositories」を選択
+      - `jewelry-ec` または `sakura1999126-lgtm/jewelry-ec` を選択
+      - 「Install」をクリック
+   
+   d. **Vercelダッシュボードに戻る**
+      - 「Add New...」→「Project」を再度クリック
+      - リポジトリ一覧に `jewelry-ec` が表示されるはずです
+   
+   **リポジトリが見つかったら:**
+   - `jewelry-ec` または `sakura1999126-lgtm/jewelry-ec` を選択
    - 「Import」をクリック
 
 4. **プロジェクト設定**
