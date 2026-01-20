@@ -53,19 +53,31 @@
      ```
    - または、「Use this repository」ボタンをクリック
 
-### ステップ3: 設定（ほぼ自動）
+### ステップ3: 設定を確認（ほぼ自動）
 
-**Renderが自動で設定してくれます！**
+**リポジトリを選択すると、Renderが自動で設定してくれます！**
 
-- **Name**: `jewelry-ec`（そのまま）
-- **Runtime**: `Node`（自動検出）
-- **Build Command**: `npm install`（自動）
-- **Start Command**: `node server.js`（自動）
-- **Environment**: `Node`（自動）
+画面に以下の設定が表示されます。**基本的にそのままでOK**です：
 
-**「Create Web Service」をクリック**
+- **Name**: `jewelry-ec`（変更不要）
+- **Region**: `Oregon (US West)` など（変更不要）
+- **Branch**: `main`（変更不要）
+- **Runtime**: `Node`（自動検出されていることを確認）
+- **Build Command**: 空白のまま（そのまま）
+- **Start Command**: `node server.js`（自動で入っていることを確認）
+  - もし入っていない場合は、手動で `node server.js` と入力
 
-**完了！** 約2-3分でデプロイ完了します。
+**重要なポイント:**
+- `render.yaml` というファイルがリポジトリにあるので、設定は自動で読み込まれます
+- ほとんどの項目は変更不要です
+
+### ステップ4: デプロイ開始
+
+**画面の下の方にある「Create Web Service」ボタンをクリック**
+
+**完了！** 約2-3分でデプロイが完了します。
+
+デプロイ中は、画面に進行状況が表示されます。「Live」と表示されたらデプロイ完了です！
 
 ---
 
