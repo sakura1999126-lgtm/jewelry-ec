@@ -1617,7 +1617,31 @@ body.splash-complete .main-content {
     }
 
     .product-info {
-        padding: 1rem;
+        padding: 0.6rem 0.75rem;
+    }
+
+    .product-name {
+        font-size: 0.85rem;
+        margin-bottom: 0.3rem;
+        letter-spacing: 0.5px;
+    }
+
+    .product-size-wrapper {
+        margin-bottom: 0.3rem;
+    }
+
+    .product-size {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.5rem;
+    }
+
+    .product-footer {
+        margin-top: 0.3rem;
+    }
+
+    .product-price {
+        font-size: 0.95rem;
+        letter-spacing: 0.5px;
     }
 
 /* チェックアウトフォーム */
