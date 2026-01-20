@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>West Tokyo Jewels - Premium Jewelry Store</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💎</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500&family=Shippori+Mincho:wght@400;500&family=Noto+Serif+JP:wght@300;400;500&display=swap" rel="stylesheet">
@@ -17,8 +18,8 @@
 
     <!-- Background Video -->
     <div class="video-background">
-        <video id="bgVideo" autoplay loop muted playsinline>
-            <source src="/videos/background-video.mp4" type="video/mp4">
+        <video id="bgVideo" autoplay loop muted playsinline onerror="this.style.display='none';">
+            <source src="/videos/background-video.mp4" type="video/mp4" onerror="this.parentElement.style.display='none';">
             <!-- Fallback if video cannot be loaded -->
             <div class="video-fallback"></div>
         </video>

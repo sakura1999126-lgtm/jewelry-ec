@@ -504,8 +504,16 @@ function startAnimations() {
     // 背景動画の再生確認
     const bgVideo = document.getElementById('bgVideo');
     if (bgVideo) {
+        // 動画の読み込みエラーを抑制
+        bgVideo.addEventListener('error', (e) => {
+            const videoContainer = bgVideo.closest('.video-background');
+            if (videoContainer) {
+                videoContainer.style.display = 'none';
+            }
+        }, { once: true });
+        
         bgVideo.play().catch(err => {
-            console.log('Video autoplay was blocked:', err);
+            // エラーを無視（動画が存在しない場合など）
         });
     }
 }
@@ -633,12 +641,23 @@ function createProductCard(product, index) {
     const animationStyle = displayProductsCallCount === 0 
         ? `animation: fadeInUp 0.6s ease ${delay}s forwards;` 
         : `opacity: 1; animation: none;`;
+    
+    // サイズ情報を取得（サイズがある場合は最初のサイズ名を表示）
+    let sizeInfo = '';
+    if (product.sizes && product.sizes.length > 0) {
+        if (product.sizes.length === 1) {
+            sizeInfo = `<span class="product-size">${product.sizes[0].name}</span>`;
+        } else {
+            sizeInfo = `<span class="product-size">${product.sizes.length}サイズ</span>`;
+        }
+    }
+    
     return `
         <div class="product-card" style="${animationStyle}" data-product-id="${product.id}">
-            <img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.src='https://via.placeholder.com/400x400?text=No+Image'">
+            <img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.style.display='none';">
             <div class="product-info">
                 <h3 class="product-name">${product.name}</h3>
-                <p class="product-description">${product.description}</p>
+                ${sizeInfo ? `<div class="product-size-wrapper">${sizeInfo}</div>` : ''}
                 <div class="product-footer">
                     <span class="product-price">¥${product.price.toLocaleString()}</span>
                     <button class="add-to-cart-btn" data-product-id="${product.id}" aria-label="カートに追加">
@@ -677,18 +696,14 @@ function showProductDetail(product) {
         productDetailName.textContent = product.name;
     }
     
+    // 説明文は非表示
     if (productDetailDescription) {
-        productDetailDescription.textContent = product.description;
+        productDetailDescription.style.display = 'none';
     }
     
-    // 詳細説明の設定
+    // 詳細説明も非表示
     if (productDetailDetailedDescription) {
-        if (product.detailedDescription) {
-            productDetailDetailedDescription.textContent = product.detailedDescription;
-            productDetailDetailedDescription.style.display = 'block';
-        } else {
-            productDetailDetailedDescription.style.display = 'none';
-        }
+        productDetailDetailedDescription.style.display = 'none';
     }
     
     // サイズ選択の設定
@@ -941,7 +956,7 @@ function renderCartItems() {
     cartItems.innerHTML = cart.map(item => {
         return `
             <div class="cart-item">
-                <img src="${item.image}" alt="${item.name}" class="cart-item-image" onerror="this.src='https://via.placeholder.com/80x80?text=No+Image'">
+                <img src="${item.image}" alt="${item.name}" class="cart-item-image" onerror="this.style.display='none';">
                 <div class="cart-item-details">
                     <h4 class="cart-item-name">${item.name}</h4>
                     <p class="cart-item-price">¥${(item.price * item.quantity).toLocaleString()}</p>
