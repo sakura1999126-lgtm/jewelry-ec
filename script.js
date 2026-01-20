@@ -753,29 +753,21 @@ function createProductCard(product, index) {
         ? `<img src="${imageUrl}" alt="${product.name}" class="product-image" onerror="this.style.display='none'; this.onerror=null;">`
         : '<div class="product-image product-image-placeholder"></div>';
     
-    // product-info内用の小さな画像
-    const infoImageHtml = shouldShowImage 
-        ? `<img src="${imageUrl}" alt="${product.name}" class="product-info-image" onerror="this.style.display='none'; this.onerror=null;">`
-        : '<div class="product-info-image product-info-image-placeholder"></div>';
-    
     return `
         <div class="product-card" style="${animationStyle}" data-product-id="${product.id}">
             ${imageHtml}
             <div class="product-info">
-                ${infoImageHtml}
-                <div class="product-info-content">
-                    <h3 class="product-name">${product.name}</h3>
-                    ${sizeInfo ? `<div class="product-size-wrapper">${sizeInfo}</div>` : ''}
-                    <div class="product-footer">
-                        <span class="product-price">¥${product.price.toLocaleString()}</span>
-                        <button class="add-to-cart-btn" data-product-id="${product.id}" aria-label="カートに追加">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                                <line x1="3" y1="6" x2="21" y2="6"></line>
-                                <path d="M16 10a4 4 0 0 1-8 0"></path>
-                            </svg>
-                        </button>
-                    </div>
+                <h3 class="product-name">${product.name}</h3>
+                ${sizeInfo ? `<div class="product-size-wrapper">${sizeInfo}</div>` : ''}
+                <div class="product-footer">
+                    <span class="product-price">¥${product.price.toLocaleString()}</span>
+                    <button class="add-to-cart-btn" data-product-id="${product.id}" aria-label="カートに追加">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <path d="M16 10a4 4 0 0 1-8 0"></path>
+                        </svg>
+                    </button>
                 </div>
             </div>
         </div>
