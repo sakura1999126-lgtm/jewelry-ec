@@ -20,31 +20,67 @@ function initializeSupabase() {
     
     // 複数の可能性をチェック（より広範囲に）
     if (typeof window !== 'undefined') {
-        // 1. window.supabase として利用可能な場合
-        if (window.supabase && typeof window.supabase.createClient === 'function') {
-            supabaseLib = window.supabase;
+        // 1. window.supabase として利用可能な場合（最も一般的）
+        if (window.supabase) {
+            if (typeof window.supabase.createClient === 'function') {
+                supabaseLib = window.supabase;
+            } else if (window.supabase.default && typeof window.supabase.default.createClient === 'function') {
+                // default export の場合
+                supabaseLib = window.supabase.default;
+            } else if (window.supabase.supabase && typeof window.supabase.supabase.createClient === 'function') {
+                // ネストされた構造の場合
+                supabaseLib = window.supabase.supabase;
+            }
         }
         // 2. グローバルスコープの supabase 変数
-        else if (typeof window.supabaseLib !== 'undefined' && typeof window.supabaseLib.createClient === 'function') {
+        if (!supabaseLib && typeof window.supabaseLib !== 'undefined' && typeof window.supabaseLib.createClient === 'function') {
             supabaseLib = window.supabaseLib;
         }
         // 3. @supabase/supabase-js が直接エクスポートしている場合
-        else if (window.supabasejs && typeof window.supabasejs.createClient === 'function') {
+        if (!supabaseLib && window.supabasejs && typeof window.supabasejs.createClient === 'function') {
             supabaseLib = window.supabasejs;
         }
         // 4. グローバルスコープで直接利用可能な場合
-        else if (typeof createClient !== 'undefined') {
+        if (!supabaseLib && typeof createClient !== 'undefined') {
             // createClientが直接利用可能な場合、ラッパーオブジェクトを作成
             supabaseLib = { createClient: createClient };
         }
     }
     
-    // デバッグ用: 利用可能な変数を確認
-    if (!supabaseLib) {
-        console.log('Supabaseライブラリ検出: 利用可能な変数を確認中...');
-        console.log('window.supabase:', typeof window.supabase);
-        console.log('window.supabasejs:', typeof window.supabasejs);
-        console.log('createClient:', typeof createClient);
+    // デバッグ用: 利用可能な変数を確認（常に実行）
+    console.log('Supabaseライブラリ検出: 利用可能な変数を確認中...');
+    console.log('window.supabase:', window.supabase);
+    if (window.supabase) {
+        console.log('window.supabase の型:', typeof window.supabase);
+        console.log('window.supabase のキー:', Object.keys(window.supabase));
+        console.log('window.supabase.createClient:', window.supabase.createClient);
+        console.log('window.supabase.createClient の型:', typeof window.supabase.createClient);
+        
+        // window.supabaseがオブジェクトの場合、すべてのプロパティを確認
+        if (typeof window.supabase === 'object') {
+            for (let key in window.supabase) {
+                if (typeof window.supabase[key] === 'function' && key.toLowerCase().includes('client')) {
+                    console.log(`✓ 見つかった関数: window.supabase.${key}`);
+                }
+            }
+        }
+    }
+    console.log('window.supabasejs:', typeof window.supabasejs);
+    console.log('createClient:', typeof createClient);
+    
+    // window.supabaseがオブジェクトの場合、createClientを直接探す（再チェック）
+    if (!supabaseLib && window.supabase && typeof window.supabase === 'object') {
+        // createClientが直接プロパティとして存在するか確認
+        if (typeof window.supabase.createClient === 'function') {
+            console.log('✓ window.supabase.createClient が見つかりました（再チェック）');
+            supabaseLib = window.supabase;
+        } else {
+            // もしかしたら default export の可能性
+            if (window.supabase.default && typeof window.supabase.default.createClient === 'function') {
+                console.log('✓ window.supabase.default.createClient が見つかりました');
+                supabaseLib = window.supabase.default;
+            }
+        }
     }
     
     // Supabaseライブラリが見つかった場合
