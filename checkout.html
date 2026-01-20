@@ -155,16 +155,26 @@
                     orderData.order_number = orderNumber;
                     orderData.created_at = new Date().toISOString();
                     
+                    // コンソールに注文情報を表示（確認用）
+                    console.log('=== 注文確定 ===');
+                    console.log('注文番号:', orderNumber);
+                    console.log('注文データ:', orderData);
+                    console.log('注文日時:', new Date().toLocaleString('ja-JP'));
+                    console.log('================');
+                    
                     // ローカルストレージに注文を保存（履歴として）
                     const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');
                     existingOrders.push(orderData);
                     localStorage.setItem('orders', JSON.stringify(existingOrders));
+                    console.log('ローカルストレージに保存完了。全注文数:', existingOrders.length);
                     
                     // カートをクリア
                     localStorage.removeItem('cart');
+                    console.log('カートをクリアしました');
                     
-                    // 注文完了ページにリダイレクト
-                    window.location.href = `/checkout-success.html?order=${orderNumber}`;
+                    // 注文完了ページにリダイレクト（注文データもURLパラメータで渡す）
+                    const orderDataParam = encodeURIComponent(JSON.stringify(orderData));
+                    window.location.href = `/checkout-success.html?order=${orderNumber}&data=${orderDataParam}`;
                     
                 } catch (error) {
                     console.error('注文エラー:', error);

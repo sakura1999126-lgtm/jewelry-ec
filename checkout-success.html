@@ -84,19 +84,72 @@
             <div class="order-number" id="orderNumber">
                 注文番号: 読み込み中...
             </div>
-            <a href="/" class="back-home-btn">ホームに戻る</a>
+            <div class="order-details" id="orderDetails" style="margin-top: 2rem; padding: 1.5rem; background: rgba(255, 255, 255, 0.03); border-radius: 12px; text-align: left;">
+                <h3 style="font-family: 'Shippori Mincho', serif; color: #ffd700; margin-bottom: 1rem; font-size: 1.2rem; letter-spacing: 2px;">注文内容</h3>
+                <div id="orderInfo" style="color: rgba(255, 255, 255, 0.8); line-height: 1.8; font-size: 0.95rem;">
+                    読み込み中...
+                </div>
+            </div>
+            <a href="/" class="back-home-btn" style="margin-top: 2rem;">ホームに戻る</a>
         </div>
     </div>
 
     <script>
-        // URLパラメータから注文番号を取得
+        // URLパラメータから注文番号とデータを取得
         const urlParams = new URLSearchParams(window.location.search);
         const orderNumber = urlParams.get('order');
+        const orderDataParam = urlParams.get('data');
         
         if (orderNumber) {
             document.getElementById('orderNumber').textContent = `注文番号: ${orderNumber}`;
+            
+            // コンソールに表示（確認用）
+            console.log('=== 注文完了ページ ===');
+            console.log('注文番号:', orderNumber);
+            
+            // 注文データがあれば表示
+            if (orderDataParam) {
+                try {
+                    const orderData = JSON.parse(decodeURIComponent(orderDataParam));
+                    console.log('注文データ:', orderData);
+                    
+                    // 注文詳細を表示
+                    const orderInfo = document.getElementById('orderInfo');
+                    orderInfo.innerHTML = `
+                        <div style="margin-bottom: 1rem;">
+                            <strong style="color: #ffd700;">お名前:</strong> ${orderData.customer_name || '未入力'}
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <strong style="color: #ffd700;">メールアドレス:</strong> ${orderData.customer_email || '未入力'}
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <strong style="color: #ffd700;">電話番号:</strong> ${orderData.customer_phone || '未入力'}
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <strong style="color: #ffd700;">配送先:</strong><br>
+                            ${orderData.shipping_address || '未入力'}
+                        </div>
+                        <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                            <div style="margin-bottom: 0.5rem;">
+                                <strong style="color: #ffd700;">注文商品数:</strong> ${orderData.items ? orderData.items.length : 0}点
+                            </div>
+                            <div>
+                                <strong style="color: #ffd700;">合計金額:</strong> ¥${orderData.total_amount ? orderData.total_amount.toLocaleString() : 0}
+                            </div>
+                        </div>
+                    `;
+                } catch (e) {
+                    console.error('注文データの解析エラー:', e);
+                    document.getElementById('orderInfo').textContent = '注文データの表示に失敗しました。';
+                }
+            } else {
+                document.getElementById('orderInfo').textContent = '注文データが見つかりませんでした。';
+            }
+            
+            console.log('==================');
         } else {
             document.getElementById('orderNumber').textContent = '注文番号: 取得できませんでした';
+            document.getElementById('orderInfo').textContent = '注文情報を取得できませんでした。';
         }
     </script>
 </body>
