@@ -71,7 +71,6 @@
         </main>
     </div>
 
-    <script src="supabase-config.js"></script>
     <script src="script.js"></script>
     <script>
         // Checkout page specific script
@@ -146,50 +145,17 @@
                         }))
                     };
                     
-                    // Supabaseに注文を保存
-                    if (typeof supabase === 'undefined' || !supabase) {
-                        throw new Error('Supabaseが設定されていません');
-                    }
-                    
                     // 注文番号を生成
                     const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
                     
-                    // 注文を保存
-                    const { data: order, error: orderError } = await supabase
-                        .from('orders')
-                        .insert({
-                            order_number: orderNumber,
-                            customer_name: orderData.customer_name,
-                            customer_email: orderData.customer_email,
-                            customer_phone: orderData.customer_phone,
-                            shipping_address: orderData.shipping_address,
-                            total_amount: orderData.total_amount,
-                            status: 'pending'
-                        })
-                        .select()
-                        .single();
+                    // 注文データに注文番号を追加
+                    orderData.order_number = orderNumber;
+                    orderData.created_at = new Date().toISOString();
                     
-                    if (orderError) {
-                        throw new Error(`注文の保存に失敗しました: ${orderError.message}`);
-                    }
-                    
-                    // 注文アイテムを保存
-                    const orderItems = orderData.items.map(item => ({
-                        order_id: order.id,
-                        product_id: item.product_id,
-                        product_name: item.product_name,
-                        product_price: item.product_price,
-                        quantity: item.quantity,
-                        size_name: item.size_name
-                    }));
-                    
-                    const { error: itemsError } = await supabase
-                        .from('order_items')
-                        .insert(orderItems);
-                    
-                    if (itemsError) {
-                        throw new Error(`注文アイテムの保存に失敗しました: ${itemsError.message}`);
-                    }
+                    // ローカルストレージに注文を保存（履歴として）
+                    const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');
+                    existingOrders.push(orderData);
+                    localStorage.setItem('orders', JSON.stringify(existingOrders));
                     
                     // カートをクリア
                     localStorage.removeItem('cart');
