@@ -737,11 +737,14 @@ function updateProductImages(images) {
     // メイン画像を設定
     productDetailImage.src = images[0];
     productDetailImage.alt = currentDetailProduct?.name || '';
+    productDetailImage.onerror = function() {
+        this.style.display = 'none';
+    };
     
     // サムネイル画像を生成
     productImageThumbnails.innerHTML = images.map((img, index) => `
         <div class="product-image-thumbnail ${index === 0 ? 'active' : ''}" data-image-index="${index}">
-            <img src="${img}" alt="${currentDetailProduct?.name || ''} ${index + 1}">
+            <img src="${img}" alt="${currentDetailProduct?.name || ''} ${index + 1}" onerror="this.style.display='none';">
         </div>
     `).join('');
     
@@ -751,6 +754,9 @@ function updateProductImages(images) {
         thumb.addEventListener('click', () => {
             currentDetailImageIndex = index;
             productDetailImage.src = images[index];
+            productDetailImage.onerror = function() {
+                this.style.display = 'none';
+            };
             thumbnails.forEach(t => t.classList.remove('active'));
             thumb.classList.add('active');
         });
@@ -762,6 +768,9 @@ function updateProductImages(images) {
         productImagePrev.onclick = () => {
             currentDetailImageIndex = (currentDetailImageIndex - 1 + images.length) % images.length;
             productDetailImage.src = images[currentDetailImageIndex];
+            productDetailImage.onerror = function() {
+                this.style.display = 'none';
+            };
             thumbnails.forEach(t => t.classList.remove('active'));
             thumbnails[currentDetailImageIndex].classList.add('active');
         };
@@ -772,6 +781,9 @@ function updateProductImages(images) {
         productImageNext.onclick = () => {
             currentDetailImageIndex = (currentDetailImageIndex + 1) % images.length;
             productDetailImage.src = images[currentDetailImageIndex];
+            productDetailImage.onerror = function() {
+                this.style.display = 'none';
+            };
             thumbnails.forEach(t => t.classList.remove('active'));
             thumbnails[currentDetailImageIndex].classList.add('active');
         };
