@@ -41,7 +41,10 @@ let currentSelectedSize = null;
 
 // ページロード時の初期化
 document.addEventListener('DOMContentLoaded', () => {
-    initializeApp();
+    // Supabaseの初期化を少し待つ（CDNの読み込みを待つ）
+    setTimeout(() => {
+        initializeApp();
+    }, 200);
 });
 
 // アプリケーションの初期化
