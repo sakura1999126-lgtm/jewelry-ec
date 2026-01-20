@@ -95,6 +95,10 @@
     </div>
 
     <script>
+        // 注文完了時にカートをクリア
+        localStorage.removeItem('cart');
+        console.log('カートをクリアしました');
+        
         // URLパラメータから注文番号とデータを取得
         const urlParams = new URLSearchParams(window.location.search);
         const orderNumber = urlParams.get('order');

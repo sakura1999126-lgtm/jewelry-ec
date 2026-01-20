@@ -153,6 +153,10 @@
                     // TODO: Stripe実装後は以下のように変更
                     // window.location.href = data.url;
                     
+                    // カートをクリア（Stripe実装後はStripeからのリダイレクト時にクリアされる）
+                    localStorage.removeItem('cart');
+                    console.log('カートをクリアしました');
+                    
                     // 暫定的に完了ページに移動（Stripe実装まで）
                     alert('Stripe Checkoutの実装が完了次第、決済ページにリダイレクトされます。\n現在は完了ページに移動します。');
                     window.location.href = '/checkout-success.html?order=STRIPE_READY';
