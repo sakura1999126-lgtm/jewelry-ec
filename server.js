@@ -29,19 +29,25 @@ function serveStaticFile(filePath, res) {
   const ext = path.extname(filePath).toLowerCase();
   const contentType = mimeTypes[ext] || 'application/octet-stream';
 
-  fs.readFile(filePath, (err, content) => {
-    if (err) {
-      if (err.code === 'ENOENT') {
-        res.writeHead(404, { 'Content-Type': 'text/html' });
-        res.end('<h1>404 - File Not Found</h1>', 'utf-8');
-      } else {
+  // ファイルの存在確認
+  fs.access(filePath, fs.constants.F_OK, (accessErr) => {
+    if (accessErr) {
+      console.error(`File not found: ${filePath}`);
+      res.writeHead(404, { 'Content-Type': 'text/html' });
+      res.end('<h1>404 - File Not Found</h1>', 'utf-8');
+      return;
+    }
+
+    fs.readFile(filePath, (err, content) => {
+      if (err) {
+        console.error(`Error reading file: ${filePath}`, err);
         res.writeHead(500);
         res.end(`Server Error: ${err.code}`, 'utf-8');
+      } else {
+        res.writeHead(200, { 'Content-Type': contentType });
+        res.end(content, 'utf-8');
       }
-    } else {
-      res.writeHead(200, { 'Content-Type': contentType });
-      res.end(content, 'utf-8');
-    }
+    });
   });
 }
 
@@ -154,7 +160,9 @@ const server = http.createServer((req, res) => {
     filePath = path.join(__dirname, pathname);
   } else if (pathname.startsWith('/images/')) {
     // imagesフォルダ内の画像
-    filePath = path.join(__dirname, pathname);
+    // pathnameから/images/を取り除いて、imagesフォルダのパスを構築
+    const imageName = pathname.replace('/images/', '');
+    filePath = path.join(__dirname, 'images', imageName);
   } else if (pathname === '/') {
     filePath = path.join(__dirname, 'index.html');
   } else {
