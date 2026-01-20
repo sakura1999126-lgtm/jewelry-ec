@@ -11,12 +11,16 @@
     "jewelry",
     "ecommerce",
     "stripe",
-    "nodejs"
+    "nodejs",
+    "vercel"
   ],
   "author": "",
   "license": "MIT",
   "engines": {
     "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "stripe": "^14.0.0"
   }
 }
 
