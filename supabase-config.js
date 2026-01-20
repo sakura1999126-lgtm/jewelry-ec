@@ -13,9 +13,18 @@ let supabase = null;
 
 // CDNから読み込まれたSupabaseライブラリを取得
 // UMDビルドの場合、グローバル変数として利用可能
-const supabaseLib = typeof window !== 'undefined' && window.supabase 
-    ? window.supabase 
-    : (typeof supabaseLib !== 'undefined' ? supabaseLib : null);
+// CDNの場合は window.supabase または supabase として利用可能
+const getSupabaseLib = () => {
+    if (typeof window !== 'undefined') {
+        // CDNから読み込まれた場合
+        if (window.supabase) return window.supabase;
+        // またはグローバルスコープに直接定義されている場合
+        if (typeof supabase !== 'undefined' && supabase.createClient) return supabase;
+    }
+    return null;
+};
+
+const supabaseLib = getSupabaseLib();
 
 if (supabaseLib && SUPABASE_CONFIG.url !== 'YOUR_SUPABASE_URL' && SUPABASE_CONFIG.anonKey !== 'YOUR_SUPABASE_ANON_KEY') {
     try {
