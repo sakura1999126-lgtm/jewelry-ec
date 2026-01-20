@@ -733,8 +733,32 @@ body.splash-complete .main-content {
 
 @media (min-width: 769px) {
     .product-modal-content {
-        max-width: 1200px;
-        padding: 3rem;
+        max-width: 1000px;
+        max-height: 85vh;
+        padding: 2rem;
+        overflow-y: auto;
+    }
+
+    .product-detail-container {
+        gap: 2.5rem;
+    }
+
+    .product-detail-image-main {
+        aspect-ratio: 0.9;
+    }
+
+    .product-detail-info {
+        gap: 1rem;
+    }
+
+    .product-detail-name {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .product-detail-description {
+        font-size: 0.9rem;
+        margin-bottom: 0.8rem;
     }
 }
 

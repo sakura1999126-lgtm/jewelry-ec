@@ -73,35 +73,82 @@
             const checkoutItems = document.getElementById('checkoutItems');
             let subtotal = 0;
 
-            cart.forEach(item => {
-                const itemTotal = item.price * item.quantity;
-                subtotal += itemTotal;
+            // 商品データを取得して画像情報を補完
+            fetch('/api/products')
+                .then(res => res.json())
+                .then(products => {
+                    cart.forEach(item => {
+                        const itemTotal = item.price * item.quantity;
+                        subtotal += itemTotal;
 
-                const itemElement = document.createElement('div');
-                itemElement.className = 'checkout-item';
-                const imageHtml = item.image && !item.image.includes('placeholder.com')
-                    ? `<img src="${item.image}" alt="${item.name}" onerror="this.style.display='none';">`
-                    : '';
-                itemElement.innerHTML = `
-                    <div class="checkout-item-image">
-                        ${imageHtml}
-                    </div>
-                    <div class="checkout-item-details">
-                        <h3>${item.name}</h3>
-                        <p>数量: ${item.quantity}</p>
-                        <p class="checkout-item-price">¥${itemTotal.toLocaleString()}</p>
-                    </div>
-                `;
-                checkoutItems.appendChild(itemElement);
-            });
+                        // 商品データから画像を取得
+                        const product = products.find(p => p.id === item.id);
+                        let imageUrl = item.image || (product && product.image) || '';
+                        
+                        // プレースホルダーを除外
+                        if (imageUrl.includes('placeholder.com')) {
+                            imageUrl = '';
+                        }
 
-            // Calculate and display total
-            const shipping = 0; // Shipping can be configured later
-            const total = subtotal + shipping;
+                        const itemElement = document.createElement('div');
+                        itemElement.className = 'checkout-item';
+                        
+                        const imageHtml = imageUrl && !imageUrl.includes('placeholder.com')
+                            ? `<img src="${imageUrl}" alt="${item.name}" onerror="this.style.display='none';">`
+                            : '<div style="width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 2rem;">📦</div>';
+                        
+                        itemElement.innerHTML = `
+                            <div class="checkout-item-image">
+                                ${imageHtml}
+                            </div>
+                            <div class="checkout-item-details">
+                                <h3>${item.name}</h3>
+                                <p>数量: ${item.quantity}</p>
+                                <p class="checkout-item-price">¥${itemTotal.toLocaleString()}</p>
+                            </div>
+                        `;
+                        checkoutItems.appendChild(itemElement);
+                    });
 
-            document.getElementById('checkoutSubtotal').textContent = `¥${subtotal.toLocaleString()}`;
-            document.getElementById('checkoutShipping').textContent = `¥${shipping.toLocaleString()}`;
-            document.getElementById('checkoutTotal').textContent = `¥${total.toLocaleString()}`;
+                    // Calculate and display total
+                    const shipping = 0;
+                    const total = subtotal + shipping;
+
+                    document.getElementById('checkoutSubtotal').textContent = `¥${subtotal.toLocaleString()}`;
+                    document.getElementById('checkoutShipping').textContent = `¥${shipping.toLocaleString()}`;
+                    document.getElementById('checkoutTotal').textContent = `¥${total.toLocaleString()}`;
+                })
+                .catch(error => {
+                    console.error('商品データの取得に失敗しました:', error);
+                    // エラーの場合は画像なしで表示
+                    cart.forEach(item => {
+                        const itemTotal = item.price * item.quantity;
+                        subtotal += itemTotal;
+
+                        const itemElement = document.createElement('div');
+                        itemElement.className = 'checkout-item';
+                        itemElement.innerHTML = `
+                            <div class="checkout-item-image">
+                                <div style="width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 2rem;">📦</div>
+                            </div>
+                            <div class="checkout-item-details">
+                                <h3>${item.name}</h3>
+                                <p>数量: ${item.quantity}</p>
+                                <p class="checkout-item-price">¥${itemTotal.toLocaleString()}</p>
+                            </div>
+                        `;
+                        checkoutItems.appendChild(itemElement);
+                    });
+
+                    const shipping = 0;
+                    const total = subtotal + shipping;
+
+                    document.getElementById('checkoutSubtotal').textContent = `¥${subtotal.toLocaleString()}`;
+                    document.getElementById('checkoutShipping').textContent = `¥${shipping.toLocaleString()}`;
+                    document.getElementById('checkoutTotal').textContent = `¥${total.toLocaleString()}`;
+                });
+
+            // 合計金額の計算と表示はfetchのコールバック内で実行
 
             // Stripe Checkout処理
             const stripeCheckoutBtn = document.getElementById('stripeCheckoutBtn');
