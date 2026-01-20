@@ -3,8 +3,8 @@
 
 const SUPABASE_CONFIG = {
     // Supabaseダッシュボードの Settings > API から取得
-    url: 'YOUR_SUPABASE_URL',  // 例: 'https://xxxxx.supabase.co'
-    anonKey: 'YOUR_SUPABASE_ANON_KEY'  // 例: 'eyJhbGc...'（長い文字列）
+    url: 'https://vewdsawoqblftnxgnjgd.supabase.co',  // 例: 'https://xxxxx.supabase.co'
+    anonKey: 'sb_publishable_dCtprp8B03kQsm-nCFATMg_1sBQxZU4'  // 例: 'eyJhbGc...'（長い文字列）
 };
 
 // Supabaseクライアントの初期化
