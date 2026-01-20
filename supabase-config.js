@@ -127,24 +127,35 @@ function tryInitializeSupabase() {
     }
 }
 
-// Supabaseスクリプトの読み込み完了を待つ
+// Supabaseスクリプトの読み込み完了を待つ（最大20回、100ms間隔）
+let waitAttempts = 0;
+const maxWaitAttempts = 20;
+
 function waitForSupabaseScript() {
+    waitAttempts++;
+    
     // スクリプトが読み込まれたか確認
-    if (window.supabaseLoaded || (window.supabase && typeof window.supabase === 'object')) {
+    if (window.supabase && typeof window.supabase === 'object') {
         // スクリプトが読み込まれた後、少し待ってから初期化
+        console.log('Supabaseスクリプトが検出されました。初期化を開始します...');
         setTimeout(tryInitializeSupabase, 100);
-    } else {
+    } else if (waitAttempts < maxWaitAttempts) {
         // まだ読み込まれていない場合、再試行
-        setTimeout(waitForSupabaseScript, 50);
+        setTimeout(waitForSupabaseScript, 100);
+    } else {
+        // 最大試行回数に達した場合、エラーを表示
+        console.error('Supabaseスクリプトの読み込みがタイムアウトしました。CDNのURLを確認してください。');
+        console.error('確認URL: https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js');
     }
 }
 
 // DOMContentLoadedまたは即座に初期化を試みる
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-        waitForSupabaseScript();
+        // DOMContentLoaded後、少し待ってからSupabaseスクリプトの読み込みを待つ
+        setTimeout(waitForSupabaseScript, 100);
     });
 } else {
     // 既に読み込み済みの場合、Supabaseスクリプトの読み込みを待つ
-    waitForSupabaseScript();
+    setTimeout(waitForSupabaseScript, 100);
 }
