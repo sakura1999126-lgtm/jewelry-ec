@@ -145,7 +145,7 @@ function waitForSupabaseScript() {
     } else {
         // 最大試行回数に達した場合、エラーを表示
         console.error('Supabaseスクリプトの読み込みがタイムアウトしました。CDNのURLを確認してください。');
-        console.error('確認URL: https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js');
+        console.error('確認URL: https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js');
     }
 }
 
