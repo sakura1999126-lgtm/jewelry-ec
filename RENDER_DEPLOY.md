@@ -20,16 +20,38 @@
 
 ### ステップ2: Webサービスを作成
 
-1. **Renderダッシュボードで「New +」をクリック**
+1. **Renderダッシュボードで「New +」ボタンをクリック**
+   - 画面右上の青い「New +」ボタン
+
 2. **「Web Service」を選択**
-3. **「Connect GitHub」をクリック**（初回のみ）
-   - GitHubの認証画面で「Authorize Render」をクリック
+   - メニューから「Web Service」をクリック
+
+3. **GitHubアカウントを接続**（初回のみ）
+
+   **【もし「Connect GitHub」ボタンが表示されている場合】**
+   - 「Connect GitHub」ボタンをクリック
+   - GitHubのログイン画面が開きます
+   - GitHubのユーザー名とパスワードを入力
+   - 「Authorize Render」ボタンをクリック（権限を許可）
+   - Renderダッシュボードに戻ります
+
+   **【もしすでにGitHubが接続されている場合】**
+   - このステップはスキップして、次のステップに進みます
+
 4. **リポジトリを選択**
-   - 「Connect a repository」で `jewelry-ec` を検索・選択
-   - または、リポジトリURLを直接入力:
+
+   **方法A: 検索して選択（推奨）**
+   - 「Connect a repository」の下に検索ボックスがあります
+   - `jewelry-ec` と入力して検索
+   - 見つかったら、`sakura1999126-lgtm/jewelry-ec` をクリックして選択
+
+   **方法B: URLを直接入力**
+   - 「Public Git repository」という入力欄があります
+   - そこに以下のURLをコピー&ペースト:
      ```
      https://github.com/sakura1999126-lgtm/jewelry-ec
      ```
+   - または、「Use this repository」ボタンをクリック
 
 ### ステップ3: 設定（ほぼ自動）
 
