@@ -137,8 +137,17 @@ async function fetchProducts() {
                 
                 // 画像情報を変換
                 const images = (product.product_images || [])
-                    .sort((a, b) => a.display_order - b.display_order)
-                    .map(img => img.image_url);
+                    .sort((a, b) => (a.display_order || 0) - (b.display_order || 0))
+                    .map(img => img.image_url)
+                    .filter(url => url && url.trim() !== ''); // 空のURLを除外
+                
+                // メイン画像を決定（product.image、product_imagesの最初、または空文字列）
+                let mainImage = '';
+                if (product.image && product.image.trim() !== '') {
+                    mainImage = product.image;
+                } else if (images.length > 0) {
+                    mainImage = images[0];
+                }
                 
                 return {
                     id: product.id,
@@ -146,14 +155,17 @@ async function fetchProducts() {
                     category: product.category,
                     price: product.price,
                     currency: product.currency || 'JPY',
-                    image: product.image || (images.length > 0 ? images[0] : ''),
-                    images: images.length > 0 ? images : (product.image ? [product.image] : []),
+                    image: mainImage,
+                    images: images.length > 0 ? images : (mainImage ? [mainImage] : []),
                     description: product.description || '',
                     detailedDescription: product.detailed_description || '',
                     sizes: sizes.length > 0 ? sizes : undefined,
                     stock: product.stock || 0
                 };
             });
+            
+            // デバッグ用: 取得した商品データを確認
+            console.log('Supabaseから取得した商品データ:', products);
         }
         
         if (products.length === 0) {
