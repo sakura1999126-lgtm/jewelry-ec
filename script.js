@@ -931,11 +931,17 @@ function addToCart(product) {
     if (existingItem) {
         existingItem.quantity += 1;
     } else {
+        // カートに追加する際に、無効な画像URLは保存しない
+        const imageUrl = product.image || '';
+        const validImage = imageUrl && !imageUrl.includes('via.placeholder.com') && !imageUrl.includes('placeholder.com') 
+            ? imageUrl 
+            : '';
+        
         cart.push({
             id: product.id,
             name: product.name,
             price: product.price,
-            image: product.image,
+            image: validImage,
             quantity: 1
         });
     }
