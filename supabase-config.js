@@ -11,11 +11,24 @@ const SUPABASE_CONFIG = {
 // CDNから読み込まれたSupabaseライブラリを使用
 let supabase = null;
 
-if (typeof supabaseLib !== 'undefined' && SUPABASE_CONFIG.url !== 'YOUR_SUPABASE_URL') {
-    supabase = supabaseLib.createClient(
-        SUPABASE_CONFIG.url,
-        SUPABASE_CONFIG.anonKey
-    );
-} else if (SUPABASE_CONFIG.url === 'YOUR_SUPABASE_URL') {
+// CDNから読み込まれたSupabaseライブラリを取得
+// UMDビルドの場合、グローバル変数として利用可能
+const supabaseLib = typeof window !== 'undefined' && window.supabase 
+    ? window.supabase 
+    : (typeof supabaseLib !== 'undefined' ? supabaseLib : null);
+
+if (supabaseLib && SUPABASE_CONFIG.url !== 'YOUR_SUPABASE_URL' && SUPABASE_CONFIG.anonKey !== 'YOUR_SUPABASE_ANON_KEY') {
+    try {
+        supabase = supabaseLib.createClient(
+            SUPABASE_CONFIG.url,
+            SUPABASE_CONFIG.anonKey
+        );
+        console.log('Supabase接続成功');
+    } catch (error) {
+        console.error('Supabase接続エラー:', error);
+    }
+} else if (SUPABASE_CONFIG.url === 'YOUR_SUPABASE_URL' || SUPABASE_CONFIG.anonKey === 'YOUR_SUPABASE_ANON_KEY') {
     console.warn('Supabase設定が完了していません。supabase-config.jsを編集してください。');
+} else {
+    console.warn('Supabaseライブラリが読み込まれていません。');
 }
