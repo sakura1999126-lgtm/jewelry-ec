@@ -578,6 +578,22 @@ body.splash-complete .main-content {
     z-index: 0;
 }
 
+.product-image-placeholder {
+    width: 100%;
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.product-image-placeholder::after {
+    content: '📷';
+    font-size: 2rem;
+    opacity: 0.3;
+}
+
 .product-card:hover .product-image {
     transform: scale(1.05);
 }

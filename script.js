@@ -682,12 +682,12 @@ function createProductCard(product, index) {
         }
     }
     
-    // 画像URLが無効な場合（via.placeholder.comなど）は画像を表示しない
+    // 画像URLが無効な場合（via.placeholder.comなど）は画像を表示しないが、スペースは確保
     const imageUrl = product.image || '';
     const shouldShowImage = imageUrl && !imageUrl.includes('via.placeholder.com') && !imageUrl.includes('placeholder.com');
     const imageHtml = shouldShowImage 
         ? `<img src="${imageUrl}" alt="${product.name}" class="product-image" onerror="this.style.display='none'; this.onerror=null;">`
-        : '';
+        : '<div class="product-image product-image-placeholder"></div>';
     
     return `
         <div class="product-card" style="${animationStyle}" data-product-id="${product.id}">
