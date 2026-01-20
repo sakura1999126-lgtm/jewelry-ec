@@ -110,7 +110,7 @@ async function fetchProducts() {
         products = data.products || [];
         
         if (products.length === 0) {
-            console.warn('No products found in products.json');
+            // console.warn('No products found in products.json');
             if (productsContainer) {
                 productsContainer.innerHTML = '<p class="loading">商品が見つかりませんでした</p>';
             }
@@ -120,7 +120,7 @@ async function fetchProducts() {
         // displayProductsは引数を受け取らないので、呼び出しのみ
         displayProducts();
     } catch (error) {
-        console.error('Failed to fetch product data:', error);
+        // console.error('Failed to fetch product data:', error);
         if (productsContainer) {
             productsContainer.innerHTML = '<p class="loading">商品の読み込みに失敗しました。ページを再読み込みしてください。</p>';
         }
@@ -249,9 +249,9 @@ function setupElementSelection() {
         }
     });
     
-    // デバッグ用: コンソールにメッセージを表示
-    console.log('要素選択機能がセットアップされました。ショートカット: ' + 
-                (navigator.platform.toUpperCase().indexOf('MAC') >= 0 ? 'Cmd' : 'Ctrl') + '+Shift+E');
+    // デバッグ用: コンソールにメッセージを表示（本番環境では非表示）
+    // console.log('要素選択機能がセットアップされました。ショートカット: ' + 
+    //             (navigator.platform.toUpperCase().indexOf('MAC') >= 0 ? 'Cmd' : 'Ctrl') + '+Shift+E');
 }
 
 // 要素選択機能を無効化
@@ -285,7 +285,7 @@ function disableElementSelection() {
         selectionHandlers.touchmove = null;
     }
     
-    console.log('要素編集モードが無効になりました');
+    // console.log('要素編集モードが無効になりました');
 }
 
 // 要素選択機能を有効化（編集可能）
@@ -412,7 +412,7 @@ function enableElementSelection() {
     // クリックで要素を編集
     selectionHandlers.click = (e) => {
         if (!selectionModeActive) {
-            console.log('要素編集モードが無効です');
+            // console.log('要素編集モードが無効です');
             return;
         }
         
@@ -427,7 +427,7 @@ function enableElementSelection() {
             return;
         }
         
-        console.log('要素をクリック:', target);
+        // console.log('要素をクリック:', target);
         e.preventDefault();
         e.stopPropagation();
         
@@ -482,7 +482,7 @@ function enableElementSelection() {
     document.addEventListener('click', selectionHandlers.click, true);
     document.addEventListener('touchend', selectionHandlers.touch, true);
     
-    console.log('要素編集モードが有効になりました (Ctrl+Shift+E で無効化)');
+    // console.log('要素編集モードが有効になりました (Ctrl+Shift+E で無効化)');
 }
 
 // アニメーション開始
@@ -514,17 +514,29 @@ function startAnimations() {
     
     // 背景動画の再生確認
     const bgVideo = document.getElementById('bgVideo');
-    if (bgVideo) {
-        // 動画の読み込みエラーを抑制
-        bgVideo.addEventListener('error', (e) => {
-            const videoContainer = bgVideo.closest('.video-background');
-            if (videoContainer) {
-                videoContainer.style.display = 'none';
-            }
+    const videoBackground = document.getElementById('videoBackground');
+    if (bgVideo && videoBackground) {
+        // 動画の読み込みエラーを完全に抑制
+        const handleVideoError = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            videoBackground.style.display = 'none';
+            return false;
+        };
+        
+        bgVideo.addEventListener('error', handleVideoError, { once: true, capture: true });
+        bgVideo.addEventListener('loadstart', () => {
+            // 動画の読み込み開始時にエラーチェック
+            setTimeout(() => {
+                if (bgVideo.readyState === 0 && bgVideo.networkState === 3) {
+                    // ネットワークエラーの場合
+                    videoBackground.style.display = 'none';
+                }
+            }, 1000);
         }, { once: true });
         
-        bgVideo.play().catch(err => {
-            // エラーを無視（動画が存在しない場合など）
+        bgVideo.play().catch(() => {
+            // 再生エラーは無視
         });
     }
 }
@@ -663,9 +675,16 @@ function createProductCard(product, index) {
         }
     }
     
+    // 画像URLが無効な場合（via.placeholder.comなど）は画像を表示しない
+    const imageUrl = product.image || '';
+    const shouldShowImage = imageUrl && !imageUrl.includes('via.placeholder.com') && !imageUrl.includes('placeholder.com');
+    const imageHtml = shouldShowImage 
+        ? `<img src="${imageUrl}" alt="${product.name}" class="product-image" onerror="this.style.display='none'; this.onerror=null;">`
+        : '';
+    
     return `
         <div class="product-card" style="${animationStyle}" data-product-id="${product.id}">
-            <img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.style.display='none';">
+            ${imageHtml}
             <div class="product-info">
                 <h3 class="product-name">${product.name}</h3>
                 ${sizeInfo ? `<div class="product-size-wrapper">${sizeInfo}</div>` : ''}
@@ -696,9 +715,11 @@ function showProductDetail(product) {
     currentSelectedSize = null;
     
     // 画像の設定（複数画像対応）
-    const images = product.images && product.images.length > 0 
+    // via.placeholder.comの画像を除外
+    const allImages = product.images && product.images.length > 0 
         ? product.images 
         : [product.image];
+    const images = allImages.filter(img => img && !img.includes('via.placeholder.com') && !img.includes('placeholder.com'));
     
     updateProductImages(images);
     
@@ -745,17 +766,29 @@ function showProductDetail(product) {
 function updateProductImages(images) {
     if (!productDetailImage || !productImageThumbnails || images.length === 0) return;
     
+    // 有効な画像のみをフィルタリング（via.placeholder.comを除外）
+    const validImages = images.filter(img => img && !img.includes('via.placeholder.com') && !img.includes('placeholder.com'));
+    
+    if (validImages.length === 0) {
+        // 有効な画像がない場合は画像セクションを非表示
+        if (productDetailImage.parentElement) {
+            productDetailImage.parentElement.style.display = 'none';
+        }
+        return;
+    }
+    
     // メイン画像を設定
-    productDetailImage.src = images[0];
+    productDetailImage.src = validImages[0];
     productDetailImage.alt = currentDetailProduct?.name || '';
     productDetailImage.onerror = function() {
         this.style.display = 'none';
+        this.onerror = null; // エラーハンドラーを削除して無限ループを防ぐ
     };
     
     // サムネイル画像を生成
-    productImageThumbnails.innerHTML = images.map((img, index) => `
+    productImageThumbnails.innerHTML = validImages.map((img, index) => `
         <div class="product-image-thumbnail ${index === 0 ? 'active' : ''}" data-image-index="${index}">
-            <img src="${img}" alt="${currentDetailProduct?.name || ''} ${index + 1}" onerror="this.style.display='none';">
+            <img src="${img}" alt="${currentDetailProduct?.name || ''} ${index + 1}" onerror="this.style.display='none'; this.onerror=null;">
         </div>
     `).join('');
     
@@ -764,9 +797,10 @@ function updateProductImages(images) {
     thumbnails.forEach((thumb, index) => {
         thumb.addEventListener('click', () => {
             currentDetailImageIndex = index;
-            productDetailImage.src = images[index];
+            productDetailImage.src = validImages[index];
             productDetailImage.onerror = function() {
                 this.style.display = 'none';
+                this.onerror = null;
             };
             thumbnails.forEach(t => t.classList.remove('active'));
             thumb.classList.add('active');
@@ -775,12 +809,13 @@ function updateProductImages(images) {
     
     // 前/次のボタンイベント
     if (productImagePrev) {
-        productImagePrev.style.display = images.length > 1 ? 'flex' : 'none';
+        productImagePrev.style.display = validImages.length > 1 ? 'flex' : 'none';
         productImagePrev.onclick = () => {
-            currentDetailImageIndex = (currentDetailImageIndex - 1 + images.length) % images.length;
-            productDetailImage.src = images[currentDetailImageIndex];
+            currentDetailImageIndex = (currentDetailImageIndex - 1 + validImages.length) % validImages.length;
+            productDetailImage.src = validImages[currentDetailImageIndex];
             productDetailImage.onerror = function() {
                 this.style.display = 'none';
+                this.onerror = null;
             };
             thumbnails.forEach(t => t.classList.remove('active'));
             thumbnails[currentDetailImageIndex].classList.add('active');
@@ -788,12 +823,13 @@ function updateProductImages(images) {
     }
     
     if (productImageNext) {
-        productImageNext.style.display = images.length > 1 ? 'flex' : 'none';
+        productImageNext.style.display = validImages.length > 1 ? 'flex' : 'none';
         productImageNext.onclick = () => {
-            currentDetailImageIndex = (currentDetailImageIndex + 1) % images.length;
-            productDetailImage.src = images[currentDetailImageIndex];
+            currentDetailImageIndex = (currentDetailImageIndex + 1) % validImages.length;
+            productDetailImage.src = validImages[currentDetailImageIndex];
             productDetailImage.onerror = function() {
                 this.style.display = 'none';
+                this.onerror = null;
             };
             thumbnails.forEach(t => t.classList.remove('active'));
             thumbnails[currentDetailImageIndex].classList.add('active');
@@ -977,9 +1013,16 @@ function renderCartItems() {
     }
     
     cartItems.innerHTML = cart.map(item => {
+        // 画像URLが無効な場合（via.placeholder.comなど）は画像を表示しない
+        const imageUrl = item.image || '';
+        const shouldShowImage = imageUrl && !imageUrl.includes('via.placeholder.com') && !imageUrl.includes('placeholder.com');
+        const imageHtml = shouldShowImage 
+            ? `<img src="${imageUrl}" alt="${item.name}" class="cart-item-image" onerror="this.style.display='none'; this.onerror=null;">`
+            : '';
+        
         return `
             <div class="cart-item">
-                <img src="${item.image}" alt="${item.name}" class="cart-item-image" onerror="this.style.display='none';">
+                ${imageHtml}
                 <div class="cart-item-details">
                     <h4 class="cart-item-name">${item.name}</h4>
                     <p class="cart-item-price">¥${(item.price * item.quantity).toLocaleString()}</p>
