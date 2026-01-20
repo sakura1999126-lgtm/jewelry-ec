@@ -1568,26 +1568,55 @@ body.splash-complete .main-content {
 
 /* チェックアウトフォーム */
 .checkout-form-section {
-    background: linear-gradient(135deg, rgba(28, 28, 28, 0.75) 0%, rgba(20, 20, 20, 0.8) 100%);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 16px;
-    padding: 2.5rem;
-    border: 1px solid rgba(255, 215, 0, 0.15);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    background: linear-gradient(135deg, rgba(15, 15, 15, 0.95) 0%, rgba(10, 10, 10, 0.98) 100%);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-radius: 24px;
+    padding: 3rem;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(255, 215, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        inset 0 -1px 0 rgba(255, 215, 0, 0.05);
     margin-top: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.checkout-form-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, 
+        transparent,
+        rgba(255, 215, 0, 0.3),
+        rgba(255, 215, 0, 0.6),
+        rgba(255, 215, 0, 0.3),
+        transparent
+    );
+    animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
 }
 
 .checkout-form-section h2 {
-    font-family: 'Shippori Mincho', 'Noto Serif JP', serif;
-    font-size: 1.5rem;
-    font-weight: 300;
-    margin-bottom: 2rem;
+    font-family: 'Playfair Display', 'Shippori Mincho', serif;
+    font-size: 1.75rem;
+    font-weight: 400;
+    margin-bottom: 2.5rem;
     color: #ffd700;
-    letter-spacing: 3px;
+    letter-spacing: 4px;
     text-align: center;
     position: relative;
-    padding-bottom: 1rem;
+    padding-bottom: 1.5rem;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
 }
 
 .checkout-form-section h2::after {
@@ -1596,9 +1625,16 @@ body.splash-complete .main-content {
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 60px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.5), transparent);
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 215, 0, 0.4), 
+        rgba(255, 215, 0, 0.8), 
+        rgba(255, 215, 0, 0.4), 
+        transparent
+    );
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
 .checkout-form {
@@ -1616,13 +1652,23 @@ body.splash-complete .main-content {
 
 .form-group label {
     font-family: 'Shippori Mincho', 'Noto Serif JP', serif;
-    color: rgba(255, 255, 255, 0.95);
+    color: rgba(255, 255, 255, 0.98);
     font-size: 0.95rem;
     font-weight: 400;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.form-group .field-hint {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    margin-left: auto;
+    font-style: italic;
 }
 
 .form-group .required {
@@ -1633,16 +1679,19 @@ body.splash-complete .main-content {
 
 .form-group input,
 .form-group textarea {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.05) 100%);
-    border: 1px solid rgba(255, 215, 0, 0.25);
-    border-radius: 10px;
-    padding: 1rem 1.25rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.06) 100%);
+    border: 1.5px solid rgba(255, 215, 0, 0.2);
+    border-radius: 12px;
+    padding: 1.15rem 1.5rem;
     color: #fff;
     font-family: 'Noto Sans JP', sans-serif;
     font-size: 1rem;
     font-weight: 300;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     letter-spacing: 0.5px;
+    box-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .form-group input::placeholder,
@@ -1654,10 +1703,14 @@ body.splash-complete .main-content {
 .form-group input:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: rgba(255, 215, 0, 0.6);
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.08) 100%);
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    transform: translateY(-1px);
+    border-color: rgba(255, 215, 0, 0.7);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.1) 100%);
+    box-shadow: 
+        0 0 30px rgba(255, 215, 0, 0.25),
+        0 4px 12px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        inset 0 -1px 0 rgba(255, 215, 0, 0.1);
+    transform: translateY(-2px);
 }
 
 .form-group input:hover:not(:focus),
@@ -1673,21 +1726,26 @@ body.splash-complete .main-content {
 }
 
 .checkout-submit-btn {
-    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
+    background-size: 200% 100%;
     color: #000;
-    padding: 1.25rem 2.5rem;
+    padding: 1.4rem 3rem;
     border: none;
-    border-radius: 10px;
-    font-family: 'Shippori Mincho', 'Noto Serif JP', serif;
-    font-size: 1.1rem;
-    font-weight: 500;
-    letter-spacing: 2px;
+    border-radius: 12px;
+    font-family: 'Playfair Display', 'Shippori Mincho', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: 3px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 1.5rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: 2rem;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
+    box-shadow: 
+        0 8px 25px rgba(255, 215, 0, 0.3),
+        0 0 0 1px rgba(255, 215, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    text-transform: uppercase;
 }
 
 .checkout-submit-btn::before {
@@ -1706,9 +1764,13 @@ body.splash-complete .main-content {
 }
 
 .checkout-submit-btn:hover:not(:disabled) {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
-    background: linear-gradient(135deg, #ffed4e 0%, #ffd700 100%);
+    transform: translateY(-4px);
+    box-shadow: 
+        0 12px 35px rgba(255, 215, 0, 0.5),
+        0 0 0 1px rgba(255, 215, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    background-position: 100% 0;
+    letter-spacing: 4px;
 }
 
 .checkout-submit-btn:active:not(:disabled) {
