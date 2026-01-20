@@ -126,7 +126,8 @@ function createCheckoutSession(req, res) {
 // サーバー作成
 const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
-  const pathname = parsedUrl.pathname;
+  // URLエンコードされた文字（%20など）をデコード
+  let pathname = decodeURIComponent(parsedUrl.pathname);
   const method = req.method;
 
   // APIエンドポイントの処理
@@ -150,6 +151,9 @@ const server = http.createServer((req, res) => {
   
   // publicフォルダ内のリソース（画像、動画など）
   if (pathname.startsWith('/public/')) {
+    filePath = path.join(__dirname, pathname);
+  } else if (pathname.startsWith('/images/')) {
+    // imagesフォルダ内の画像
     filePath = path.join(__dirname, pathname);
   } else if (pathname === '/') {
     filePath = path.join(__dirname, 'index.html');
