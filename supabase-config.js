@@ -18,16 +18,33 @@ function initializeSupabase() {
     // UMDビルドの場合、グローバル変数として利用可能
     let supabaseLib = null;
     
-    // 複数の可能性をチェック
+    // 複数の可能性をチェック（より広範囲に）
     if (typeof window !== 'undefined') {
-        // window.supabase として利用可能な場合
-        if (window.supabase && window.supabase.createClient) {
+        // 1. window.supabase として利用可能な場合
+        if (window.supabase && typeof window.supabase.createClient === 'function') {
             supabaseLib = window.supabase;
         }
-        // グローバルスコープに直接定義されている場合（ただし、このファイル内の変数と競合しないように）
-        else if (typeof window.supabaseLib !== 'undefined' && window.supabaseLib.createClient) {
+        // 2. グローバルスコープの supabase 変数
+        else if (typeof window.supabaseLib !== 'undefined' && typeof window.supabaseLib.createClient === 'function') {
             supabaseLib = window.supabaseLib;
         }
+        // 3. @supabase/supabase-js が直接エクスポートしている場合
+        else if (window.supabasejs && typeof window.supabasejs.createClient === 'function') {
+            supabaseLib = window.supabasejs;
+        }
+        // 4. グローバルスコープで直接利用可能な場合
+        else if (typeof createClient !== 'undefined') {
+            // createClientが直接利用可能な場合、ラッパーオブジェクトを作成
+            supabaseLib = { createClient: createClient };
+        }
+    }
+    
+    // デバッグ用: 利用可能な変数を確認
+    if (!supabaseLib) {
+        console.log('Supabaseライブラリ検出: 利用可能な変数を確認中...');
+        console.log('window.supabase:', typeof window.supabase);
+        console.log('window.supabasejs:', typeof window.supabasejs);
+        console.log('createClient:', typeof createClient);
     }
     
     // Supabaseライブラリが見つかった場合
@@ -50,6 +67,7 @@ function initializeSupabase() {
         }
     } else if (!supabaseLib) {
         console.warn('Supabaseライブラリが読み込まれていません。CDNの読み込みを確認してください。');
+        console.warn('ヒント: ブラウザのネットワークタブで supabase.min.js が読み込まれているか確認してください。');
         return false;
     } else {
         console.warn('Supabase設定が完了していません。supabase-config.jsを編集してください。');
@@ -57,10 +75,28 @@ function initializeSupabase() {
     }
 }
 
+// 複数回試行して初期化（CDNの読み込みを待つ）
+let initAttempts = 0;
+const maxAttempts = 10;
+
+function tryInitializeSupabase() {
+    initAttempts++;
+    const success = initializeSupabase();
+    
+    if (!success && initAttempts < maxAttempts) {
+        // まだ読み込まれていない場合、少し待ってから再試行
+        setTimeout(tryInitializeSupabase, 200);
+    } else if (!success && initAttempts >= maxAttempts) {
+        console.error('Supabaseの初期化に失敗しました。CDNの読み込みを確認してください。');
+    }
+}
+
 // DOMContentLoadedまたは即座に初期化を試みる
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeSupabase);
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(tryInitializeSupabase, 100);
+    });
 } else {
     // 既に読み込み済みの場合、少し待ってから初期化（CDNの読み込みを待つ）
-    setTimeout(initializeSupabase, 100);
+    setTimeout(tryInitializeSupabase, 100);
 }
