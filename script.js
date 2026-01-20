@@ -104,15 +104,26 @@ async function fetchProducts() {
         // Cloudflare Pages用: products.jsonを直接読み込む
         const response = await fetch('/products.json');
         if (!response.ok) {
-            throw new Error('Failed to fetch products');
+            throw new Error(`Failed to fetch products: ${response.status} ${response.statusText}`);
         }
         const data = await response.json();
         products = data.products || [];
+        
+        if (products.length === 0) {
+            console.warn('No products found in products.json');
+            if (productsContainer) {
+                productsContainer.innerHTML = '<p class="loading">商品が見つかりませんでした</p>';
+            }
+            return;
+        }
+        
         // displayProductsは引数を受け取らないので、呼び出しのみ
         displayProducts();
     } catch (error) {
         console.error('Failed to fetch product data:', error);
-        productsContainer.innerHTML = '<p class="loading">商品の読み込みに失敗しました</p>';
+        if (productsContainer) {
+            productsContainer.innerHTML = '<p class="loading">商品の読み込みに失敗しました。ページを再読み込みしてください。</p>';
+        }
     }
 }
 
