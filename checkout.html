@@ -42,33 +42,16 @@
                     </div>
                 </section>
 
-                <!-- Customer Information Form -->
-                <section class="checkout-form-section">
-                    <h2>お客様情報</h2>
-                    <form id="checkoutForm" class="checkout-form">
-                        <div class="form-group">
-                            <label for="customerName">お名前 <span class="required">*</span></label>
-                            <input type="text" id="customerName" name="customerName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="customerEmail">
-                                メールアドレス <span class="required">*</span>
-                                <span class="field-hint">（注文確認・配送通知をお送りします）</span>
-                            </label>
-                            <input type="email" id="customerEmail" name="customerEmail" placeholder="example@email.com" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="customerPhone">電話番号 <span class="required">*</span></label>
-                            <input type="tel" id="customerPhone" name="customerPhone" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="shippingAddress">配送先住所 <span class="required">*</span></label>
-                            <textarea id="shippingAddress" name="shippingAddress" rows="3" required></textarea>
-                        </div>
-                        <button type="submit" class="checkout-submit-btn" id="checkoutSubmitBtn">
-                            注文を確定する
-                        </button>
-                    </form>
+                <!-- Payment Section -->
+                <section class="checkout-payment-section">
+                    <h2>お支払い</h2>
+                    <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 2rem; line-height: 1.8; text-align: center; font-size: 0.95rem;">
+                        決済情報・配送先情報は<br>
+                        次のページで入力していただきます
+                    </p>
+                    <button type="button" class="checkout-submit-btn" id="stripeCheckoutBtn">
+                        Stripe Checkoutに進む
+                    </button>
                 </section>
             </div>
         </main>
@@ -120,67 +103,65 @@
             document.getElementById('checkoutShipping').textContent = `¥${shipping.toLocaleString()}`;
             document.getElementById('checkoutTotal').textContent = `¥${total.toLocaleString()}`;
 
-            // フォーム送信処理
-            const checkoutForm = document.getElementById('checkoutForm');
-            const checkoutSubmitBtn = document.getElementById('checkoutSubmitBtn');
+            // Stripe Checkout処理
+            const stripeCheckoutBtn = document.getElementById('stripeCheckoutBtn');
             
-            checkoutForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                
+            stripeCheckoutBtn.addEventListener('click', async () => {
                 // ボタンを無効化
-                checkoutSubmitBtn.disabled = true;
-                checkoutSubmitBtn.textContent = '処理中...';
+                stripeCheckoutBtn.disabled = true;
+                stripeCheckoutBtn.textContent = '処理中...';
                 
                 try {
-                    // 注文データを作成
-                    const orderData = {
-                        customer_name: document.getElementById('customerName').value,
-                        customer_email: document.getElementById('customerEmail').value,
-                        customer_phone: document.getElementById('customerPhone').value,
-                        shipping_address: document.getElementById('shippingAddress').value,
-                        total_amount: total,
-                        items: cart.map(item => ({
-                            product_id: item.id,
-                            product_name: item.name,
-                            product_price: item.price,
-                            quantity: item.quantity,
-                            size_name: item.size_name || null
-                        }))
-                    };
+                    // カートデータをStripe Checkout用の形式に変換
+                    const lineItems = cart.map(item => ({
+                        price_data: {
+                            currency: 'jpy',
+                            product_data: {
+                                name: item.name,
+                                description: item.size_name ? `サイズ: ${item.size_name}` : '',
+                                images: item.image && !item.image.includes('placeholder.com') ? [item.image] : []
+                            },
+                            unit_amount: item.price
+                        },
+                        quantity: item.quantity
+                    }));
                     
-                    // 注文番号を生成
-                    const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+                    // Stripe Checkout Sessionを作成するAPIを呼び出し
+                    const response = await fetch('/api/checkout', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            lineItems: lineItems,
+                            successUrl: `${window.location.origin}/checkout-success.html?session_id={CHECKOUT_SESSION_ID}`,
+                            cancelUrl: `${window.location.origin}/checkout.html`
+                        })
+                    });
                     
-                    // 注文データに注文番号を追加
-                    orderData.order_number = orderNumber;
-                    orderData.created_at = new Date().toISOString();
+                    const data = await response.json();
                     
-                    // コンソールに注文情報を表示（確認用）
-                    console.log('=== 注文確定 ===');
-                    console.log('注文番号:', orderNumber);
-                    console.log('注文データ:', orderData);
-                    console.log('注文日時:', new Date().toLocaleString('ja-JP'));
-                    console.log('================');
+                    if (data.error) {
+                        throw new Error(data.error);
+                    }
                     
-                    // ローカルストレージに注文を保存（履歴として）
-                    const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');
-                    existingOrders.push(orderData);
-                    localStorage.setItem('orders', JSON.stringify(existingOrders));
-                    console.log('ローカルストレージに保存完了。全注文数:', existingOrders.length);
+                    // Stripe Checkoutにリダイレクト
+                    // 注意: 実際のStripe実装では、data.sessionIdを使用してリダイレクト
+                    // 現在はプレースホルダーなので、完了ページに直接移動
+                    console.log('Stripe Checkout Session作成完了:', data);
                     
-                    // カートをクリア
-                    localStorage.removeItem('cart');
-                    console.log('カートをクリアしました');
+                    // TODO: Stripe実装後は以下のように変更
+                    // window.location.href = data.url;
                     
-                    // 注文完了ページにリダイレクト（注文データもURLパラメータで渡す）
-                    const orderDataParam = encodeURIComponent(JSON.stringify(orderData));
-                    window.location.href = `/checkout-success.html?order=${orderNumber}&data=${orderDataParam}`;
+                    // 暫定的に完了ページに移動（Stripe実装まで）
+                    alert('Stripe Checkoutの実装が完了次第、決済ページにリダイレクトされます。\n現在は完了ページに移動します。');
+                    window.location.href = '/checkout-success.html?order=STRIPE_READY';
                     
                 } catch (error) {
-                    console.error('注文エラー:', error);
-                    alert(`注文の処理中にエラーが発生しました: ${error.message}`);
-                    checkoutSubmitBtn.disabled = false;
-                    checkoutSubmitBtn.textContent = '注文を確定する';
+                    console.error('Stripe Checkoutエラー:', error);
+                    alert(`決済処理の開始中にエラーが発生しました: ${error.message}`);
+                    stripeCheckoutBtn.disabled = false;
+                    stripeCheckoutBtn.textContent = 'Stripe Checkoutに進む';
                 }
             });
         });
