@@ -1617,58 +1617,59 @@ body.splash-complete .main-content {
     }
 
     .product-info {
-        padding: 0.4rem 0.6rem !important;
+        padding: 0.35rem 0.5rem !important;
         min-height: auto !important;
         height: auto !important;
+        max-height: 90px !important;
     }
 
     .product-card .product-info {
-        padding: 0.4rem 0.6rem !important;
+        padding: 0.35rem 0.5rem !important;
     }
 
     .product-name {
-        font-size: 0.75rem !important;
-        margin-bottom: 0.2rem !important;
-        letter-spacing: 0.3px !important;
-        line-height: 1.2 !important;
+        font-size: 0.7rem !important;
+        margin-bottom: 0.15rem !important;
+        letter-spacing: 0.2px !important;
+        line-height: 1.15 !important;
     }
 
     .product-card .product-name {
-        font-size: 0.75rem !important;
-        margin-bottom: 0.2rem !important;
+        font-size: 0.7rem !important;
+        margin-bottom: 0.15rem !important;
     }
 
     .product-size-wrapper {
-        margin-bottom: 0.2rem !important;
+        margin-bottom: 0.15rem !important;
     }
 
     .product-size {
-        font-size: 0.65rem !important;
-        padding: 0.15rem 0.4rem !important;
+        font-size: 0.6rem !important;
+        padding: 0.1rem 0.35rem !important;
     }
 
     .product-footer {
-        margin-top: 0.2rem !important;
+        margin-top: 0.15rem !important;
     }
 
     .product-price {
-        font-size: 0.85rem !important;
-        letter-spacing: 0.3px !important;
+        font-size: 0.8rem !important;
+        letter-spacing: 0.2px !important;
     }
 
     .product-card .product-price {
-        font-size: 0.85rem !important;
+        font-size: 0.8rem !important;
     }
 
     .add-to-cart-btn {
-        width: 35px !important;
-        height: 35px !important;
-        padding: 0.4rem !important;
+        width: 32px !important;
+        height: 32px !important;
+        padding: 0.35rem !important;
     }
 
     .add-to-cart-btn svg {
-        width: 18px !important;
-        height: 18px !important;
+        width: 16px !important;
+        height: 16px !important;
     }
 
 /* チェックアウトフォーム */
