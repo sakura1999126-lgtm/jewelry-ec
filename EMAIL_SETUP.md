@@ -8,109 +8,71 @@
 
 ---
 
-## 🚀 メール送信を実装する方法
+## ✅ 決定事項
 
-### 方法1: Stripe Checkoutを使用（推奨・最も簡単）
+**Stripe Checkoutを使用してメール送信を行います。**
 
-**Stripe実装後、Stripeが自動でメールを送信します。**
+Stripe実装後、Stripeが自動でメールを送信します。追加の実装は不要です。
 
-#### メリット
+---
+
+## 🚀 Stripe Checkoutでのメール送信
+
+### Stripeが自動で送信するメール
+
+**Stripe実装後、以下が自動で送信されます：**
+
+1. **決済確認メール**
+   - 決済完了時に自動送信
+   - 注文番号、合計金額、購入商品一覧を含む
+
+2. **領収書**
+   - 決済完了後に自動送信
+   - PDF形式でダウンロード可能
+
+3. **配送通知（設定次第）**
+   - Stripeダッシュボードで設定可能
+
+### メリット
+
 - ✅ **自動送信**: 決済完了時に自動でメール送信
-- ✅ **無料**: メール送信機能が含まれている
+- ✅ **無料**: メール送信機能が含まれている（Stripe利用料金のみ）
 - ✅ **セキュリティ**: Stripeがすべて管理
-- ✅ **多言語対応**: 自動で多言語対応
-
-#### Stripeが送信するメール
-- 決済確認メール
-- 領収書
-- 配送通知（設定次第）
-
-#### 必要な作業
-1. Stripe実装（後で実装予定）
-2. Stripeダッシュボードでメールテンプレートを設定
-3. 完了（自動でメールが送信される）
+- ✅ **多言語対応**: 自動で多言語対応（日本語対応済み）
+- ✅ **追加実装不要**: Stripe実装だけで自動で動作
 
 ---
 
-### 方法2: メール送信サービスを使用
+## 📋 Stripe実装後のメール設定
 
-**自分でメール送信機能を実装する場合**
+### ステップ1: Stripe実装
 
-#### おすすめサービス
+Stripe実装の手順は `STRIPE_IMPLEMENTATION_CHECKLIST.md` を参照してください。
 
-**1. Resend（推奨）**
-- **無料プラン**: 月3,000通まで無料
-- **簡単**: APIキー1つで完了
-- **開発者向け**: シンプルで使いやすい
-- **URL**: https://resend.com
+### ステップ2: Stripeダッシュボードでメール設定（任意）
 
-**2. SendGrid**
-- **無料プラン**: 月100通まで無料
-- **実績**: 多くのサービスで使用されている
-- **URL**: https://sendgrid.com
+1. **Stripeダッシュボードにログイン**
+   - https://dashboard.stripe.com
+2. **「Settings」→「Branding」** を開く
+   - ブランドカラー、ロゴ、メールテンプレートを設定
+3. **「Settings」→「Emails」** を開く
+   - メール送信の有効/無効を設定
+   - メールテンプレートをカスタマイズ
 
-**3. Mailgun**
-- **無料プラン**: 月5,000通まで無料（最初の3ヶ月）
-- **URL**: https://www.mailgun.com
+### ステップ3: 完了
 
----
-
-## 📋 メール送信実装の手順（Resendを使用する場合）
-
-### ステップ1: Resendアカウント作成
-
-1. **https://resend.com にアクセス**
-2. **アカウント作成**（無料）
-3. **APIキーを取得**
-
-### ステップ2: Renderに環境変数を設定
-
-1. **Renderダッシュボードでプロジェクトを開く**
-2. **「Environment」タブをクリック**
-3. **以下を追加**:
-   - **Key**: `RESEND_API_KEY`
-   - **Value**: ResendのAPIキー
-
-### ステップ3: サーバー側でメール送信を実装
-
-`server.js` または `api/checkout.js` に以下を追加：
-
-```javascript
-const resend = require('resend')(process.env.RESEND_API_KEY);
-
-// 注文完了後にメール送信
-await resend.emails.send({
-  from: 'WEST TOKYO JEWELS <orders@yourdomain.com>',
-  to: orderData.customer_email,
-  subject: 'ご注文ありがとうございます',
-  html: `
-    <h1>ご注文ありがとうございます</h1>
-    <p>注文番号: ${orderNumber}</p>
-    <p>合計金額: ¥${orderData.total_amount.toLocaleString()}</p>
-    ...
-  `
-});
-```
+**これで完了です！** Stripe実装後、決済完了時に自動でメールが送信されます。
 
 ---
 
-## 💡 推奨：Stripe Checkoutを使用
+## 🎨 メールカスタマイズ
 
-**最も簡単で確実な方法は、Stripe実装後にStripeのメール機能を使うことです。**
+### Stripeダッシュボードで設定可能な項目
 
-### Stripe実装後のメール送信
-
-1. **Stripeが自動で送信**
-   - 決済確認メール
-   - 領収書
-   - 配送通知（設定次第）
-
-2. **カスタマイズ可能**
-   - Stripeダッシュボードでメールテンプレートを編集
-   - ブランドカラーやロゴを設定可能
-
-3. **追加の実装不要**
-   - Stripeを実装するだけで、メール送信も自動で動作
+- **ブランドカラー**: メールのアクセント色
+- **ロゴ**: メール上部に表示されるロゴ
+- **メールテンプレート**: メール本文のデザイン
+- **送信元メールアドレス**: 送信元のメールアドレス（デフォルト: noreply@stripe.com）
 
 ---
 
@@ -122,21 +84,21 @@ await resend.emails.send({
 
 ### 対応方法
 
-1. **今すぐ対応**: メール送信サービス（Resendなど）を実装
-2. **後で対応**: Stripe実装後に、Stripeのメール機能を使用（推奨）
+**Stripe実装後に自動で送信されるようになります。**
 
 ---
 
 ## ✅ まとめ
 
 - **現在**: メール送信機能なし
-- **推奨**: Stripe実装後にStripeのメール機能を使用
-- **代替案**: Resendなどのメール送信サービスを使用
+- **決定**: Stripe Checkoutを使用してメール送信
+- **実装**: Stripe実装後、自動でメールが送信される
+- **設定**: Stripeダッシュボードでメールテンプレートをカスタマイズ可能
 
 ---
 
 ## 📚 参考リンク
 
-- Resend: https://resend.com
-- Stripeメール: https://stripe.com/docs/payments/checkout/customer-emails
-- SendGrid: https://sendgrid.com
+- Stripeメール設定: https://dashboard.stripe.com/settings/emails
+- Stripeブランディング: https://dashboard.stripe.com/settings/branding
+- Stripeメールドキュメント: https://stripe.com/docs/payments/checkout/customer-emails
