@@ -127,12 +127,24 @@ function tryInitializeSupabase() {
     }
 }
 
+// Supabaseスクリプトの読み込み完了を待つ
+function waitForSupabaseScript() {
+    // スクリプトが読み込まれたか確認
+    if (window.supabaseLoaded || (window.supabase && typeof window.supabase === 'object')) {
+        // スクリプトが読み込まれた後、少し待ってから初期化
+        setTimeout(tryInitializeSupabase, 100);
+    } else {
+        // まだ読み込まれていない場合、再試行
+        setTimeout(waitForSupabaseScript, 50);
+    }
+}
+
 // DOMContentLoadedまたは即座に初期化を試みる
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-        setTimeout(tryInitializeSupabase, 100);
+        waitForSupabaseScript();
     });
 } else {
-    // 既に読み込み済みの場合、少し待ってから初期化（CDNの読み込みを待つ）
-    setTimeout(tryInitializeSupabase, 100);
+    // 既に読み込み済みの場合、Supabaseスクリプトの読み込みを待つ
+    waitForSupabaseScript();
 }
