@@ -249,9 +249,6 @@ function setupElementSelection() {
         }
     });
     
-    // デバッグ用: コンソールにメッセージを表示（本番環境では非表示）
-    // console.log('要素選択機能がセットアップされました。ショートカット: ' + 
-    //             (navigator.platform.toUpperCase().indexOf('MAC') >= 0 ? 'Cmd' : 'Ctrl') + '+Shift+E');
 }
 
 // 要素選択機能を無効化
@@ -512,32 +509,42 @@ function startAnimations() {
         }
     }
     
-    // 背景動画の再生確認
+    // 背景動画の再生確認（動画ファイルが存在する場合のみ）
     const bgVideo = document.getElementById('bgVideo');
     const videoBackground = document.getElementById('videoBackground');
     if (bgVideo && videoBackground) {
-        // 動画の読み込みエラーを完全に抑制
-        const handleVideoError = (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            videoBackground.style.display = 'none';
-            return false;
-        };
-        
-        bgVideo.addEventListener('error', handleVideoError, { once: true, capture: true });
-        bgVideo.addEventListener('loadstart', () => {
-            // 動画の読み込み開始時にエラーチェック
-            setTimeout(() => {
-                if (bgVideo.readyState === 0 && bgVideo.networkState === 3) {
-                    // ネットワークエラーの場合
+        // 動画ファイルの存在確認（HEADリクエストで確認）
+        fetch('/videos/background-video.mp4', { method: 'HEAD' })
+            .then(response => {
+                if (response.ok) {
+                    // 動画ファイルが存在する場合のみ、sourceを追加
+                    const source = document.createElement('source');
+                    source.src = '/videos/background-video.mp4';
+                    source.type = 'video/mp4';
+                    bgVideo.appendChild(source);
+                    
+                    // 動画の読み込みエラーを抑制
+                    const handleVideoError = (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        videoBackground.style.display = 'none';
+                        return false;
+                    };
+                    
+                    bgVideo.addEventListener('error', handleVideoError, { once: true, capture: true });
+                    bgVideo.load();
+                    bgVideo.play().catch(() => {
+                        // 再生エラーは無視
+                    });
+                } else {
+                    // 動画ファイルが存在しない場合は非表示
                     videoBackground.style.display = 'none';
                 }
-            }, 1000);
-        }, { once: true });
-        
-        bgVideo.play().catch(() => {
-            // 再生エラーは無視
-        });
+            })
+            .catch(() => {
+                // エラーが発生した場合は非表示
+                videoBackground.style.display = 'none';
+            });
     }
 }
 
