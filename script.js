@@ -101,16 +101,63 @@ function showSplashScreen() {
 // 商品データを取得
 async function fetchProducts() {
     try {
-        // Cloudflare Pages用: products.jsonを直接読み込む
-        const response = await fetch('/products.json');
-        if (!response.ok) {
-            throw new Error(`Failed to fetch products: ${response.status} ${response.statusText}`);
+        // Supabaseが利用可能かチェック
+        if (typeof supabase === 'undefined' || !supabase) {
+            console.warn('Supabase is not configured. Falling back to products.json');
+            // フォールバック: products.jsonから読み込む
+            const response = await fetch('/products.json');
+            if (!response.ok) {
+                throw new Error(`Failed to fetch products: ${response.status} ${response.statusText}`);
+            }
+            const data = await response.json();
+            products = data.products || [];
+        } else {
+            // Supabaseから商品データを取得
+            const { data, error } = await supabase
+                .from('products')
+                .select(`
+                    *,
+                    product_sizes(*),
+                    product_images(*)
+                `)
+                .order('created_at', { ascending: false });
+            
+            if (error) {
+                throw new Error(`Supabase error: ${error.message}`);
+            }
+            
+            // Supabaseのデータ形式を既存の形式に変換
+            products = (data || []).map(product => {
+                // サイズ情報を変換
+                const sizes = (product.product_sizes || []).map(size => ({
+                    name: size.name,
+                    price: size.price,
+                    stock: size.stock
+                }));
+                
+                // 画像情報を変換
+                const images = (product.product_images || [])
+                    .sort((a, b) => a.display_order - b.display_order)
+                    .map(img => img.image_url);
+                
+                return {
+                    id: product.id,
+                    name: product.name,
+                    category: product.category,
+                    price: product.price,
+                    currency: product.currency || 'JPY',
+                    image: product.image || (images.length > 0 ? images[0] : ''),
+                    images: images.length > 0 ? images : (product.image ? [product.image] : []),
+                    description: product.description || '',
+                    detailedDescription: product.detailed_description || '',
+                    sizes: sizes.length > 0 ? sizes : undefined,
+                    stock: product.stock || 0
+                };
+            });
         }
-        const data = await response.json();
-        products = data.products || [];
         
         if (products.length === 0) {
-            // console.warn('No products found in products.json');
+            // console.warn('No products found');
             if (productsContainer) {
                 productsContainer.innerHTML = '<p class="loading">商品が見つかりませんでした</p>';
             }
@@ -120,7 +167,7 @@ async function fetchProducts() {
         // displayProductsは引数を受け取らないので、呼び出しのみ
         displayProducts();
     } catch (error) {
-        // console.error('Failed to fetch product data:', error);
+        console.error('Failed to fetch product data:', error);
         if (productsContainer) {
             productsContainer.innerHTML = '<p class="loading">商品の読み込みに失敗しました。ページを再読み込みしてください。</p>';
         }
