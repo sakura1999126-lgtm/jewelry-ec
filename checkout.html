@@ -42,33 +42,40 @@
                     </div>
                 </section>
 
-                <!-- Stripe Payment Form (Placeholder) -->
-                <section class="checkout-payment-section">
-                    <h2>お支払い情報</h2>
-                    <div class="stripe-placeholder" id="stripePlaceholder">
-                        <p>Stripe決済フォームはここに統合されます</p>
-                        <div class="stripe-info">
-                            <p>Stripe Checkout Sessionは以下のように実装されます:</p>
-                            <ul>
-                                <li>Stripe.js SDKを読み込む</li>
-                                <li>Checkout Sessionを作成（/api/checkoutエンドポイント経由）</li>
-                                <li>Stripe Checkoutへリダイレクト</li>
-                                <li>決済完了を処理</li>
-                            </ul>
+                <!-- Customer Information Form -->
+                <section class="checkout-form-section">
+                    <h2>お客様情報</h2>
+                    <form id="checkoutForm" class="checkout-form">
+                        <div class="form-group">
+                            <label for="customerName">お名前 <span class="required">*</span></label>
+                            <input type="text" id="customerName" name="customerName" required>
                         </div>
-                        <button class="stripe-test-btn" id="stripeTestBtn" disabled>
-                            Stripe決済に進む（準備中）
+                        <div class="form-group">
+                            <label for="customerEmail">メールアドレス <span class="required">*</span></label>
+                            <input type="email" id="customerEmail" name="customerEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerPhone">電話番号 <span class="required">*</span></label>
+                            <input type="tel" id="customerPhone" name="customerPhone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="shippingAddress">配送先住所 <span class="required">*</span></label>
+                            <textarea id="shippingAddress" name="shippingAddress" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="checkout-submit-btn" id="checkoutSubmitBtn">
+                            注文を確定する
                         </button>
-                    </div>
+                    </form>
                 </section>
             </div>
         </main>
     </div>
 
+    <script src="supabase-config.js"></script>
     <script src="script.js"></script>
     <script>
         // Checkout page specific script
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             // Get cart data from local storage
             const cart = JSON.parse(localStorage.getItem('cart') || '[]');
             
@@ -87,9 +94,12 @@
 
                 const itemElement = document.createElement('div');
                 itemElement.className = 'checkout-item';
+                const imageHtml = item.image && !item.image.includes('placeholder.com')
+                    ? `<img src="${item.image}" alt="${item.name}" onerror="this.style.display='none';">`
+                    : '';
                 itemElement.innerHTML = `
                     <div class="checkout-item-image">
-                        <img src="${item.image}" alt="${item.name}">
+                        ${imageHtml}
                     </div>
                     <div class="checkout-item-details">
                         <h3>${item.name}</h3>
@@ -107,6 +117,93 @@
             document.getElementById('checkoutSubtotal').textContent = `¥${subtotal.toLocaleString()}`;
             document.getElementById('checkoutShipping').textContent = `¥${shipping.toLocaleString()}`;
             document.getElementById('checkoutTotal').textContent = `¥${total.toLocaleString()}`;
+
+            // フォーム送信処理
+            const checkoutForm = document.getElementById('checkoutForm');
+            const checkoutSubmitBtn = document.getElementById('checkoutSubmitBtn');
+            
+            checkoutForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                // ボタンを無効化
+                checkoutSubmitBtn.disabled = true;
+                checkoutSubmitBtn.textContent = '処理中...';
+                
+                try {
+                    // 注文データを作成
+                    const orderData = {
+                        customer_name: document.getElementById('customerName').value,
+                        customer_email: document.getElementById('customerEmail').value,
+                        customer_phone: document.getElementById('customerPhone').value,
+                        shipping_address: document.getElementById('shippingAddress').value,
+                        total_amount: total,
+                        items: cart.map(item => ({
+                            product_id: item.id,
+                            product_name: item.name,
+                            product_price: item.price,
+                            quantity: item.quantity,
+                            size_name: item.size_name || null
+                        }))
+                    };
+                    
+                    // Supabaseに注文を保存
+                    if (typeof supabase === 'undefined' || !supabase) {
+                        throw new Error('Supabaseが設定されていません');
+                    }
+                    
+                    // 注文番号を生成
+                    const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+                    
+                    // 注文を保存
+                    const { data: order, error: orderError } = await supabase
+                        .from('orders')
+                        .insert({
+                            order_number: orderNumber,
+                            customer_name: orderData.customer_name,
+                            customer_email: orderData.customer_email,
+                            customer_phone: orderData.customer_phone,
+                            shipping_address: orderData.shipping_address,
+                            total_amount: orderData.total_amount,
+                            status: 'pending'
+                        })
+                        .select()
+                        .single();
+                    
+                    if (orderError) {
+                        throw new Error(`注文の保存に失敗しました: ${orderError.message}`);
+                    }
+                    
+                    // 注文アイテムを保存
+                    const orderItems = orderData.items.map(item => ({
+                        order_id: order.id,
+                        product_id: item.product_id,
+                        product_name: item.product_name,
+                        product_price: item.product_price,
+                        quantity: item.quantity,
+                        size_name: item.size_name
+                    }));
+                    
+                    const { error: itemsError } = await supabase
+                        .from('order_items')
+                        .insert(orderItems);
+                    
+                    if (itemsError) {
+                        throw new Error(`注文アイテムの保存に失敗しました: ${itemsError.message}`);
+                    }
+                    
+                    // カートをクリア
+                    localStorage.removeItem('cart');
+                    
+                    // 注文完了ページにリダイレクト
+                    window.location.href = `/checkout-success.html?order=${orderNumber}`;
+                    
+                } catch (error) {
+                    console.error('注文エラー:', error);
+                    alert(`注文の処理中にエラーが発生しました: ${error.message}`);
+                    checkoutSubmitBtn.disabled = false;
+                    checkoutSubmitBtn.textContent = '注文を確定する';
+                }
+            });
         });
     </script>
 </body>

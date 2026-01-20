@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注文完了 - West Tokyo Jewels</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500&family=Shippori+Mincho:wght@400;500&family=Noto+Serif+JP:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .success-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .success-content {
+            background: linear-gradient(135deg, rgba(28, 28, 28, 0.9) 0%, rgba(20, 20, 20, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+        .success-title {
+            font-family: 'Shippori Mincho', 'Noto Serif JP', serif;
+            font-size: 2rem;
+            color: #ffd700;
+            margin-bottom: 1rem;
+        }
+        .success-message {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+        .order-number {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 2rem 0;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            color: #ffd700;
+        }
+        .back-home-btn {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #000;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .back-home-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-content">
+            <div class="success-icon">✅</div>
+            <h1 class="success-title">ご注文ありがとうございます</h1>
+            <p class="success-message">
+                ご注文を承りました。<br>
+                注文確認メールをお送りいたしますので、ご確認ください。
+            </p>
+            <div class="order-number" id="orderNumber">
+                注文番号: 読み込み中...
+            </div>
+            <a href="/" class="back-home-btn">ホームに戻る</a>
+        </div>
+    </div>
+
+    <script>
+        // URLパラメータから注文番号を取得
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderNumber = urlParams.get('order');
+        
+        if (orderNumber) {
+            document.getElementById('orderNumber').textContent = `注文番号: ${orderNumber}`;
+        } else {
+            document.getElementById('orderNumber').textContent = '注文番号: 取得できませんでした';
+        }
+    </script>
+</body>
+</html>
