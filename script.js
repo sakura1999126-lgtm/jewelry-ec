@@ -966,7 +966,6 @@ function renderSizeOptions(sizes) {
              data-size-stock="${size.stock}">
             <span class="product-size-name">${size.name}</span>
             ${size.price !== currentDetailProduct?.price ? `<span class="product-size-price">¥${size.price.toLocaleString()}</span>` : ''}
-            ${size.stock <= 0 ? '<span style="font-size: 0.75rem; color: rgba(255, 215, 0, 0.7); margin-left: 0.5rem;">(売り切れ・受注生産可)</span>' : ''}
         </div>
     `).join('');
     
