@@ -189,14 +189,18 @@
 
                         const itemElement = document.createElement('div');
                         itemElement.className = 'checkout-item';
+                        // 商品名を短縮（長い場合は省略）
+                        const displayName = item.name.length > 30 ? item.name.substring(0, 30) + '...' : item.name;
                         itemElement.innerHTML = `
                             <div class="checkout-item-image">
                                 <div style="width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 2rem;">📦</div>
                             </div>
                             <div class="checkout-item-details">
-                                <h3>${item.name}</h3>
-                                <p>数量: ${item.quantity}</p>
-                                <p class="checkout-item-price">¥${itemTotal.toLocaleString()}</p>
+                                <h3>${displayName}</h3>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
+                                    <span style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">数量: ${item.quantity}</span>
+                                    <p class="checkout-item-price" style="margin: 0;">¥${itemTotal.toLocaleString()}</p>
+                                </div>
                             </div>
                         `;
                         checkoutItems.appendChild(itemElement);
