@@ -160,6 +160,64 @@
       "image": "https://via.placeholder.com/400x400?text=Gold+Bangle",
       "description": "大胆なバングルデザイン。スタイリッシュな印象で強い存在感を放ちます。",
       "stock": 9
+    },
+    {
+      "id": "prod_earring_soldout",
+      "name": "Limited Edition Pearl Earrings",
+      "category": "earrings",
+      "price": 54900,
+      "currency": "JPY",
+      "image": "https://via.placeholder.com/400x400?text=Pearl+Earrings",
+      "images": [
+        "https://via.placeholder.com/800x800?text=Pearl+Earrings+1",
+        "https://via.placeholder.com/800x800?text=Pearl+Earrings+2"
+      ],
+      "description": "限定版の美しいパールイヤリング。天然パールを使用したプレミアムアイテムです。",
+      "detailedDescription": "限定版の美しいパールイヤリング。天然パールを使用したプレミアムアイテムで、エレガントな輝きが特徴です。\n\n【素材】\n- メタル: 14Kゴールド\n- ストーン: 天然パール\n- 重量: 約2.8g\n\n【特徴】\n- 限定生産の特別なデザイン\n- 天然パールの美しい輝き\n- 職人が一つひとつ丁寧に仕上げたハンドメイド\n- 専用ケース付き",
+      "sizes": [
+        {"name": "フリーサイズ", "price": 54900, "stock": 0}
+      ],
+      "stock": 0
+    },
+    {
+      "id": "prod_necklace_soldout",
+      "name": "Premium Diamond Choker Necklace",
+      "category": "necklace",
+      "price": 129900,
+      "currency": "JPY",
+      "image": "https://via.placeholder.com/400x400?text=Diamond+Choker",
+      "images": [
+        "https://via.placeholder.com/800x800?text=Diamond+Choker+1",
+        "https://via.placeholder.com/800x800?text=Diamond+Choker+2",
+        "https://via.placeholder.com/800x800?text=Diamond+Choker+3"
+      ],
+      "description": "プレミアムダイヤモンドチョーカーネックレス。エレガントで存在感のある特別なアイテムです。",
+      "detailedDescription": "プレミアムダイヤモンドチョーカーネックレス。エレガントで存在感のある特別なアイテムです。\n\n【素材】\n- メタル: 14Kゴールド\n- ストーン: ダイヤモンド（合計1.0ct）\n- チェーン: 約38cm\n- 重量: 約12g\n\n【特徴】\n- 高品質なダイヤモンドを多数使用\n- チョーカースタイルの洗練されたデザイン\n- 特別な日に最適なプレミアムアイテム\n- 専用ケース付き",
+      "sizes": [
+        {"name": "38cm", "price": 129900, "stock": 0},
+        {"name": "40cm", "price": 129900, "stock": 0}
+      ],
+      "stock": 0
+    },
+    {
+      "id": "prod_bracelet_soldout",
+      "name": "Luxury Tennis Bracelet Diamond",
+      "category": "bracelet",
+      "price": 99900,
+      "currency": "JPY",
+      "image": "https://via.placeholder.com/400x400?text=Luxury+Tennis",
+      "images": [
+        "https://via.placeholder.com/800x800?text=Luxury+Tennis+1",
+        "https://via.placeholder.com/800x800?text=Luxury+Tennis+2"
+      ],
+      "description": "ラグジュアリーテニスブレスレット。連続したダイヤモンドが手首を美しく輝かせます。",
+      "detailedDescription": "ラグジュアリーテニスブレスレット。連続したダイヤモンドが手首を美しく輝かせます。\n\n【素材】\n- メタル: 14Kゴールド\n- ストーン: ダイヤモンド（合計0.8ct）\n- 長さ: 約18cm（調節可能）\n- 重量: 約15g\n\n【特徴】\n- 高品質なダイヤモンドを連続使用\n- エレガントで洗練されたデザイン\n- 特別な日に最適なラグジュアリーアイテム\n- 専用ケース付き",
+      "sizes": [
+        {"name": "16cm", "price": 99900, "stock": 0},
+        {"name": "18cm", "price": 99900, "stock": 0},
+        {"name": "20cm", "price": 99900, "stock": 0}
+      ],
+      "stock": 0
     }
   ]
 }

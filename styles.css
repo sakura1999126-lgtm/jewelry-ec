@@ -606,6 +606,30 @@ body.splash-complete .main-content {
     opacity: 1;
 }
 
+.product-card-soldout {
+    opacity: 0.7;
+}
+
+.product-card-soldout .product-image {
+    filter: grayscale(30%);
+}
+
+.product-soldout-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.95) 0%, rgba(255, 165, 0, 0.95) 100%);
+    color: #000;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 10px rgba(255, 215, 0, 0.5);
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -1805,6 +1829,13 @@ body.splash-complete .main-content {
     .add-to-cart-btn svg {
         width: 14px !important;
         height: 14px !important;
+    }
+
+    .product-soldout-badge {
+        top: 0.5rem !important;
+        right: 0.5rem !important;
+        font-size: 0.6rem !important;
+        padding: 0.25rem 0.5rem !important;
     }
 
 /* チェックアウトフォーム */

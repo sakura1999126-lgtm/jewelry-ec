@@ -787,9 +787,21 @@ function createProductCard(product, index) {
         ? `<img src="${imageUrl}" alt="${product.name}" class="product-image" onerror="this.style.display='none'; this.onerror=null;">`
         : '<div class="product-image product-image-placeholder"></div>';
     
+    // 在庫チェック（サイズがある場合はすべてのサイズの在庫を確認）
+    let isSoldOut = false;
+    if (product.sizes && product.sizes.length > 0) {
+        isSoldOut = product.sizes.every(size => (size.stock || 0) <= 0);
+    } else {
+        isSoldOut = (product.stock || 0) <= 0;
+    }
+    
+    const soldOutBadge = isSoldOut ? '<span class="product-soldout-badge">売り切れ</span>' : '';
+    const soldOutClass = isSoldOut ? 'product-card-soldout' : '';
+    
     return `
-        <div class="product-card" style="${animationStyle}" data-product-id="${product.id}">
+        <div class="product-card ${soldOutClass}" style="${animationStyle}" data-product-id="${product.id}">
             ${imageHtml}
+            ${soldOutBadge}
             <div class="product-info">
                 <h3 class="product-name">${product.name}</h3>
                 ${sizeInfo ? `<div class="product-size-wrapper">${sizeInfo}</div>` : ''}
