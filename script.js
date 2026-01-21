@@ -745,7 +745,13 @@ function attachProductCardListeners() {
             const productId = btn.dataset.productId;
             const product = products.find(p => p.id === productId);
             if (product) {
-                addToCart(product);
+                // サイズがある商品の場合は商品詳細モーダルを開く
+                if (product.sizes && product.sizes.length > 0) {
+                    showProductDetail(product);
+                } else {
+                    // サイズがない商品の場合は直接カートに追加
+                    addToCart(product);
+                }
             }
         });
     });
