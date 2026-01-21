@@ -979,7 +979,6 @@ function renderSizeOptions(sizes) {
         updateProductStock(currentDetailProduct, firstSize);
     }
 }
-}
 
 // 商品価格を更新
 function updateProductPrice(product, selectedSize = null) {
