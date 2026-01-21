@@ -157,6 +157,7 @@
                             </div>
                             <div class="checkout-item-details">
                                 <h3>${displayName}</h3>
+                                ${item.size_name ? `<p style="font-size: 0.75rem; color: rgba(255,215,0,0.8); margin-bottom: 0.25rem;">${item.size_name}</p>` : ''}
                                 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
                                     <span style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">数量: ${item.quantity}</span>
                                     <p class="checkout-item-price" style="margin: 0;">¥${itemTotal.toLocaleString()}</p>
