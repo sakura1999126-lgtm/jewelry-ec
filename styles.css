@@ -1234,6 +1234,7 @@ body.splash-complete .main-content {
     top: 0;
     width: 400px;
     height: 100vh;
+    max-height: 100vh;
     background: linear-gradient(135deg, rgba(25, 25, 25, 0.92) 0%, rgba(18, 18, 18, 0.95) 100%);
     backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
@@ -1294,6 +1295,8 @@ body.splash-complete .main-content {
     padding: 1rem;
     -webkit-overflow-scrolling: touch;
     min-height: 0;
+    max-height: calc(100vh - 200px);
+    box-sizing: border-box;
 }
 
 .cart-empty {
@@ -1635,18 +1638,19 @@ body.splash-complete .main-content {
 
 .checkout-item-soldout-badge {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
+    top: 0.25rem;
+    right: 0.25rem;
     background: linear-gradient(135deg, rgba(255, 215, 0, 0.95) 0%, rgba(255, 165, 0, 0.95) 100%);
     color: #000;
-    font-size: 0.65rem;
+    font-size: 0.55rem;
     font-weight: 600;
-    padding: 0.3rem 0.6rem;
-    border-radius: 15px;
+    padding: 0.2rem 0.4rem;
+    border-radius: 10px;
     z-index: 10;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 8px rgba(255, 215, 0, 0.5);
-    letter-spacing: 0.5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3), 0 0 6px rgba(255, 215, 0, 0.5);
+    letter-spacing: 0.3px;
     white-space: nowrap;
+    line-height: 1;
 }
 
 .checkout-item-details h3 {
@@ -2383,24 +2387,43 @@ body.splash-complete .main-content {
         width: 100%;
         right: -100%;
         height: 100vh;
+        max-height: 100vh;
         overflow: hidden;
     }
     
     .cart-items {
         -webkit-overflow-scrolling: touch;
         min-height: 0;
+        max-height: calc(100vh - 180px) !important;
+        padding: 0.75rem !important;
     }
     
     .cart-footer {
-        padding: 1rem;
+        padding: 1rem !important;
+        flex-shrink: 0 !important;
     }
     
     .cart-panel-header {
-        padding: 1rem;
+        padding: 1rem !important;
+        flex-shrink: 0 !important;
     }
     
     .cart-panel-header h2 {
         font-size: 1.2rem;
+    }
+
+    .checkout-btn {
+        padding: 0.9rem !important;
+        font-size: 1rem !important;
+        margin-top: 0.75rem !important;
+    }
+
+    .checkout-item-soldout-badge {
+        top: 0.2rem !important;
+        right: 0.2rem !important;
+        font-size: 0.5rem !important;
+        padding: 0.15rem 0.35rem !important;
+        border-radius: 8px !important;
     }
 
     /* チェックアウト */
