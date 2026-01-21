@@ -518,7 +518,7 @@ function startAnimations() {
     const videoBackground = document.getElementById('videoBackground');
     if (bgVideo && videoBackground) {
         // まずテスト用の画像ファイルを試す
-        const testVideoPath = '/videos/C9710A44-C10D-4496-BB5C-909B6AB627AA_1_102_o.jpeg';
+        const testVideoPath = '/public/videos/C9710A44-C10D-4496-BB5C-909B6AB627AA_1_102_o.jpeg';
         
         // テスト用画像を背景として使用（動画として再生できないため）
         fetch(testVideoPath, { method: 'HEAD' })
