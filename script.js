@@ -765,16 +765,17 @@ function createProductCard(product, index) {
         ? `animation: fadeInUp 0.6s ease ${delay}s forwards;` 
         : `opacity: 1; animation: none;`;
     
-    // サイズ情報を取得（サイズがある場合は見やすく表示）
+    // サイズ情報を取得（mm表記のみ抽出し、見切れないよう1行内で折り返し可）
     let sizeInfo = '';
     if (product.sizes && product.sizes.length > 0) {
-        if (product.sizes.length === 1) {
-            sizeInfo = `<div class="product-size-wrapper"><span class="product-size">${product.sizes[0].name}</span></div>`;
-        } else {
-            // 複数サイズがある場合は、サイズ一覧を見やすく表示
-            const sizeList = product.sizes.map(size => size.name).join(' / ');
-            sizeInfo = `<div class="product-size-wrapper"><span class="product-size">${sizeList}</span></div>`;
-        }
+        const formatSizeName = (name) => {
+            // 15mm / 15.5mm などの mm 表記のみを抽出、なければ元の名称を返す
+            const mmMatch = name.match(/([0-9]+(?:\\.[0-9]+)?mm)/i);
+            return mmMatch ? `${mmMatch[1].replace(/mm/i, 'mm')}` : name;
+        };
+
+        const sizeList = product.sizes.map(size => formatSizeName(size.name)).join(' / ');
+        sizeInfo = `<div class="product-size-wrapper"><span class="product-size">${sizeList}</span></div>`;
     }
     
     // 画像URLが無効な場合（via.placeholder.comなど）は画像を表示しないが、スペースは確保
