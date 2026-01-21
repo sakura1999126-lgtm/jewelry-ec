@@ -26,8 +26,12 @@ module.exports = async (req, res) => {
   try {
     const { lineItems, successUrl, cancelUrl } = req.body;
 
-    // TODO: Stripe実装後に以下のコードを有効化
-    /*
+    // Stripe実装
+    if (!process.env.STRIPE_SECRET_KEY) {
+      res.status(500).json({ error: 'Stripe secret key not configured' });
+      return;
+    }
+
     const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
     const session = await stripe.checkout.sessions.create({
@@ -46,18 +50,6 @@ module.exports = async (req, res) => {
     res.status(200).json({
       sessionId: session.id,
       url: session.url
-    });
-    */
-
-    // 現在はプレースホルダー
-    res.status(200).json({
-      message: 'Stripe Checkout endpoint ready',
-      note: 'Stripe実装後に、上記のコメントアウト部分を有効化してください',
-      receivedData: {
-        lineItems: lineItems?.length || 0,
-        successUrl,
-        cancelUrl
-      }
     });
 
   } catch (error) {

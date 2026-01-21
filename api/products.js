@@ -25,7 +25,10 @@ module.exports = async (req, res) => {
   try {
     const filePath = path.join(process.cwd(), 'products.json');
     const data = fs.readFileSync(filePath, 'utf8');
-    const products = JSON.parse(data);
+    const parsed = JSON.parse(data);
+
+    // products.json が { products: [...] } 形式の場合、配列を直接返す
+    const products = Array.isArray(parsed) ? parsed : (parsed.products || []);
 
     res.status(200).json(products);
   } catch (error) {

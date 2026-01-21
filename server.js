@@ -59,12 +59,20 @@ function getProducts(req, res) {
     if (err) {
       res.writeHead(500, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Failed to read products' }), 'utf-8');
-    } else {
+      return;
+    }
+    try {
+      const parsed = JSON.parse(data);
+      // 配列 or { products: [...] } の両方に対応
+      const products = Array.isArray(parsed) ? parsed : (parsed.products || []);
       res.writeHead(200, { 
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
       });
-      res.end(data, 'utf-8');
+      res.end(JSON.stringify(products), 'utf-8');
+    } catch (parseErr) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Failed to parse products' }), 'utf-8');
     }
   });
 }
@@ -77,54 +85,80 @@ function getProductById(req, res, productId) {
     if (err) {
       res.writeHead(500, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Failed to read products' }), 'utf-8');
-    } else {
-      try {
-        const products = JSON.parse(data);
-        const product = products.products.find(p => p.id === productId);
-        
-        if (product) {
-          res.writeHead(200, { 
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-          });
-          res.end(JSON.stringify(product), 'utf-8');
-        } else {
-          res.writeHead(404, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ error: 'Product not found' }), 'utf-8');
-        }
-      } catch (parseErr) {
-        res.writeHead(500, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Failed to parse products' }), 'utf-8');
+      return;
+    }
+    try {
+      const parsed = JSON.parse(data);
+      const products = Array.isArray(parsed) ? parsed : (parsed.products || []);
+      const product = products.find(p => p.id === productId);
+      
+      if (product) {
+        res.writeHead(200, { 
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        });
+        res.end(JSON.stringify(product), 'utf-8');
+      } else {
+        res.writeHead(404, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Product not found' }), 'utf-8');
       }
+    } catch (parseErr) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Failed to parse products' }), 'utf-8');
     }
   });
 }
 
-// APIエンドポイント: 決済セッション作成（Stripe統合用、後で実装）
+// APIエンドポイント: 決済セッション作成（Stripe）
 function createCheckoutSession(req, res) {
+  if (req.method === 'OPTIONS') {
+    res.writeHead(200, {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type'
+    });
+    res.end();
+    return;
+  }
+
   let body = '';
   
   req.on('data', chunk => {
     body += chunk.toString();
   });
   
-  req.on('end', () => {
+  req.on('end', async () => {
     try {
-      const cartData = JSON.parse(body);
-      
-      // ここで後からStripe Checkout Sessionを作成する処理を追加
-      // 現在はプレースホルダーとしてカートデータを返す
+      const { lineItems, successUrl, cancelUrl } = JSON.parse(body || '{}');
+
+      if (!process.env.STRIPE_SECRET_KEY) {
+        res.writeHead(500, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+        res.end(JSON.stringify({ error: 'Stripe secret key not configured' }), 'utf-8');
+        return;
+      }
+
+      const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
+      const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: lineItems,
+        mode: 'payment',
+        success_url: successUrl,
+        cancel_url: cancelUrl,
+        shipping_address_collection: { allowed_countries: ['JP'] },
+        locale: 'ja',
+        customer_email: null
+      });
+
       res.writeHead(200, { 
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
       });
-      res.end(JSON.stringify({ 
-        message: 'Checkout session endpoint ready for Stripe integration',
-        cart: cartData 
-      }), 'utf-8');
+      res.end(JSON.stringify({ sessionId: session.id, url: session.url }), 'utf-8');
     } catch (err) {
-      res.writeHead(400, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Invalid request data' }), 'utf-8');
+      console.error('Checkout error:', err);
+      res.writeHead(500, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+      res.end(JSON.stringify({ error: err.message || 'Internal server error' }), 'utf-8');
     }
   });
 }

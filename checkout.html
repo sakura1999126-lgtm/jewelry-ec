@@ -57,6 +57,7 @@
         </main>
     </div>
 
+    <script src="https://js.stripe.com/v3"></script>
     <script src="script.js"></script>
     <script>
         // Checkout page specific script
@@ -75,14 +76,37 @@
 
             // 商品データを取得して画像情報を補完
             fetch('/api/products')
-                .then(res => res.json())
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error(`HTTP error! status: ${res.status}`);
+                    }
+                    return res.json();
+                })
                 .then(products => {
+                    // レスポンスが配列でない場合の処理（より堅牢に）
+                    let productList = [];
+                    if (Array.isArray(products)) {
+                        productList = products;
+                    } else if (products && Array.isArray(products.products)) {
+                        productList = products.products;
+                    } else if (products && typeof products === 'object') {
+                        // 万一オブジェクトだった場合は値を配列化（id付き前提）
+                        productList = Object.values(products);
+                    } else {
+                        console.warn('商品データ形式が不明です。空配列で処理します。', products);
+                    }
+
+                    if (!Array.isArray(productList)) {
+                        console.warn('商品データが配列化できませんでした。空配列で処理します。', productList);
+                        productList = [];
+                    }
+
                     cart.forEach(item => {
                         const itemTotal = item.price * item.quantity;
                         subtotal += itemTotal;
 
                         // 商品データから画像を取得
-                        const product = products.find(p => p.id === item.id);
+                        const product = productList.find(p => p.id === item.id);
                         let imageUrl = item.image || (product && product.image) || '';
                         
                         // プレースホルダーを除外
@@ -148,6 +172,10 @@
                     document.getElementById('checkoutTotal').textContent = `¥${total.toLocaleString()}`;
                 });
 
+            // Stripe公開キーを設定（提供されたキー）
+            const STRIPE_PUBLISHABLE_KEY = 'pk_live_51RdmGtDF8kU2wSzlxNevjp7kXNAcK4XkuYvcZ22mWeLsXWQuQLazPw30qodEJ3DdodLul06q3HhjPcmRQHRvuXsO00aTo5x6HF';
+            const stripe = window.Stripe ? Stripe(STRIPE_PUBLISHABLE_KEY) : null;
+
             // 合計金額の計算と表示はfetchのコールバック内で実行
 
             // Stripe Checkout処理
@@ -159,6 +187,10 @@
                 stripeCheckoutBtn.textContent = '処理中...';
                 
                 try {
+                    if (!stripe) {
+                        throw new Error('Stripe.jsの読み込みに失敗しました。ネットワーク状態をご確認ください。');
+                    }
+
                     // カートデータをStripe Checkout用の形式に変換
                     const lineItems = cart.map(item => ({
                         price_data: {
@@ -186,27 +218,36 @@
                         })
                     });
                     
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({ error: `HTTP error! status: ${response.status}` }));
+                        throw new Error(errorData.error || errorData.message || `Server error: ${response.status}`);
+                    }
+
                     const data = await response.json();
                     
                     if (data.error) {
                         throw new Error(data.error);
                     }
+
+                    // Stripe Checkout SessionのURLまたはsessionIdが返ってくる
+                    if (data.url) {
+                        // session.url が直接返ってきた場合
+                        window.location.href = data.url;
+                        return;
+                    }
+
+                    if (data.sessionId) {
+                        // sessionId が返ってきた場合、Stripe.jsでリダイレクト
+                        const { error: stripeError } = await stripe.redirectToCheckout({ sessionId: data.sessionId });
+                        if (stripeError) {
+                            throw new Error(stripeError.message);
+                        }
+                        return;
+                    }
                     
-                    // Stripe Checkoutにリダイレクト
-                    // 注意: 実際のStripe実装では、data.sessionIdを使用してリダイレクト
-                    // 現在はプレースホルダーなので、完了ページに直接移動
-                    console.log('Stripe Checkout Session作成完了:', data);
-                    
-                    // TODO: Stripe実装後は以下のように変更
-                    // window.location.href = data.url;
-                    
-                    // カートをクリア（Stripe実装後はStripeからのリダイレクト時にクリアされる）
-                    localStorage.removeItem('cart');
-                    console.log('カートをクリアしました');
-                    
-                    // 暫定的に完了ページに移動（Stripe実装まで）
-                    alert('Stripe Checkoutの実装が完了次第、決済ページにリダイレクトされます。\n現在は完了ページに移動します。');
-                    window.location.href = '/checkout-success.html?order=STRIPE_READY';
+                    // 予期しないレスポンス形式
+                    console.error('予期しないStripe Checkoutレスポンス:', data);
+                    throw new Error('Stripe Checkout Sessionの作成に失敗しました。サーバーのログを確認してください。');
                     
                 } catch (error) {
                     console.error('Stripe Checkoutエラー:', error);
