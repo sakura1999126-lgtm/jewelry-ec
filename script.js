@@ -765,13 +765,15 @@ function createProductCard(product, index) {
         ? `animation: fadeInUp 0.6s ease ${delay}s forwards;` 
         : `opacity: 1; animation: none;`;
     
-    // サイズ情報を取得（サイズがある場合は最初のサイズ名を表示）
+    // サイズ情報を取得（サイズがある場合は見やすく表示）
     let sizeInfo = '';
     if (product.sizes && product.sizes.length > 0) {
         if (product.sizes.length === 1) {
-            sizeInfo = `<span class="product-size">${product.sizes[0].name}</span>`;
+            sizeInfo = `<div class="product-size-wrapper"><span class="product-size">${product.sizes[0].name}</span></div>`;
         } else {
-            sizeInfo = `<span class="product-size">${product.sizes.length}サイズ</span>`;
+            // 複数サイズがある場合は、サイズ一覧を見やすく表示
+            const sizeList = product.sizes.map(size => size.name).join(' / ');
+            sizeInfo = `<div class="product-size-wrapper"><span class="product-size">${sizeList}</span></div>`;
         }
     }
     
@@ -795,6 +797,11 @@ function createProductCard(product, index) {
         isSoldOut = (product.stock || 0) <= 0;
     }
     
+    // カートに入っている商品の個数を確認
+    const cartItem = cart.find(item => item.id === product.id);
+    const cartQuantity = cartItem ? cartItem.quantity : 0;
+    const cartBadgeHtml = cartQuantity > 0 ? `<span class="product-cart-badge">${cartQuantity}</span>` : '';
+    
     const soldOutBadge = isSoldOut ? '<span class="product-soldout-badge">売り切れ</span>' : '';
     const soldOutClass = isSoldOut ? 'product-card-soldout' : '';
     
@@ -802,9 +809,10 @@ function createProductCard(product, index) {
         <div class="product-card ${soldOutClass}" style="${animationStyle}" data-product-id="${product.id}">
             ${imageHtml}
             ${soldOutBadge}
+            ${cartBadgeHtml}
             <div class="product-info">
                 <h3 class="product-name">${product.name}</h3>
-                ${sizeInfo ? `<div class="product-size-wrapper">${sizeInfo}</div>` : ''}
+                ${sizeInfo}
                 <div class="product-footer">
                     <span class="product-price">¥${product.price.toLocaleString()}</span>
                     <button class="add-to-cart-btn" data-product-id="${product.id}" aria-label="カートに追加">
@@ -1133,6 +1141,35 @@ function updateCartUI() {
     
     // カートアイテムを再描画
     renderCartItems();
+    
+    // 商品一覧のカートバッジを更新
+    updateProductCartBadges();
+}
+
+// 商品一覧のカートバッジを更新
+function updateProductCartBadges() {
+    if (!productsContainer) return;
+    
+    const productCards = productsContainer.querySelectorAll('.product-card');
+    productCards.forEach(card => {
+        const productId = card.dataset.productId;
+        const cartItem = cart.find(item => item.id === productId);
+        const cartQuantity = cartItem ? cartItem.quantity : 0;
+        
+        // 既存のカートバッジを削除
+        const existingBadge = card.querySelector('.product-cart-badge');
+        if (existingBadge) {
+            existingBadge.remove();
+        }
+        
+        // カートに入っている場合はバッジを追加
+        if (cartQuantity > 0) {
+            const badge = document.createElement('span');
+            badge.className = 'product-cart-badge';
+            badge.textContent = cartQuantity.toString();
+            card.appendChild(badge);
+        }
+    });
 }
 
 // カートアイテムを描画
@@ -1152,22 +1189,44 @@ function renderCartItems() {
             ? `<img src="${imageUrl}" alt="${item.name}" class="cart-item-image" onerror="this.style.display='none'; this.onerror=null;">`
             : '';
         
+        // 商品データを取得して詳細表示に遷移できるようにする
+        const product = products.find(p => p.id === item.id);
+        
         return `
-            <div class="cart-item">
+            <div class="cart-item" data-cart-product-id="${item.id}" style="cursor: pointer;">
                 ${imageHtml}
                 <div class="cart-item-details">
                     <h4 class="cart-item-name">${item.name}</h4>
+                    ${item.size_name ? `<p class="cart-item-size">サイズ: ${item.size_name}</p>` : ''}
                     <p class="cart-item-price">¥${(item.price * item.quantity).toLocaleString()}</p>
-                    <div class="cart-item-quantity">
+                    <div class="cart-item-quantity" onclick="event.stopPropagation();">
                         <button class="quantity-btn" onclick="updateQuantity('${item.id}', -1)">-</button>
                         <span>${item.quantity}</span>
                         <button class="quantity-btn" onclick="updateQuantity('${item.id}', 1)">+</button>
                     </div>
-                    <button class="cart-item-remove" onclick="removeFromCart('${item.id}')" aria-label="削除">×</button>
+                    <button class="cart-item-remove" onclick="event.stopPropagation(); removeFromCart('${item.id}')" aria-label="削除">×</button>
                 </div>
             </div>
         `;
     }).join('');
+    
+    // カートアイテムのクリックイベントを設定
+    const cartItemElements = cartItems.querySelectorAll('.cart-item');
+    cartItemElements.forEach(cartItem => {
+        cartItem.addEventListener('click', (e) => {
+            // 数量変更ボタンや削除ボタンをクリックした場合は詳細表示しない
+            if (e.target.closest('.quantity-btn') || e.target.closest('.cart-item-remove')) {
+                return;
+            }
+            
+            const productId = cartItem.dataset.cartProductId;
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                closeCart();
+                showProductDetail(product);
+            }
+        });
+    });
 }
 
 // カートを開く

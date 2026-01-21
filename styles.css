@@ -630,6 +630,26 @@ body.splash-complete .main-content {
     white-space: nowrap;
 }
 
+.product-cart-badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    background: #ff4444;
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(255, 68, 68, 0.5), 0 0 12px rgba(255, 68, 68, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    line-height: 1;
+}
+
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -703,13 +723,16 @@ body.splash-complete .main-content {
 .product-size {
     display: inline-block;
     font-family: 'Shippori Mincho', 'Noto Serif JP', serif;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: 400;
-    color: rgba(255, 215, 0, 0.9);
-    padding: 0.25rem 0.6rem;
-    background: rgba(255, 215, 0, 0.1);
-    border: 1px solid rgba(255, 215, 0, 0.3);
-    border-radius: 4px;
+    color: rgba(255, 215, 0, 0.95);
+    padding: 0.35rem 0.75rem;
+    background: rgba(255, 215, 0, 0.12);
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    border-radius: 6px;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+    line-height: 1.4;
 }
 
 .product-description {
@@ -1300,6 +1323,15 @@ body.splash-complete .main-content {
     letter-spacing: 1px;
 }
 
+.cart-item-size {
+    font-family: 'Shippori Mincho', 'Noto Serif JP', serif;
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: rgba(255, 215, 0, 0.8);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.5px;
+}
+
 .cart-item-price {
     font-family: 'Shippori Mincho', 'Noto Serif JP', serif;
     color: #ffd700;
@@ -1861,6 +1893,14 @@ body.splash-complete .main-content {
         right: 0.5rem !important;
         font-size: 0.6rem !important;
         padding: 0.25rem 0.5rem !important;
+    }
+
+    .product-cart-badge {
+        top: 0.5rem !important;
+        left: 0.5rem !important;
+        width: 24px !important;
+        height: 24px !important;
+        font-size: 0.75rem !important;
     }
 
 /* チェックアウトフォーム */
