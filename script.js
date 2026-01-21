@@ -1054,7 +1054,18 @@ function closeProductDetail() {
 
 // カートに追加
 function addToCart(product) {
-    const existingItem = cart.find(item => item.id === product.id);
+    // サイズ情報を取得（selectedSizeがあれば使用、なければnull）
+    const sizeName = product.selectedSize || product.size_name || null;
+    
+    // 商品IDとサイズ名の組み合わせで一意のキーを生成
+    const cartKey = sizeName ? `${product.id}_${sizeName}` : product.id;
+    
+    // 同じ商品かつ同じサイズのアイテムを検索
+    const existingItem = cart.find(item => {
+        const itemSizeName = item.size_name || null;
+        const itemCartKey = itemSizeName ? `${item.id}_${itemSizeName}` : item.id;
+        return itemCartKey === cartKey;
+    });
     
     if (existingItem) {
         existingItem.quantity += 1;
@@ -1070,7 +1081,8 @@ function addToCart(product) {
             name: product.name,
             price: product.price,
             image: validImage,
-            quantity: 1
+            quantity: 1,
+            size_name: sizeName || undefined
         });
     }
     
@@ -1084,20 +1096,31 @@ function addToCart(product) {
 }
 
 // カートから削除
-function removeFromCart(productId) {
-    cart = cart.filter(item => item.id !== productId);
+function removeFromCart(cartKey) {
+    // cartKeyは商品IDまたは商品ID_サイズ名の形式
+    cart = cart.filter(item => {
+        const itemSizeName = item.size_name || null;
+        const itemCartKey = itemSizeName ? `${item.id}_${itemSizeName}` : item.id;
+        return itemCartKey !== cartKey;
+    });
     saveCart();
     updateCartUI();
     renderCartItems();
 }
 
 // 数量を更新
-function updateQuantity(productId, change) {
-    const item = cart.find(item => item.id === productId);
+function updateQuantity(cartKey, change) {
+    // cartKeyは商品IDまたは商品ID_サイズ名の形式
+    const item = cart.find(item => {
+        const itemSizeName = item.size_name || null;
+        const itemCartKey = itemSizeName ? `${item.id}_${itemSizeName}` : item.id;
+        return itemCartKey === cartKey;
+    });
+    
     if (item) {
         item.quantity += change;
         if (item.quantity <= 0) {
-            removeFromCart(productId);
+            removeFromCart(cartKey);
         } else {
             saveCart();
             updateCartUI();
@@ -1154,8 +1177,10 @@ function updateProductCartBadges() {
     const productCards = productsContainer.querySelectorAll('.product-card');
     productCards.forEach(card => {
         const productId = card.dataset.productId;
-        const cartItem = cart.find(item => item.id === productId);
-        const cartQuantity = cartItem ? cartItem.quantity : 0;
+        
+        // 同じ商品IDのすべてのカートアイテム（異なるサイズ含む）の数量を合計
+        const cartItemsForProduct = cart.filter(item => item.id === productId);
+        const cartQuantity = cartItemsForProduct.reduce((sum, item) => sum + item.quantity, 0);
         
         // 既存のカートバッジを削除
         const existingBadge = card.querySelector('.product-cart-badge');
@@ -1193,19 +1218,23 @@ function renderCartItems() {
         // 商品データを取得して詳細表示に遷移できるようにする
         const product = products.find(p => p.id === item.id);
         
+        // カートキーを生成（商品IDとサイズ名の組み合わせ）
+        const itemSizeName = item.size_name || null;
+        const cartKey = itemSizeName ? `${item.id}_${itemSizeName}` : item.id;
+        
         return `
-            <div class="cart-item" data-cart-product-id="${item.id}" style="cursor: pointer;">
+            <div class="cart-item" data-cart-product-id="${item.id}" data-cart-key="${cartKey}" style="cursor: pointer;">
                 ${imageHtml}
                 <div class="cart-item-details">
                     <h4 class="cart-item-name">${item.name}</h4>
                     ${item.size_name ? `<p class="cart-item-size">サイズ: ${item.size_name}</p>` : ''}
                     <p class="cart-item-price">¥${(item.price * item.quantity).toLocaleString()}</p>
                     <div class="cart-item-quantity" onclick="event.stopPropagation();">
-                        <button class="quantity-btn" onclick="updateQuantity('${item.id}', -1)">-</button>
+                        <button class="quantity-btn" onclick="updateQuantity('${cartKey}', -1)">-</button>
                         <span>${item.quantity}</span>
-                        <button class="quantity-btn" onclick="updateQuantity('${item.id}', 1)">+</button>
+                        <button class="quantity-btn" onclick="updateQuantity('${cartKey}', 1)">+</button>
                     </div>
-                    <button class="cart-item-remove" onclick="event.stopPropagation(); removeFromCart('${item.id}')" aria-label="削除">×</button>
+                    <button class="cart-item-remove" onclick="event.stopPropagation(); removeFromCart('${cartKey}')" aria-label="削除">×</button>
                 </div>
             </div>
         `;
