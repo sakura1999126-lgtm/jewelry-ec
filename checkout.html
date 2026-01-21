@@ -192,18 +192,28 @@
                     }
 
                     // カートデータをStripe Checkout用の形式に変換
-                    const lineItems = cart.map(item => ({
-                        price_data: {
-                            currency: 'jpy',
-                            product_data: {
-                                name: item.name,
-                                description: item.size_name ? `サイズ: ${item.size_name}` : '',
-                                images: item.image && !item.image.includes('placeholder.com') ? [item.image] : []
+                    const lineItems = cart.map(item => {
+                        const hasImage = item.image && !item.image.includes('placeholder.com');
+                        const productData = {
+                            name: item.name,
+                        };
+                        // description は空文字を送らない
+                        if (item.size_name) {
+                            productData.description = `サイズ: ${item.size_name}`;
+                        }
+                        if (hasImage) {
+                            productData.images = [item.image];
+                        }
+
+                        return {
+                            price_data: {
+                                currency: 'jpy',
+                                product_data: productData,
+                                unit_amount: item.price
                             },
-                            unit_amount: item.price
-                        },
-                        quantity: item.quantity
-                    }));
+                            quantity: item.quantity
+                        };
+                    });
                     
                     // Stripe Checkout Sessionを作成するAPIを呼び出し
                     const response = await fetch('/api/checkout', {
