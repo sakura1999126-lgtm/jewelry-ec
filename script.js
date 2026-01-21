@@ -798,9 +798,9 @@ function createProductCard(product, index) {
         isSoldOut = (product.stock || 0) <= 0;
     }
     
-    // カートに入っている商品の個数を確認
-    const cartItem = cart.find(item => item.id === product.id);
-    const cartQuantity = cartItem ? cartItem.quantity : 0;
+    // カートに入っている商品の個数を確認（同じ商品の異なるサイズも合計）
+    const cartItemsForProduct = cart.filter(item => item.id === product.id);
+    const cartQuantity = cartItemsForProduct.reduce((sum, item) => sum + item.quantity, 0);
     const cartBadgeHtml = cartQuantity > 0 ? `<span class="product-cart-badge">${cartQuantity}</span>` : '';
     
     const soldOutBadge = isSoldOut ? '<span class="product-soldout-badge">売り切れ</span>' : '';
