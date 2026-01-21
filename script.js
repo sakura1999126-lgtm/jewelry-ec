@@ -517,10 +517,25 @@ function startAnimations() {
     const bgVideo = document.getElementById('bgVideo');
     const videoBackground = document.getElementById('videoBackground');
     if (bgVideo && videoBackground) {
-        // 動画ファイルの存在確認（HEADリクエストで確認）
-        fetch('/videos/background-video.mp4', { method: 'HEAD' })
+        // まずテスト用の画像ファイルを試す
+        const testVideoPath = '/videos/C9710A44-C10D-4496-BB5C-909B6AB627AA_1_102_o.jpeg';
+        
+        // テスト用画像を背景として使用（動画として再生できないため）
+        fetch(testVideoPath, { method: 'HEAD' })
             .then(response => {
                 if (response.ok) {
+                    // 画像ファイルを背景として使用
+                    videoBackground.style.backgroundImage = `url(${testVideoPath})`;
+                    videoBackground.style.backgroundSize = 'cover';
+                    videoBackground.style.backgroundPosition = 'center';
+                    bgVideo.style.display = 'none';
+                } else {
+                    // 通常の動画ファイルを確認
+                    return fetch('/videos/background-video.mp4', { method: 'HEAD' });
+                }
+            })
+            .then(response => {
+                if (response && response.ok) {
                     // 動画ファイルが存在する場合のみ、sourceを追加
                     const source = document.createElement('source');
                     source.src = '/videos/background-video.mp4';
@@ -540,7 +555,7 @@ function startAnimations() {
                     bgVideo.play().catch(() => {
                         // 再生エラーは無視
                     });
-                } else {
+                } else if (!response) {
                     // 動画ファイルが存在しない場合は非表示
                     videoBackground.style.display = 'none';
                 }
@@ -568,21 +583,32 @@ function setupScrollAnimation() {
                 const windowHeight = window.innerHeight;
                 const heroHeight = heroSection.offsetHeight;
                 
-                // スクロール位置に応じてフェードアウト/フェードイン
-                const scrollRatio = Math.min(scrollY / (heroHeight * 0.5), 1);
+                // より自然な切り替えのため、スクロール位置を調整
+                // Hero section のフェードアウト開始位置を早める
+                const fadeStartPoint = windowHeight * 0.3;
+                const fadeEndPoint = windowHeight * 0.7;
                 
-                // Hero section をフェードアウト
-                if (scrollRatio > 0.3) {
-                    heroSection.classList.add('fade-out');
+                // Hero section を段階的にフェードアウト
+                if (scrollY > fadeStartPoint) {
+                    const fadeProgress = Math.min((scrollY - fadeStartPoint) / (fadeEndPoint - fadeStartPoint), 1);
+                    heroSection.style.opacity = 1 - fadeProgress;
+                    heroSection.style.transform = `translateY(${fadeProgress * 30}px)`;
                 } else {
-                    heroSection.classList.remove('fade-out');
+                    heroSection.style.opacity = 1;
+                    heroSection.style.transform = 'translateY(0)';
                 }
                 
-                // Products section をフェードイン
-                if (scrollY > windowHeight * 0.6) {
-                    productsSection.classList.add('fade-in');
+                // Products section を段階的にフェードイン（より早く開始）
+                const productsFadeStart = windowHeight * 0.4;
+                const productsFadeEnd = windowHeight * 0.8;
+                
+                if (scrollY > productsFadeStart) {
+                    const productsFadeProgress = Math.min((scrollY - productsFadeStart) / (productsFadeEnd - productsFadeStart), 1);
+                    productsSection.style.opacity = productsFadeProgress;
+                    productsSection.style.transform = `translateY(${(1 - productsFadeProgress) * 20}px)`;
                 } else {
-                    productsSection.classList.remove('fade-in');
+                    productsSection.style.opacity = 0;
+                    productsSection.style.transform = 'translateY(20px)';
                 }
                 
                 ticking = false;

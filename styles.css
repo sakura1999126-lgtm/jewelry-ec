@@ -436,12 +436,8 @@ body.splash-complete .main-content {
     align-items: center;
     justify-content: center;
     z-index: 1;
-    transition: opacity 0.8s ease-out;
-}
-
-.hero-section.fade-out {
-    opacity: 0;
-    pointer-events: none;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    will-change: opacity, transform;
 }
 
 .hero-content {
@@ -460,7 +456,7 @@ body.splash-complete .main-content {
     text-shadow: 2px 2px 20px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.3);
     letter-spacing: 4px;
     line-height: 1.2;
-    background: linear-gradient(135deg, #ffffff 0%, #ffd700 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 215, 0, 0.7) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -473,7 +469,7 @@ body.splash-complete .main-content {
     font-size: 1.1rem;
     font-weight: 300;
     opacity: 0;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(255, 255, 255, 0.7);
     text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.7);
     letter-spacing: 2px;
     line-height: 1.8;
@@ -500,7 +496,7 @@ body.splash-complete .main-content {
     text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.7);
     letter-spacing: 3px;
     text-transform: none;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.7);
     margin-bottom: 2rem;
     animation: fadeInUp 1.2s ease-out 0.45s forwards;
 }
@@ -539,11 +535,9 @@ body.splash-complete .main-content {
     position: relative;
     z-index: 2;
     opacity: 0;
-    transition: opacity 0.8s ease-in;
-}
-
-.products-section.fade-in {
-    opacity: 1;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-in, transform 0.6s ease-in;
+    will-change: opacity, transform;
 }
 
 .products-container {
