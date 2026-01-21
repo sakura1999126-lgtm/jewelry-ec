@@ -471,7 +471,7 @@ body.splash-complete .main-content {
     opacity: 0;
     color: rgba(255, 255, 255, 0.7);
     text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.7);
-    letter-spacing: 2px;
+    letter-spacing: 4px;
     line-height: 1.8;
     margin-top: 2rem;
     animation: fadeInUp 1.2s ease-out 0.6s forwards;
@@ -494,7 +494,7 @@ body.splash-complete .main-content {
     font-weight: 300;
     opacity: 0;
     text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.7);
-    letter-spacing: 3px;
+    letter-spacing: 5px;
     text-transform: none;
     color: rgba(255, 255, 255, 0.7);
     margin-bottom: 2rem;
@@ -1479,13 +1479,21 @@ body.splash-complete .main-content {
     font-family: 'Playfair Display', 'Shippori Mincho', serif;
     font-size: 1.75rem;
     font-weight: 400;
-    margin-bottom: 2rem;
-    color: #ffd700;
+    margin-bottom: 0.5rem;
+    width: 100%;
+    opacity: 1;
     letter-spacing: 4px;
     text-align: center;
     position: relative;
     padding-bottom: 1.5rem;
-    text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    line-height: 1.4;
+    overflow: visible;
+    background: linear-gradient(135deg, rgba(198, 173, 83, 0.7) 0%, rgba(255, 200, 0, 0.7) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    vertical-align: bottom;
 }
 
 .checkout-cart-section h2::after,
@@ -1572,6 +1580,11 @@ body.splash-complete .main-content {
     padding-top: 1rem;
     margin-top: 1rem;
     letter-spacing: 3px;
+}
+
+.summary-row.total span:first-child {
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .stripe-placeholder {
@@ -1671,13 +1684,13 @@ body.splash-complete .main-content {
 
     .hero-subtitle {
         font-size: 1rem;
-        letter-spacing: 2px;
+        letter-spacing: 4px;
         margin-bottom: 1rem;
     }
     
     .hero-description {
         font-size: 0.9rem;
-        letter-spacing: 1px;
+        letter-spacing: 3px;
         margin-top: 1.5rem;
     }
     
