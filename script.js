@@ -62,6 +62,9 @@ async function initializeApp() {
     
     // アニメーション開始
     startAnimations();
+    
+    // スクロールイベントの設定
+    setupScrollAnimation();
 }
 
 // スプラッシュスクリーンを表示
@@ -547,6 +550,52 @@ function startAnimations() {
                 videoBackground.style.display = 'none';
             });
     }
+}
+
+// スクロールアニメーションの設定
+function setupScrollAnimation() {
+    const heroSection = document.getElementById('heroSection');
+    const productsSection = document.querySelector('.products-section');
+    
+    if (!heroSection || !productsSection) return;
+    
+    let ticking = false;
+    
+    function handleScroll() {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                const scrollY = window.scrollY || window.pageYOffset;
+                const windowHeight = window.innerHeight;
+                const heroHeight = heroSection.offsetHeight;
+                
+                // スクロール位置に応じてフェードアウト/フェードイン
+                const scrollRatio = Math.min(scrollY / (heroHeight * 0.5), 1);
+                
+                // Hero section をフェードアウト
+                if (scrollRatio > 0.3) {
+                    heroSection.classList.add('fade-out');
+                } else {
+                    heroSection.classList.remove('fade-out');
+                }
+                
+                // Products section をフェードイン
+                if (scrollY > windowHeight * 0.6) {
+                    productsSection.classList.add('fade-in');
+                } else {
+                    productsSection.classList.remove('fade-in');
+                }
+                
+                ticking = false;
+            });
+            
+            ticking = true;
+        }
+    }
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // 初回チェック
+    handleScroll();
 }
 
 // サイドバーの開閉
