@@ -5,6 +5,19 @@ const url = require('url');
 
 const PORT = process.env.PORT || 3006;
 
+// Stripeの初期化（環境変数が設定されている場合のみ）
+let stripe = null;
+try {
+  if (process.env.STRIPE_SECRET_KEY) {
+    stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+    console.log('Stripe initialized successfully');
+  } else {
+    console.log('Stripe secret key not configured - checkout will not work');
+  }
+} catch (err) {
+  console.error('Failed to initialize Stripe:', err.message);
+}
+
 // MIMEタイプのマッピング
 const mimeTypes = {
   '.html': 'text/html',
@@ -144,13 +157,11 @@ function createCheckoutSession(req, res) {
         return;
       }
 
-      if (!process.env.STRIPE_SECRET_KEY) {
+      if (!stripe) {
         res.writeHead(500, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
         res.end(JSON.stringify({ error: 'Stripe secret key not configured' }), 'utf-8');
         return;
       }
-
-      const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
       // Stripe Checkout Sessionを作成
       const sessionParams = {
