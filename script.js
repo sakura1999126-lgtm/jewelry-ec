@@ -946,18 +946,20 @@ function updateProductImages(images) {
 function renderSizeOptions(sizes) {
     if (!productDetailSizes) return;
     
+    // 在庫が0でも選択可能にする
     productDetailSizes.innerHTML = sizes.map((size, index) => `
-        <div class="product-size-option ${size.stock <= 0 ? 'disabled' : ''}" 
+        <div class="product-size-option" 
              data-size-index="${index}" 
              data-size-price="${size.price}"
              data-size-stock="${size.stock}">
             <span class="product-size-name">${size.name}</span>
             ${size.price !== currentDetailProduct?.price ? `<span class="product-size-price">¥${size.price.toLocaleString()}</span>` : ''}
+            ${size.stock <= 0 ? '<span style="font-size: 0.75rem; color: rgba(255, 215, 0, 0.7); margin-left: 0.5rem;">(売り切れ・受注生産可)</span>' : ''}
         </div>
     `).join('');
     
-    // サイズ選択イベント
-    const sizeOptions = productDetailSizes.querySelectorAll('.product-size-option:not(.disabled)');
+    // サイズ選択イベント（在庫が0でも選択可能）
+    const sizeOptions = productDetailSizes.querySelectorAll('.product-size-option');
     sizeOptions.forEach((option, index) => {
         option.addEventListener('click', () => {
             sizeOptions.forEach(opt => opt.classList.remove('active'));
@@ -968,15 +970,15 @@ function renderSizeOptions(sizes) {
         });
     });
     
-    // デフォルトで最初の在庫ありサイズを選択
-    const firstAvailableSize = sizes.find(s => s.stock > 0);
-    if (firstAvailableSize) {
-        const firstAvailableIndex = sizes.indexOf(firstAvailableSize);
-        sizeOptions[firstAvailableIndex]?.classList.add('active');
-        currentSelectedSize = firstAvailableSize;
-        updateProductPrice(currentDetailProduct, firstAvailableSize);
-        updateProductStock(currentDetailProduct, firstAvailableSize);
+    // デフォルトで最初のサイズを選択（在庫が0でも可）
+    if (sizes.length > 0) {
+        const firstSize = sizes[0];
+        sizeOptions[0]?.classList.add('active');
+        currentSelectedSize = firstSize;
+        updateProductPrice(currentDetailProduct, firstSize);
+        updateProductStock(currentDetailProduct, firstSize);
     }
+}
 }
 
 // 商品価格を更新
@@ -992,18 +994,27 @@ function updateProductStock(product, selectedSize = null) {
     if (!productDetailStock) return;
     
     const stock = selectedSize ? selectedSize.stock : product.stock;
-    const stockText = stock > 0 
-        ? `在庫あり (残り${stock}点)`
-        : '在庫切れ';
-    productDetailStock.textContent = stockText;
-    productDetailStock.style.color = stock > 0 
-        ? 'rgba(255, 255, 255, 0.8)'
-        : 'rgba(255, 71, 87, 0.8)';
+    let stockText = '';
+    let stockColor = '';
+    let stockNote = '';
     
+    if (stock > 0) {
+        stockText = `在庫あり (残り${stock}点)`;
+        stockColor = 'rgba(255, 255, 255, 0.8)';
+    } else {
+        stockText = '売り切れ';
+        stockColor = 'rgba(255, 215, 0, 0.8)';
+        stockNote = '購入できますが発送までに2-3週間かかります';
+    }
+    
+    productDetailStock.innerHTML = stockText + (stockNote ? `<br><span style="font-size: 0.85rem; color: rgba(255, 215, 0, 0.7);">${stockNote}</span>` : '');
+    productDetailStock.style.color = stockColor;
+    
+    // 在庫が0でも購入可能にする
     if (productDetailAddCart) {
-        productDetailAddCart.disabled = stock <= 0;
-        productDetailAddCart.style.opacity = stock > 0 ? '1' : '0.5';
-        productDetailAddCart.style.cursor = stock > 0 ? 'pointer' : 'not-allowed';
+        productDetailAddCart.disabled = false;
+        productDetailAddCart.style.opacity = '1';
+        productDetailAddCart.style.cursor = 'pointer';
     }
 }
 

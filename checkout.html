@@ -28,6 +28,11 @@
                             商品と金額を確認し、下のボタンから安全なStripe決済へ進みます。
                             次の画面で配送先・カード情報を入力します。
                         </p>
+                        <div id="outOfStockWarning" style="display: none; background: rgba(255, 215, 0, 0.1); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                            <p style="color: rgba(255, 215, 0, 0.9); margin: 0; font-size: 0.9rem;">
+                                ⚠️ 売り切れ中の商品がカートに入っています。購入可能ですが、発送までに2-3週間かかります。
+                            </p>
+                        </div>
                     </div>
 
                     <div class="checkout-items" id="checkoutItems">
@@ -106,6 +111,9 @@
                         productList = [];
                     }
 
+                    // 売り切れ商品があるかチェック
+                    let hasOutOfStockItems = false;
+
                     cart.forEach(item => {
                         const itemTotal = item.price * item.quantity;
                         subtotal += itemTotal;
@@ -113,6 +121,14 @@
                         // 商品データから画像を取得
                         const product = productList.find(p => p.id === item.id);
                         let imageUrl = item.image || (product && product.image) || '';
+                        
+                        // 売り切れ商品をチェック
+                        if (product) {
+                            const stock = product.stock || 0;
+                            if (stock <= 0) {
+                                hasOutOfStockItems = true;
+                            }
+                        }
                         
                         // プレースホルダーを除外
                         if (imageUrl.includes('placeholder.com')) {
@@ -138,6 +154,12 @@
                         `;
                         checkoutItems.appendChild(itemElement);
                     });
+
+                    // 売り切れ警告を表示
+                    const outOfStockWarning = document.getElementById('outOfStockWarning');
+                    if (outOfStockWarning) {
+                        outOfStockWarning.style.display = hasOutOfStockItems ? 'block' : 'none';
+                    }
 
                     // Calculate and display total
                     const shipping = 0;
@@ -168,6 +190,12 @@
                         `;
                         checkoutItems.appendChild(itemElement);
                     });
+
+                    // エラー時は売り切れ警告を非表示
+                    const outOfStockWarning = document.getElementById('outOfStockWarning');
+                    if (outOfStockWarning) {
+                        outOfStockWarning.style.display = 'none';
+                    }
 
                     const shipping = 0;
                     const total = subtotal + shipping;

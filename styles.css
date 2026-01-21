@@ -1450,11 +1450,12 @@ body.splash-complete .main-content {
 }
 
 .checkout-content {
-    max-width: 820px;
+    max-width: 100%;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     gap: 2.25rem;
+    padding: 0 1rem;
 }
 
 .checkout-cart-section,
@@ -1463,7 +1464,7 @@ body.splash-complete .main-content {
     backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
     border-radius: 20px;
-    padding: 2.5rem;
+    padding: 1.75rem;
     border: 1px solid rgba(255, 215, 0, 0.2);
     box-shadow: 
         0 20px 60px rgba(0, 0, 0, 0.6),
@@ -1472,6 +1473,8 @@ body.splash-complete .main-content {
         inset 0 -1px 0 rgba(255, 215, 0, 0.05);
     position: relative;
     overflow: hidden;
+    width: 100%;
+    opacity: 1;
 }
 
 .checkout-cart-section h2,
