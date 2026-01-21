@@ -519,7 +519,7 @@ function startAnimations() {
     if (bgVideo && videoBackground) {
         // public/videosフォルダ内の動画ファイルを試す
         const videoPaths = [
-            '/public/videos/D8372934-DDE3-4462-94B2-AD389E7C62BD.mov',
+            '/public/videos/video-output-89612E44-DF59-414E-B8F0-781525F2B34D.mp4',
             '/public/videos/background-video.mp4',
             '/videos/background-video.mp4'
         ];
@@ -542,6 +542,10 @@ function startAnimations() {
                             bgVideo.style.display = 'none';
                         } else {
                             // .mp4などの動画ファイルの場合
+                            // 音量を0（ミュート）に設定
+                            bgVideo.muted = true;
+                            bgVideo.volume = 0;
+                            
                             const source = document.createElement('source');
                             source.src = videoPath;
                             source.type = `video/${ext}`;
