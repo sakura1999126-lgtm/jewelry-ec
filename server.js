@@ -226,6 +226,10 @@ const server = http.createServer((req, res) => {
   // publicフォルダ内のリソース（画像、動画など）
   if (pathname.startsWith('/public/')) {
     filePath = path.join(__dirname, pathname);
+  } else if (pathname.startsWith('/videos/')) {
+    // videosフォルダ内の動画（public/videos/から）
+    const videoName = pathname.replace('/videos/', '');
+    filePath = path.join(__dirname, 'public', 'videos', videoName);
   } else if (pathname.startsWith('/images/')) {
     // imagesフォルダ内の画像
     // pathnameから/images/を取り除いて、imagesフォルダのパスを構築
