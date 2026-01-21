@@ -652,6 +652,9 @@ body.splash-complete .main-content {
     padding: 1rem;
     position: relative;
     z-index: 2;
+    display: flex;
+    flex-direction: column;
+    min-height: 100px;
 }
 
 .product-name {
@@ -664,6 +667,9 @@ body.splash-complete .main-content {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     letter-spacing: 1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .product-size-wrapper {
@@ -696,6 +702,8 @@ body.splash-complete .main-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 0.5rem;
+    min-height: 40px;
 }
 
 .product-price {
@@ -1724,59 +1732,79 @@ body.splash-complete .main-content {
     }
 
     .product-info {
-        padding: 0.35rem 0.5rem !important;
+        padding: 0.4rem 0.45rem !important;
         min-height: auto !important;
         height: auto !important;
-        max-height: 90px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
     }
 
     .product-card .product-info {
-        padding: 0.35rem 0.5rem !important;
+        padding: 0.4rem 0.45rem !important;
     }
 
     .product-name {
-        font-size: 0.7rem !important;
-        margin-bottom: 0.15rem !important;
+        font-size: 0.65rem !important;
+        margin-bottom: 0.2rem !important;
         letter-spacing: 0.2px !important;
-        line-height: 1.15 !important;
+        line-height: 1.2 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        width: 100% !important;
+        flex-shrink: 0 !important;
     }
 
     .product-card .product-name {
-        font-size: 0.7rem !important;
-        margin-bottom: 0.15rem !important;
+        font-size: 0.65rem !important;
+        margin-bottom: 0.2rem !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
     }
 
     .product-size-wrapper {
-        margin-bottom: 0.15rem !important;
+        margin-bottom: 0.2rem !important;
+        flex-shrink: 0 !important;
     }
 
     .product-size {
-        font-size: 0.6rem !important;
-        padding: 0.1rem 0.35rem !important;
+        font-size: 0.55rem !important;
+        padding: 0.1rem 0.3rem !important;
     }
 
     .product-footer {
-        margin-top: 0.15rem !important;
+        margin-top: auto !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 0.25rem !important;
+        flex-shrink: 0 !important;
     }
 
     .product-price {
-        font-size: 0.8rem !important;
+        font-size: 0.75rem !important;
         letter-spacing: 0.2px !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
     }
 
     .product-card .product-price {
-        font-size: 0.8rem !important;
+        font-size: 0.75rem !important;
     }
 
     .add-to-cart-btn {
-        width: 32px !important;
-        height: 32px !important;
-        padding: 0.35rem !important;
+        width: 28px !important;
+        height: 28px !important;
+        padding: 0.25rem !important;
+        flex-shrink: 0 !important;
+        min-width: 28px !important;
     }
 
     .add-to-cart-btn svg {
-        width: 16px !important;
-        height: 16px !important;
+        width: 14px !important;
+        height: 14px !important;
     }
 
 /* チェックアウトフォーム */
