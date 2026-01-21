@@ -131,6 +131,19 @@ function createCheckoutSession(req, res) {
     try {
       const { lineItems, successUrl, cancelUrl } = JSON.parse(body || '{}');
 
+      // バリデーション
+      if (!lineItems || !Array.isArray(lineItems) || lineItems.length === 0) {
+        res.writeHead(400, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+        res.end(JSON.stringify({ error: 'lineItems is required and must be a non-empty array' }), 'utf-8');
+        return;
+      }
+
+      if (!successUrl || !cancelUrl) {
+        res.writeHead(400, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+        res.end(JSON.stringify({ error: 'successUrl and cancelUrl are required' }), 'utf-8');
+        return;
+      }
+
       if (!process.env.STRIPE_SECRET_KEY) {
         res.writeHead(500, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
         res.end(JSON.stringify({ error: 'Stripe secret key not configured' }), 'utf-8');
@@ -139,16 +152,19 @@ function createCheckoutSession(req, res) {
 
       const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-      const session = await stripe.checkout.sessions.create({
+      // Stripe Checkout Sessionを作成
+      const sessionParams = {
         payment_method_types: ['card'],
         line_items: lineItems,
         mode: 'payment',
         success_url: successUrl,
         cancel_url: cancelUrl,
         shipping_address_collection: { allowed_countries: ['JP'] },
-        locale: 'ja',
-        customer_email: null
-      });
+        locale: 'ja'
+        // customer_emailは未指定（Stripeが自動的に管理）
+      };
+
+      const session = await stripe.checkout.sessions.create(sessionParams);
 
       res.writeHead(200, { 
         'Content-Type': 'application/json',
@@ -157,8 +173,15 @@ function createCheckoutSession(req, res) {
       res.end(JSON.stringify({ sessionId: session.id, url: session.url }), 'utf-8');
     } catch (err) {
       console.error('Checkout error:', err);
+      const errorMessage = err.message || 'Internal server error';
+      const errorType = err.type || 'StripeError';
+      
       res.writeHead(500, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
-      res.end(JSON.stringify({ error: err.message || 'Internal server error' }), 'utf-8');
+      res.end(JSON.stringify({ 
+        error: errorMessage,
+        type: errorType,
+        details: err.raw ? err.raw.message : undefined
+      }), 'utf-8');
     }
   });
 }

@@ -219,13 +219,21 @@
                     });
                     
                     if (!response.ok) {
-                        const errorData = await response.json().catch(() => ({ error: `HTTP error! status: ${response.status}` }));
-                        throw new Error(errorData.error || errorData.message || `Server error: ${response.status}`);
+                        let errorData;
+                        try {
+                            errorData = await response.json();
+                        } catch (e) {
+                            errorData = { error: `HTTP error! status: ${response.status}` };
+                        }
+                        const errorMsg = errorData.error || errorData.message || `Server error: ${response.status}`;
+                        console.error('API Error Response:', errorData);
+                        throw new Error(errorMsg);
                     }
 
                     const data = await response.json();
                     
                     if (data.error) {
+                        console.error('Stripe API Error:', data);
                         throw new Error(data.error);
                     }
 
