@@ -23,14 +23,10 @@
                 <!-- Unified Order & Payment Card -->
                 <section class="checkout-cart-section" style="gap: 1.5rem;">
                     <div>
-                        <h2 style="margin-bottom: 0.5rem;">ご注文内容とお支払い</h2>
-                        <p style="color: rgba(255,255,255,0.75); line-height: 1.6; margin: 0 0 1rem;">
-                            商品と金額を確認し、下のボタンから安全なStripe決済へ進みます。
-                            次の画面で配送先・カード情報を入力します。
-                        </p>
-                        <div id="outOfStockWarning" style="display: none; background: rgba(255, 215, 0, 0.1); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
-                            <p style="color: rgba(255, 215, 0, 0.9); margin: 0; font-size: 0.9rem;">
-                                ⚠️ 売り切れ中の商品がカートに入っています。購入可能ですが、発送までに2-3週間かかります。
+                        <h2 style="margin-bottom: 0.75rem;">ご注文内容とお支払い</h2>
+                        <div id="outOfStockWarning" style="display: none; background: rgba(255, 215, 0, 0.1); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 8px; padding: 0.75rem; margin-bottom: 1rem;">
+                            <p style="color: rgba(255, 215, 0, 0.9); margin: 0; font-size: 0.85rem; line-height: 1.4;">
+                                ⚠️ 売り切れ商品あり（発送まで2-3週間）
                             </p>
                         </div>
                     </div>
@@ -52,15 +48,9 @@
                             <span>お支払い合計</span>
                             <span id="checkoutTotal">¥0</span>
                         </div>
-                        <p style="color: rgba(255,255,255,0.65); font-size: 0.9rem; margin-top: 0.75rem;">
-                            セキュアなStripe決済で処理されます。次ページで配送先とカード情報をご入力ください。
-                        </p>
-                        <button type="button" class="checkout-submit-btn" id="stripeCheckoutBtn" style="width: 100%; margin-top: 0.75rem;">
+                        <button type="button" class="checkout-submit-btn" id="stripeCheckoutBtn" style="width: 100%; margin-top: 1rem;">
                             Stripeで支払いへ進む
                         </button>
-                        <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem; margin-top: 0.5rem;">
-                            ※ 決済画面は別ページで表示されます。
-                        </p>
                     </div>
                 </section>
             </div>
@@ -157,16 +147,20 @@
                         
                         const soldOutBadge = isSoldOut ? '<span class="checkout-item-soldout-badge">売り切れ</span>' : '';
                         
+                        // 商品名を短縮（長い場合は省略）
+                        const displayName = item.name.length > 30 ? item.name.substring(0, 30) + '...' : item.name;
+                        
                         itemElement.innerHTML = `
                             <div class="checkout-item-image">
                                 ${imageHtml}
                                 ${soldOutBadge}
                             </div>
                             <div class="checkout-item-details">
-                                <h3>${item.name}</h3>
-                                <p>数量: ${item.quantity}</p>
-                                ${isSoldOut ? '<p style="color: rgba(255, 215, 0, 0.8); font-size: 0.85rem; margin-top: 0.25rem;">※ 発送までに2-3週間かかります</p>' : ''}
-                                <p class="checkout-item-price">¥${itemTotal.toLocaleString()}</p>
+                                <h3>${displayName}</h3>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
+                                    <span style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">数量: ${item.quantity}</span>
+                                    <p class="checkout-item-price" style="margin: 0;">¥${itemTotal.toLocaleString()}</p>
+                                </div>
                             </div>
                         `;
                         checkoutItems.appendChild(itemElement);

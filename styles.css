@@ -1644,6 +1644,10 @@ body.splash-complete .main-content {
     font-weight: 300;
     margin-bottom: 0.5rem;
     letter-spacing: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
 }
 
 .checkout-item-price {
@@ -2153,12 +2157,77 @@ body.splash-complete .main-content {
     .checkout-content {
         max-width: 100%;
         padding: 0 0.5rem;
-        gap: 1.5rem;
+        gap: 1rem;
     }
 
     .checkout-cart-section,
     .checkout-payment-section {
-        padding: 1.75rem;
+        padding: 1rem;
+        gap: 1rem !important;
+    }
+
+    .checkout-cart-section h2 {
+        font-size: 1.3rem !important;
+        margin-bottom: 0.5rem !important;
+        letter-spacing: 2px !important;
+    }
+
+    .checkout-items {
+        margin-bottom: 1rem !important;
+    }
+
+    .checkout-item {
+        padding: 0.75rem !important;
+        gap: 0.75rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+
+    .checkout-item-image {
+        width: 70px !important;
+        height: 70px !important;
+        flex-shrink: 0 !important;
+    }
+
+    .checkout-item-details {
+        min-width: 0 !important;
+        flex: 1 !important;
+    }
+
+    .checkout-item-details h3 {
+        font-size: 0.85rem !important;
+        margin-bottom: 0.35rem !important;
+        letter-spacing: 1px !important;
+        line-height: 1.2 !important;
+    }
+
+    .checkout-item-price {
+        font-size: 1rem !important;
+        letter-spacing: 1px !important;
+    }
+
+    .checkout-summary {
+        padding-top: 0.75rem !important;
+    }
+
+    .summary-row {
+        margin-bottom: 0.75rem !important;
+        font-size: 0.95rem !important;
+    }
+
+    .summary-row.total {
+        font-size: 1.2rem !important;
+        padding-top: 0.75rem !important;
+        margin-top: 0.75rem !important;
+    }
+
+    #outOfStockWarning {
+        padding: 0.5rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+
+    #outOfStockWarning p {
+        font-size: 0.8rem !important;
+        line-height: 1.3 !important;
     }
 
     .checkout-form-section {
