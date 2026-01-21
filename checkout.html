@@ -123,9 +123,22 @@
                         let imageUrl = item.image || (product && product.image) || '';
                         
                         // 売り切れ商品をチェック
+                        let isSoldOut = false;
                         if (product) {
-                            const stock = product.stock || 0;
-                            if (stock <= 0) {
+                            // サイズがある場合は選択されたサイズの在庫を確認
+                            if (item.size_name && product.sizes && product.sizes.length > 0) {
+                                const selectedSize = product.sizes.find(s => s.name === item.size_name);
+                                if (selectedSize) {
+                                    isSoldOut = (selectedSize.stock || 0) <= 0;
+                                } else {
+                                    // サイズが見つからない場合は全体の在庫を確認
+                                    isSoldOut = (product.stock || 0) <= 0;
+                                }
+                            } else {
+                                isSoldOut = (product.stock || 0) <= 0;
+                            }
+                            
+                            if (isSoldOut) {
                                 hasOutOfStockItems = true;
                             }
                         }
@@ -136,19 +149,23 @@
                         }
 
                         const itemElement = document.createElement('div');
-                        itemElement.className = 'checkout-item';
+                        itemElement.className = `checkout-item ${isSoldOut ? 'checkout-item-soldout' : ''}`;
                         
                         const imageHtml = imageUrl && !imageUrl.includes('placeholder.com')
                             ? `<img src="${imageUrl}" alt="${item.name}" onerror="this.style.display='none';">`
                             : '<div style="width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 2rem;">📦</div>';
                         
+                        const soldOutBadge = isSoldOut ? '<span class="checkout-item-soldout-badge">売り切れ</span>' : '';
+                        
                         itemElement.innerHTML = `
                             <div class="checkout-item-image">
                                 ${imageHtml}
+                                ${soldOutBadge}
                             </div>
                             <div class="checkout-item-details">
                                 <h3>${item.name}</h3>
                                 <p>数量: ${item.quantity}</p>
+                                ${isSoldOut ? '<p style="color: rgba(255, 215, 0, 0.8); font-size: 0.85rem; margin-top: 0.25rem;">※ 発送までに2-3週間かかります</p>' : ''}
                                 <p class="checkout-item-price">¥${itemTotal.toLocaleString()}</p>
                             </div>
                         `;
