@@ -46,6 +46,10 @@ function serveStaticFile(filePath, res) {
   fs.access(filePath, fs.constants.F_OK, (accessErr) => {
     if (accessErr) {
       console.error(`File not found: ${filePath}`);
+      // 動画ファイルの場合は詳細なログを出力
+      if (['.mp4', '.webm', '.mov'].includes(ext)) {
+        console.error(`Video file requested but not found. Check if file exists at: ${filePath}`);
+      }
       res.writeHead(404, { 'Content-Type': 'text/html' });
       res.end('<h1>404 - File Not Found</h1>', 'utf-8');
       return;
@@ -225,7 +229,9 @@ const server = http.createServer((req, res) => {
   
   // publicフォルダ内のリソース（画像、動画など）
   if (pathname.startsWith('/public/')) {
-    filePath = path.join(__dirname, pathname);
+    // /public/を削除して相対パスに変換
+    const relativePath = pathname.replace(/^\/public\//, '');
+    filePath = path.join(__dirname, 'public', relativePath);
   } else if (pathname.startsWith('/videos/')) {
     // videosフォルダ内の動画（public/videos/から）
     const videoName = pathname.replace('/videos/', '');
@@ -239,7 +245,9 @@ const server = http.createServer((req, res) => {
     filePath = path.join(__dirname, 'index.html');
   } else {
     // HTMLファイル、CSS、JSなどのルートレベルのファイル
-    filePath = path.join(__dirname, pathname);
+    // 先頭の/を削除して相対パスに変換
+    const relativePath = pathname.startsWith('/') ? pathname.slice(1) : pathname;
+    filePath = path.join(__dirname, relativePath);
   }
 
   serveStaticFile(filePath, res);
