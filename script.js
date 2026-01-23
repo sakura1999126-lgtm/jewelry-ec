@@ -575,6 +575,9 @@ function startAnimations() {
         function setupVideoElement(videoPath) {
             console.log(`🎥 動画要素を設定中: ${videoPath}`);
             
+            // モバイル判定（関数内で一度だけ宣言）
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            
             const ext = videoPath.split('.').pop().toLowerCase();
             
             // .movファイルはブラウザで直接再生できないため、背景画像として使用
@@ -630,7 +633,6 @@ function startAnimations() {
             videoBackground.style.visibility = 'visible';
             
             // モバイル判定とサイズ調整
-            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
             if (isMobile) {
                 console.log('📱 モバイルデバイスを検出しました');
                 console.log('   画面サイズ:', window.innerWidth, 'x', window.innerHeight);
@@ -709,7 +711,6 @@ function startAnimations() {
             console.log('📥 動画の読み込みを開始...');
             
             // モバイルでの読み込みを確実にする
-            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
             if (isMobile) {
                 console.log('📱 モバイルデバイス: 動画読み込みを強化します');
                 // 動画要素を強制的に表示
