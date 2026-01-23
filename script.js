@@ -686,32 +686,32 @@ function setupScrollAnimation() {
                 const windowHeight = window.innerHeight;
                 const heroHeight = heroSection.offsetHeight;
                 
-                // より自然な切り替えのため、スクロール位置を調整
-                // Hero section のフェードアウト開始位置を早める
-                const fadeStartPoint = windowHeight * 0.3;
-                const fadeEndPoint = windowHeight * 0.7;
+                // グラデーション遷移のためのスクロール位置調整
+                const fadeStartPoint = windowHeight * 0.4;
+                const fadeEndPoint = windowHeight * 0.85;
                 
                 // Hero section を段階的にフェードアウト
                 if (scrollY > fadeStartPoint) {
                     const fadeProgress = Math.min((scrollY - fadeStartPoint) / (fadeEndPoint - fadeStartPoint), 1);
                     heroSection.style.opacity = 1 - fadeProgress;
-                    heroSection.style.transform = `translateY(${fadeProgress * 30}px)`;
+                    heroSection.style.transform = `translateY(${fadeProgress * 20}px)`;
                 } else {
                     heroSection.style.opacity = 1;
                     heroSection.style.transform = 'translateY(0)';
                 }
                 
-                // Products section を段階的にフェードイン（より早く開始）
-                const productsFadeStart = windowHeight * 0.4;
-                const productsFadeEnd = windowHeight * 0.8;
+                // Products section をグラデーションでフェードイン（黒背景への自然な遷移）
+                const productsFadeStart = windowHeight * 0.5;
+                const productsFadeEnd = windowHeight * 0.9;
                 
                 if (scrollY > productsFadeStart) {
                     const productsFadeProgress = Math.min((scrollY - productsFadeStart) / (productsFadeEnd - productsFadeStart), 1);
+                    // スムーズなグラデーション遷移
                     productsSection.style.opacity = productsFadeProgress;
-                    productsSection.style.transform = `translateY(${(1 - productsFadeProgress) * 20}px)`;
+                    productsSection.style.transform = `translateY(${(1 - productsFadeProgress) * 15}px)`;
                 } else {
                     productsSection.style.opacity = 0;
-                    productsSection.style.transform = 'translateY(20px)';
+                    productsSection.style.transform = 'translateY(15px)';
                 }
                 
                 ticking = false;
