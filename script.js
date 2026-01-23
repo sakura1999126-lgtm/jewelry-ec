@@ -609,6 +609,11 @@ function startAnimations() {
             bgVideo.appendChild(source);
             console.log(`   <source>要素を追加: src="${videoPath}", type="video/${ext}"`);
             
+            // モバイル対応: 動画のpreloadを確実に設定
+            bgVideo.setAttribute('preload', 'auto');
+            bgVideo.setAttribute('poster', ''); // ポスター画像なし
+            console.log('   動画のpreload属性を設定: auto');
+            
             // 動画要素を確実に表示（モバイル対応）
             bgVideo.style.display = 'block';
             bgVideo.style.width = '100%';
@@ -620,15 +625,26 @@ function startAnimations() {
             bgVideo.style.opacity = '1';
             bgVideo.style.visibility = 'visible';
             bgVideo.style.zIndex = '0';
+            bgVideo.style.background = '#000';
             videoBackground.style.display = 'block';
             videoBackground.style.visibility = 'visible';
             
-            // モバイル判定
+            // モバイル判定とサイズ調整
             const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
             if (isMobile) {
                 console.log('📱 モバイルデバイスを検出しました');
+                console.log('   画面サイズ:', window.innerWidth, 'x', window.innerHeight);
                 bgVideo.style.width = '100vw';
                 bgVideo.style.height = '100vh';
+                bgVideo.style.minWidth = '100vw';
+                bgVideo.style.minHeight = '100vh';
+                videoBackground.style.width = '100vw';
+                videoBackground.style.height = '100vh';
+                videoBackground.style.minWidth = '100vw';
+                videoBackground.style.minHeight = '100vh';
+                
+                // モバイルでの動画読み込みを確実にする
+                console.log('📱 モバイル用の動画設定を適用しました');
             }
             
             // イベントリスナーの設定
@@ -689,8 +705,45 @@ function startAnimations() {
             bgVideo.addEventListener('play', onPlay, { once: true });
             bgVideo.addEventListener('error', onError, { once: true });
             
-            // 動画の読み込みを開始
+            // 動画の読み込みを開始（モバイル対応）
             console.log('📥 動画の読み込みを開始...');
+            
+            // モバイルでの読み込みを確実にする
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            if (isMobile) {
+                console.log('📱 モバイルデバイス: 動画読み込みを強化します');
+                // 動画要素を強制的に表示
+                bgVideo.style.cssText = `
+                    display: block !important;
+                    width: 100vw !important;
+                    height: 100vh !important;
+                    min-width: 100vw !important;
+                    min-height: 100vh !important;
+                    object-fit: cover !important;
+                    position: absolute !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                    z-index: 0 !important;
+                    background: #000 !important;
+                `;
+                videoBackground.style.cssText = `
+                    display: block !important;
+                    position: fixed !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    width: 100vw !important;
+                    height: 100vh !important;
+                    min-width: 100vw !important;
+                    min-height: 100vh !important;
+                    z-index: -1 !important;
+                    overflow: hidden !important;
+                    background: #000 !important;
+                    visibility: visible !important;
+                `;
+            }
+            
             bgVideo.load();
             
             // モバイル対応: 複数のタイミングで再生を試みる
@@ -765,32 +818,31 @@ function setupScrollAnimation() {
                 const windowHeight = window.innerHeight;
                 const heroHeight = heroSection.offsetHeight;
                 
-                // グラデーション遷移のためのスクロール位置調整
-                const fadeStartPoint = windowHeight * 0.4;
-                const fadeEndPoint = windowHeight * 0.85;
+                // シンプルなフェード遷移（グラデーションなし）
+                const fadeStartPoint = windowHeight * 0.3;
+                const fadeEndPoint = windowHeight * 0.7;
                 
                 // Hero section を段階的にフェードアウト
                 if (scrollY > fadeStartPoint) {
                     const fadeProgress = Math.min((scrollY - fadeStartPoint) / (fadeEndPoint - fadeStartPoint), 1);
                     heroSection.style.opacity = 1 - fadeProgress;
-                    heroSection.style.transform = `translateY(${fadeProgress * 20}px)`;
+                    heroSection.style.transform = `translateY(${fadeProgress * 10}px)`;
                 } else {
                     heroSection.style.opacity = 1;
                     heroSection.style.transform = 'translateY(0)';
                 }
                 
-                // Products section をグラデーションでフェードイン（黒背景への自然な遷移）
-                const productsFadeStart = windowHeight * 0.5;
-                const productsFadeEnd = windowHeight * 0.9;
+                // Products section を早めにフェードイン（最初の商品が見やすく）
+                const productsFadeStart = windowHeight * 0.4;
+                const productsFadeEnd = windowHeight * 0.75;
                 
                 if (scrollY > productsFadeStart) {
                     const productsFadeProgress = Math.min((scrollY - productsFadeStart) / (productsFadeEnd - productsFadeStart), 1);
-                    // スムーズなグラデーション遷移
                     productsSection.style.opacity = productsFadeProgress;
-                    productsSection.style.transform = `translateY(${(1 - productsFadeProgress) * 15}px)`;
+                    productsSection.style.transform = `translateY(${(1 - productsFadeProgress) * 10}px)`;
                 } else {
                     productsSection.style.opacity = 0;
-                    productsSection.style.transform = 'translateY(15px)';
+                    productsSection.style.transform = 'translateY(10px)';
                 }
                 
                 ticking = false;
