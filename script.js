@@ -516,6 +516,11 @@ function startAnimations() {
     // 背景動画の設定
     const bgVideo = document.getElementById('bgVideo');
     const videoBackground = document.getElementById('videoBackground');
+    
+    console.log('🎬 動画背景の初期化を開始');
+    console.log('bgVideo要素:', bgVideo ? '存在' : '不存在');
+    console.log('videoBackground要素:', videoBackground ? '存在' : '不存在');
+    
     if (bgVideo && videoBackground) {
         // 動画ファイルのパス（優先順位順）
         const videoPaths = [
@@ -524,33 +529,72 @@ function startAnimations() {
             '/videos/background-video.mp4'
         ];
         
-        // 動画を設定する関数
-        function setupVideo(index) {
+        // 動画ファイルの存在確認と読み込み
+        async function checkAndLoadVideo(index) {
             if (index >= videoPaths.length) {
-                // すべてのパスを試しても見つからない場合
-                console.log('No video file found, keeping video background visible');
-                // videoBackground.style.display = 'none'; // コメントアウト：背景は表示し続ける
+                console.error('❌ すべての動画パスを試しましたが、見つかりませんでした');
+                console.error('試したパス:', videoPaths);
+                console.error('動画ファイルがRenderにデプロイされているか確認してください');
                 return;
             }
             
             const videoPath = videoPaths[index];
-            console.log(`Trying to load video: ${videoPath}`);
+            const fullUrl = window.location.origin + videoPath;
+            
+            console.log(`🔍 動画ファイルを確認中 (${index + 1}/${videoPaths.length}): ${videoPath}`);
+            console.log(`   完全なURL: ${fullUrl}`);
+            
+            try {
+                // 動画ファイルの存在確認
+                const response = await fetch(videoPath, { method: 'HEAD' });
+                
+                if (response.ok) {
+                    console.log(`✅ 動画ファイルが見つかりました: ${videoPath}`);
+                    console.log(`   ステータス: ${response.status}`);
+                    console.log(`   コンテンツタイプ: ${response.headers.get('content-type')}`);
+                    console.log(`   ファイルサイズ: ${response.headers.get('content-length')} bytes`);
+                    
+                    // 動画を設定
+                    setupVideoElement(videoPath);
+                } else {
+                    console.warn(`⚠️ 動画ファイルが見つかりません (ステータス: ${response.status}): ${videoPath}`);
+                    // 次のパスを試す
+                    checkAndLoadVideo(index + 1);
+                }
+            } catch (error) {
+                console.error(`❌ 動画ファイルの確認中にエラーが発生: ${videoPath}`);
+                console.error('   エラー詳細:', error);
+                console.error('   エラーメッセージ:', error.message);
+                console.error('   エラースタック:', error.stack);
+                // 次のパスを試す
+                checkAndLoadVideo(index + 1);
+            }
+        }
+        
+        // 動画要素を設定する関数
+        function setupVideoElement(videoPath) {
+            console.log(`🎥 動画要素を設定中: ${videoPath}`);
+            
             const ext = videoPath.split('.').pop().toLowerCase();
             
             // .movファイルはブラウザで直接再生できないため、背景画像として使用
             if (ext === 'mov' || ext === 'jpeg' || ext === 'jpg' || ext === 'png') {
+                console.log(`📷 画像として使用: ${videoPath}`);
                 videoBackground.style.backgroundImage = `url(${videoPath})`;
                 videoBackground.style.backgroundSize = 'cover';
                 videoBackground.style.backgroundPosition = 'center';
                 bgVideo.style.display = 'none';
-                console.log(`Using ${videoPath} as background image`);
                 return;
             }
             
             // .mp4などの動画ファイルの場合
-            // 音量を0（ミュート）に設定
+            console.log(`🎬 MP4動画として設定: ${videoPath}`);
+            
+            // 音量を完全に無効化（音声なし）
             bgVideo.muted = true;
             bgVideo.volume = 0;
+            bgVideo.setAttribute('muted', 'true');
+            console.log('   音量設定: muted=true, volume=0');
             
             // 既存のsource要素をクリア
             bgVideo.innerHTML = '';
@@ -559,38 +603,70 @@ function startAnimations() {
             source.src = videoPath;
             source.type = `video/${ext}`;
             bgVideo.appendChild(source);
+            console.log(`   <source>要素を追加: src="${videoPath}", type="video/${ext}"`);
             
-            // 動画の読み込みと再生
-            bgVideo.load();
+            // イベントリスナーの設定
+            const onLoadedMetadata = () => {
+                console.log('✅ 動画のメタデータが読み込まれました');
+                console.log(`   動画の長さ: ${bgVideo.duration}秒`);
+                console.log(`   動画の幅: ${bgVideo.videoWidth}px`);
+                console.log(`   動画の高さ: ${bgVideo.videoHeight}px`);
+            };
             
-            // 動画が読み込まれたら再生
             const onLoadedData = () => {
-                console.log(`Video loaded successfully: ${videoPath}`);
-                bgVideo.play().catch(err => {
-                    console.log('Video play error (ignored):', err);
+                console.log('✅ 動画データが読み込まれました');
+                bgVideo.play().then(() => {
+                    console.log('▶️ 動画の再生を開始しました');
+                }).catch(err => {
+                    console.error('❌ 動画の再生に失敗:', err);
+                    console.error('   エラー詳細:', err.message);
                 });
             };
             
-            // エラーハンドリング
-            const onError = (e) => {
-                console.log(`Video load error for ${videoPath}:`, e);
-                bgVideo.removeEventListener('loadeddata', onLoadedData);
-                bgVideo.removeEventListener('error', onError);
-                // 次のパスを試す
-                setupVideo(index + 1);
+            const onCanPlay = () => {
+                console.log('✅ 動画の再生準備が整いました');
             };
             
+            const onPlay = () => {
+                console.log('▶️ 動画が再生中です');
+            };
+            
+            const onError = (e) => {
+                console.error('❌ 動画の読み込みエラーが発生しました');
+                console.error('   エラーコード:', bgVideo.error ? bgVideo.error.code : 'unknown');
+                console.error('   エラーメッセージ:', bgVideo.error ? bgVideo.error.message : 'unknown');
+                console.error('   イベント:', e);
+                console.error('   動画パス:', videoPath);
+            };
+            
+            // イベントリスナーを追加
+            bgVideo.addEventListener('loadedmetadata', onLoadedMetadata, { once: true });
             bgVideo.addEventListener('loadeddata', onLoadedData, { once: true });
+            bgVideo.addEventListener('canplay', onCanPlay, { once: true });
+            bgVideo.addEventListener('play', onPlay, { once: true });
             bgVideo.addEventListener('error', onError, { once: true });
             
-            // 再生開始を試みる
-            bgVideo.play().catch(() => {
-                // 再生エラーは無視（loadeddataイベントで再試行される）
-            });
+            // 動画の読み込みを開始
+            console.log('📥 動画の読み込みを開始...');
+            bgVideo.load();
+            
+            // 再生開始を試みる（autoplay属性があるので自動再生されるはず）
+            setTimeout(() => {
+                bgVideo.play().then(() => {
+                    console.log('▶️ 動画の自動再生を開始しました');
+                }).catch(err => {
+                    console.warn('⚠️ 自動再生に失敗（ブラウザのポリシーによる可能性）:', err.message);
+                    console.log('   loadeddataイベントで再試行します');
+                });
+            }, 100);
         }
         
-        // 最初の動画パスから試す
-        setupVideo(0);
+        // 最初の動画パスから確認を開始
+        checkAndLoadVideo(0);
+    } else {
+        console.error('❌ 動画要素が見つかりません');
+        console.error('   bgVideo:', bgVideo);
+        console.error('   videoBackground:', videoBackground);
     }
 }
 
