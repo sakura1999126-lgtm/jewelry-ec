@@ -590,11 +590,15 @@ function startAnimations() {
             // .mp4などの動画ファイルの場合
             console.log(`🎬 MP4動画として設定: ${videoPath}`);
             
-            // 音量を完全に無効化（音声なし）
+            // モバイル対応: 音量を完全に無効化（音声なし）
             bgVideo.muted = true;
             bgVideo.volume = 0;
             bgVideo.setAttribute('muted', 'true');
+            bgVideo.setAttribute('playsinline', 'true');
+            bgVideo.setAttribute('webkit-playsinline', 'true');
+            bgVideo.setAttribute('x5-playsinline', 'true');
             console.log('   音量設定: muted=true, volume=0');
+            console.log('   モバイル対応: playsinline=true');
             
             // 既存のsource要素をクリア
             bgVideo.innerHTML = '';
@@ -604,6 +608,13 @@ function startAnimations() {
             source.type = `video/${ext}`;
             bgVideo.appendChild(source);
             console.log(`   <source>要素を追加: src="${videoPath}", type="video/${ext}"`);
+            
+            // 動画要素を確実に表示
+            bgVideo.style.display = 'block';
+            bgVideo.style.width = '100%';
+            bgVideo.style.height = '100%';
+            bgVideo.style.objectFit = 'cover';
+            videoBackground.style.display = 'block';
             
             // イベントリスナーの設定
             const onLoadedMetadata = () => {
@@ -615,16 +626,33 @@ function startAnimations() {
             
             const onLoadedData = () => {
                 console.log('✅ 動画データが読み込まれました');
-                bgVideo.play().then(() => {
-                    console.log('▶️ 動画の再生を開始しました');
-                }).catch(err => {
-                    console.error('❌ 動画の再生に失敗:', err);
-                    console.error('   エラー詳細:', err.message);
-                });
+                // モバイルでも確実に再生
+                const playPromise = bgVideo.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        console.log('▶️ 動画の再生を開始しました');
+                    }).catch(err => {
+                        console.warn('⚠️ 自動再生に失敗:', err.message);
+                        // ユーザーインタラクション後に再生を試みる
+                        const tryPlayOnInteraction = () => {
+                            bgVideo.play().then(() => {
+                                console.log('▶️ ユーザーインタラクション後に再生を開始しました');
+                                document.removeEventListener('touchstart', tryPlayOnInteraction);
+                                document.removeEventListener('click', tryPlayOnInteraction);
+                            }).catch(() => {});
+                        };
+                        document.addEventListener('touchstart', tryPlayOnInteraction, { once: true });
+                        document.addEventListener('click', tryPlayOnInteraction, { once: true });
+                    });
+                }
             };
             
             const onCanPlay = () => {
                 console.log('✅ 動画の再生準備が整いました');
+                // モバイルでも確実に再生を試みる
+                bgVideo.play().catch(() => {
+                    console.log('   再生準備完了、再生を試みます...');
+                });
             };
             
             const onPlay = () => {
@@ -650,15 +678,15 @@ function startAnimations() {
             console.log('📥 動画の読み込みを開始...');
             bgVideo.load();
             
-            // 再生開始を試みる（autoplay属性があるので自動再生されるはず）
+            // 再生開始を試みる（モバイル対応）
             setTimeout(() => {
                 bgVideo.play().then(() => {
                     console.log('▶️ 動画の自動再生を開始しました');
                 }).catch(err => {
-                    console.warn('⚠️ 自動再生に失敗（ブラウザのポリシーによる可能性）:', err.message);
-                    console.log('   loadeddataイベントで再試行します');
+                    console.warn('⚠️ 自動再生に失敗（モバイルブラウザのポリシーによる可能性）:', err.message);
+                    console.log('   ユーザーインタラクションを待機中...');
                 });
-            }, 100);
+            }, 200);
         }
         
         // 最初の動画パスから確認を開始
