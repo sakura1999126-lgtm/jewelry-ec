@@ -3,13 +3,14 @@ node_modules/
 .DS_Store
 *.log
 
-# 動画ファイル（サイズが大きいためGit管理から除外）
-*.mov
-*.mp4
-*.webm
-public/videos/*.mov
-public/videos/*.mp4
-public/videos/*.webm
+# 動画ファイル（11MB程度なのでGit管理に含める）
+# 大きな動画ファイル（50MB以上）がある場合は、以下をコメントアウトして除外してください
+# *.mov
+# *.mp4
+# *.webm
+# public/videos/*.mov
+# public/videos/*.mp4
+# public/videos/*.webm
 
 # サーバーファイル（Cloudflare Pagesでは不要）
 # server.js は残しておきますが、デプロイ時は使用されません
