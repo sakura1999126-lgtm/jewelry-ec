@@ -138,13 +138,32 @@ body.element-selection-mode * {
         width: 100vw;
         height: 100vh;
         z-index: -1;
+        overflow: hidden;
+        background: #000;
     }
     
     .video-background video {
         width: 100vw;
         height: 100vh;
         object-fit: cover;
-        display: block;
+        display: block !important;
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    /* モバイルで動画が読み込まれていない場合のフォールバック */
+    .video-background::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        z-index: 0;
     }
 }
 

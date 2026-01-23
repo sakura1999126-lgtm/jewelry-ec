@@ -609,12 +609,27 @@ function startAnimations() {
             bgVideo.appendChild(source);
             console.log(`   <source>要素を追加: src="${videoPath}", type="video/${ext}"`);
             
-            // 動画要素を確実に表示
+            // 動画要素を確実に表示（モバイル対応）
             bgVideo.style.display = 'block';
             bgVideo.style.width = '100%';
             bgVideo.style.height = '100%';
             bgVideo.style.objectFit = 'cover';
+            bgVideo.style.position = 'absolute';
+            bgVideo.style.top = '0';
+            bgVideo.style.left = '0';
+            bgVideo.style.opacity = '1';
+            bgVideo.style.visibility = 'visible';
+            bgVideo.style.zIndex = '0';
             videoBackground.style.display = 'block';
+            videoBackground.style.visibility = 'visible';
+            
+            // モバイル判定
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            if (isMobile) {
+                console.log('📱 モバイルデバイスを検出しました');
+                bgVideo.style.width = '100vw';
+                bgVideo.style.height = '100vh';
+            }
             
             // イベントリスナーの設定
             const onLoadedMetadata = () => {
@@ -678,15 +693,51 @@ function startAnimations() {
             console.log('📥 動画の読み込みを開始...');
             bgVideo.load();
             
-            // 再生開始を試みる（モバイル対応）
-            setTimeout(() => {
+            // モバイル対応: 複数のタイミングで再生を試みる
+            const attemptPlay = () => {
                 bgVideo.play().then(() => {
-                    console.log('▶️ 動画の自動再生を開始しました');
+                    console.log('▶️ 動画の再生を開始しました');
                 }).catch(err => {
-                    console.warn('⚠️ 自動再生に失敗（モバイルブラウザのポリシーによる可能性）:', err.message);
-                    console.log('   ユーザーインタラクションを待機中...');
+                    console.warn('⚠️ 再生に失敗:', err.message);
+                    console.log('   次の機会に再試行します...');
                 });
-            }, 200);
+            };
+            
+            // 即座に再生を試みる
+            setTimeout(attemptPlay, 100);
+            
+            // loadeddataイベントでも再生を試みる
+            bgVideo.addEventListener('loadeddata', attemptPlay, { once: true });
+            
+            // canplayイベントでも再生を試みる
+            bgVideo.addEventListener('canplay', attemptPlay, { once: true });
+            
+            // モバイル対応: ユーザーインタラクション（タッチ、スクロール）で再生を試みる
+            const playOnInteraction = () => {
+                attemptPlay();
+                // 一度再生できたらイベントリスナーを削除
+                bgVideo.addEventListener('play', () => {
+                    document.removeEventListener('touchstart', playOnInteraction);
+                    document.removeEventListener('touchend', playOnInteraction);
+                    document.removeEventListener('scroll', playOnInteraction);
+                    window.removeEventListener('scroll', playOnInteraction);
+                }, { once: true });
+            };
+            
+            // タッチイベントで再生を試みる
+            document.addEventListener('touchstart', playOnInteraction, { once: true, passive: true });
+            document.addEventListener('touchend', playOnInteraction, { once: true, passive: true });
+            
+            // スクロールイベントで再生を試みる（モバイルでよく使われる）
+            let scrollAttempted = false;
+            const playOnScroll = () => {
+                if (!scrollAttempted) {
+                    scrollAttempted = true;
+                    attemptPlay();
+                }
+            };
+            window.addEventListener('scroll', playOnScroll, { once: true, passive: true });
+            document.addEventListener('scroll', playOnScroll, { once: true, passive: true });
         }
         
         // 最初の動画パスから確認を開始
