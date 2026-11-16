@@ -665,6 +665,37 @@ p, h1, h2, h3 { margin: 0; }
   background: var(--wash);
 }
 
+.wash-points {
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+.wash-points li {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  padding: 1rem 1.05rem 0.95rem;
+  box-shadow: var(--shadow);
+  border-left: 4px solid var(--wash);
+}
+.wash-points strong {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: 0.98rem;
+  color: var(--wash-deep);
+}
+.wash-points p {
+  color: var(--mute);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+.price-tags--wash li {
+  background: var(--wash-soft);
+  color: var(--wash-deep);
+}
+
 /* Booking */
 .pick {
   margin: 0 0 1.15rem;

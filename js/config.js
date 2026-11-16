@@ -23,9 +23,9 @@ window.KURASHI_CONFIG = {
     wash: {
       id: "wash",
       name: "高圧洗浄",
-      short: "高圧洗浄",
+      short: "駐車場の高圧洗浄",
       stripeUrl: "",
-      mailSubject: "【予約】高圧洗浄",
+      mailSubject: "【予約】高圧洗浄（駐車場）",
     },
   },
 };

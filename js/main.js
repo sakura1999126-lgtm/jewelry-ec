@@ -71,19 +71,6 @@
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-  var periodEl = document.getElementById("campaign-period");
-  if (periodEl) {
-    var now = new Date();
-    var end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-    periodEl.textContent =
-      end.getFullYear() +
-      "年" +
-      (end.getMonth() + 1) +
-      "月" +
-      end.getDate() +
-      "日までの期間限定";
-  }
-
   document.querySelectorAll('input[name="service"]').forEach(function (el) {
     el.addEventListener("change", function () {
       if (el.checked) setSelected(el.value);
