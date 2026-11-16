@@ -77,7 +77,7 @@
     });
   });
 
-  document.querySelectorAll(".js-book-jump, .service").forEach(function (el) {
+  document.querySelectorAll(".js-book-jump, .service, .hero-pick").forEach(function (el) {
     el.addEventListener("click", function () {
       var id = el.getAttribute("data-service");
       if (id) setSelected(id);
