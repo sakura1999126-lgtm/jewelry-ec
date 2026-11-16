@@ -298,8 +298,11 @@ p, h1, h2, h3 { margin: 0; }
   line-height: 1.85;
   margin-bottom: 1.4rem;
 }
+.section__text--tight {
+  margin-bottom: 1.1rem;
+}
 
-/* Services — glanceable, interactive choosers */
+/* Services — big clear names, matte accents (no glow) */
 .services {
   display: grid;
   gap: 1rem;
@@ -309,18 +312,31 @@ p, h1, h2, h3 { margin: 0; }
 }
 
 .service {
-  display: grid;
-  grid-template-columns: 5.2rem 1fr;
-  gap: 0.95rem;
-  align-items: stretch;
+  display: block;
   text-decoration: none;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 1.05rem 1.05rem 1.1rem;
+  padding: 1.35rem 1.25rem 1.25rem;
   box-shadow: var(--shadow);
   transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
   animation: service-rise 0.7s var(--ease) both;
+  position: relative;
+  overflow: hidden;
+}
+.service::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0.45rem;
+}
+.service--touyu::before {
+  background: #d9773a;
+}
+.service--wash::before {
+  background: #3f7f8a;
 }
 .service:nth-child(2) { animation-delay: 0.12s; }
 @keyframes service-rise {
@@ -332,83 +348,50 @@ p, h1, h2, h3 { margin: 0; }
   box-shadow: 0 18px 36px rgba(184, 90, 36, 0.12);
 }
 
-.service__visual {
-  position: relative;
-  border-radius: 1.1rem;
-  min-height: 100%;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-}
-.service--touyu .service__visual {
-  background:
-    radial-gradient(circle at 35% 30%, #ffe7c2 0%, transparent 55%),
-    linear-gradient(165deg, #ffd19a, #f0a35a);
-}
-.service--wash .service__visual {
-  background:
-    radial-gradient(circle at 65% 25%, #f4fcfd 0%, transparent 50%),
-    linear-gradient(165deg, #c9ebef, #6aa9b4);
-}
-.service__orb {
-  position: absolute;
-  width: 2.6rem;
-  height: 2.6rem;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.42);
-  filter: blur(0.5px);
-  animation: orb-float 3.8s var(--ease) infinite alternate;
-}
-.service--touyu .service__orb {
-  box-shadow: 0 0 0 10px rgba(255, 255, 255, 0.12);
-}
-.service--wash .service__orb {
-  background: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.14);
-}
-@keyframes orb-float {
-  from { transform: translateY(4px) scale(0.96); }
-  to { transform: translateY(-4px) scale(1.05); }
-}
-.service__mark {
-  position: relative;
-  z-index: 1;
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: #fff;
-  text-shadow: 0 1px 8px rgba(58, 42, 31, 0.18);
-}
-
-.service__body {
-  min-width: 0;
-}
-.service__name {
-  font-size: 0.82rem;
+.service__eyebrow {
+  display: inline-block;
+  margin: 0 0 0.55rem;
+  padding: 0.28rem 0.7rem;
+  border-radius: var(--radius-s);
+  font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: var(--mute);
-  margin-bottom: 0.25rem;
 }
+.service--touyu .service__eyebrow {
+  background: #ffe8d4;
+  color: #8a4a22;
+}
+.service--wash .service__eyebrow {
+  background: #ddeff1;
+  color: #2a555c;
+}
+.service__title {
+  font-size: clamp(1.7rem, 7vw, 2.15rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.35;
+  margin: 0 0 0.55rem;
+  color: var(--ink);
+}
+.service--touyu .service__title { color: #9a4f22; }
+.service--wash .service__title { color: #2f646d; }
 .service__job {
-  font-size: clamp(1.12rem, 4.2vw, 1.28rem);
+  font-size: 1.05rem;
   font-weight: 700;
   letter-spacing: 0.03em;
-  line-height: 1.45;
+  line-height: 1.55;
   margin-bottom: 0.45rem;
   color: var(--ink);
 }
-.service--touyu .service__job { color: var(--warm-deep); }
-.service--wash .service__job { color: var(--wash-deep); }
 .service__text {
   color: var(--mute);
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   line-height: 1.7;
-  margin-bottom: 0.7rem;
+  margin-bottom: 0.85rem;
 }
 .service__points {
   list-style: none;
-  margin: 0 0 0.85rem;
+  margin: 0 0 0.95rem;
   padding: 0;
   display: flex;
   flex-wrap: wrap;
@@ -416,36 +399,26 @@ p, h1, h2, h3 { margin: 0; }
 }
 .service__points li {
   border-radius: var(--radius-s);
-  padding: 0.28rem 0.65rem;
-  font-size: 0.76rem;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.04em;
 }
 .service--touyu .service__points li {
-  background: var(--warm-soft);
-  color: var(--warm-deep);
+  background: #ffe8d4;
+  color: #8a4a22;
 }
 .service--wash .service__points li {
-  background: var(--wash-soft);
-  color: var(--wash-deep);
+  background: #ddeff1;
+  color: #2a555c;
 }
 .service__more {
-  font-size: 0.86rem;
+  font-size: 0.88rem;
   font-weight: 700;
   letter-spacing: 0.06em;
 }
-.service--touyu .service__more { color: var(--warm); }
-.service--wash .service__more { color: var(--wash); }
-
-@media (max-width: 420px) {
-  .service {
-    grid-template-columns: 1fr;
-    gap: 0.8rem;
-  }
-  .service__visual {
-    min-height: 4.6rem;
-  }
-}
+.service--touyu .service__more { color: #c45f28; }
+.service--wash .service__more { color: #3f7f8a; }
 
 /* Campaign bubble */
 .bubble {
