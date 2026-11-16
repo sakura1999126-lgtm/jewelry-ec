@@ -1,5 +1,6 @@
 uploads/
 assets/
+repos/
 .DS_Store
 *.log
 .cursor/
