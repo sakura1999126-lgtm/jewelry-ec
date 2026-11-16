@@ -3,183 +3,268 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="あったか灯油便。スタンドでの買い出しからご自宅までお届け。料金は出張費・配送料込み。電話受付24時間。">
-  <meta name="theme-color" content="#0C1A2A">
-  <title>あったか灯油便｜灯油のお届け</title>
+  <meta name="description" content="くらしサポート。あったか灯油便・高圧洗浄など、暮らしの依頼をわかりやすく受け付けます。電話受付24時間。担当：桜井 凜太郎。">
+  <meta name="theme-color" content="#0B1F33">
+  <title>くらしサポート｜あったか灯油便・高圧洗浄</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <a class="skip" href="#main">本文へ</a>
 
-  <header class="topbar">
-    <div class="wrap topbar-inner">
-      <p class="logo"><span class="logo-a">あったか</span><span class="logo-b">灯油便</span></p>
-      <a class="topbar-tel" href="tel:08079621018">080-7962-1018</a>
+  <header class="header">
+    <div class="shell header__in">
+      <a class="brand" href="#top">くらしサポート</a>
+      <nav class="nav" aria-label="メニュー">
+        <a href="#services">サービス</a>
+        <a href="#touyu">灯油便</a>
+        <a href="#wash">高圧洗浄</a>
+        <a href="#booking">予約</a>
+      </nav>
+      <a class="header__tel" href="tel:08079621018">080-7962-1018</a>
     </div>
   </header>
 
   <main id="main">
-    <section class="hero">
-      <div class="wrap hero-inner">
-        <p class="hero-kicker">灯油の買い出し・お届け</p>
-        <h1 class="hero-title">冬のあたたかさを、<br>玄関先まで。</h1>
-        <p class="hero-lead">スタンドでの買い出しから、ご自宅へのお届けまで。</p>
-        <a class="btn" href="tel:08079621018">電話で注文する　080-7962-1018</a>
-        <ul class="hero-points">
-          <li>24時間　電話受付</li>
-          <li>出張費・配送料込み</li>
-          <li>任意保険　加入済み</li>
+    <!-- Hero -->
+    <section class="hero" id="top">
+      <div class="shell hero__in">
+        <p class="eyebrow">暮らしの依頼を、ひとつずつ丁寧に</p>
+        <h1 class="hero__title">くらしサポート</h1>
+        <p class="hero__lead">灯油のお届けから、高圧洗浄まで。<br class="br-sp">必要なサービスを選んで、お申し込みください。</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#services">サービスを見る</a>
+          <a class="btn btn--quiet" href="#booking">予約・相談する</a>
+        </div>
+        <ul class="hero__meta">
+          <li>電話受付 24時間</li>
+          <li>担当 桜井 凜太郎</li>
+          <li>見積もり無料</li>
         </ul>
       </div>
     </section>
 
-    <section class="block" id="campaign">
-      <div class="wrap">
-        <p class="label" id="campaign-period">今月末までの期間限定</p>
-        <h2 class="heading">初回のご注文は、<br>どちらか1つ選べます</h2>
-        <div class="perk-row">
-          <div class="perk">
-            <p class="perk-i">1</p>
-            <h3>18Lポリタンク1缶　無料</h3>
-            <p>灯油入りのポリタンクを、1缶分お付けします。</p>
-          </div>
-          <div class="perk">
-            <p class="perk-i">2</p>
-            <h3>ストーブ給油　初回無料</h3>
-            <p>重い給油作業を、初回のみ代行します。</p>
-          </div>
+    <!-- Services index -->
+    <section class="section" id="services">
+      <div class="shell">
+        <div class="section__head">
+          <h2 class="section__title">サービス</h2>
+          <p class="section__desc">ご予約のときは、どちらのサービスか最初にお伝えください。受付がスムーズです。</p>
+        </div>
+        <div class="service-grid">
+          <a class="service-tile" href="#touyu" data-service="touyu">
+            <p class="service-tile__code">01</p>
+            <h3 class="service-tile__name">あったか灯油便</h3>
+            <p class="service-tile__text">スタンドで給油し、ご自宅までポリタンクをお届けします。</p>
+            <span class="service-tile__go">詳細と料金</span>
+          </a>
+          <a class="service-tile" href="#wash" data-service="wash">
+            <p class="service-tile__code">02</p>
+            <h3 class="service-tile__name">高圧洗浄</h3>
+            <p class="service-tile__text">汚れの状態を伺い、作業内容と料金をご案内します。</p>
+            <span class="service-tile__go">詳細を見る</span>
+          </a>
         </div>
       </div>
     </section>
 
-    <section class="block block-price" id="pricing">
-      <div class="wrap">
-        <h2 class="heading">料金</h2>
-        <p class="lead">すべて税込。出張費・配送料・設置費込み。追加料金なし。</p>
+    <!-- Touyu -->
+    <section class="section section--panel" id="touyu" data-service-section="touyu">
+      <div class="shell">
+        <div class="section__head">
+          <p class="eyebrow">サービス 01</p>
+          <h2 class="section__title">あったか灯油便</h2>
+          <p class="section__desc">ガソリンスタンドでの買い出しから、ご自宅へのお届けまで。</p>
+        </div>
 
-        <div class="rates">
-          <div class="rate">
-            <div class="rate-text">
-              <h3>1缶パック <span>18L</span></h3>
-              <p class="rate-note">税込・すべて込み</p>
+        <div class="campaign">
+          <p class="campaign__label" id="campaign-period">今月末までの期間限定</p>
+          <h3 class="campaign__title">初回のご注文は、どちらか1つ</h3>
+          <div class="campaign__opts">
+            <div>
+              <p class="campaign__num">A</p>
+              <p class="campaign__name">18Lポリタンク1缶 無料</p>
             </div>
-            <p class="rate-price">4,500<span>円</span></p>
-          </div>
-          <div class="rate rate-best">
-            <div class="rate-text">
-              <p class="rate-tag">おすすめ</p>
-              <h3>2缶パック <span>36L</span></h3>
-              <p class="rate-note">1缶あたり 3,750円</p>
+            <div>
+              <p class="campaign__num">B</p>
+              <p class="campaign__name">ストーブ給油 初回無料</p>
             </div>
-            <p class="rate-price">7,500<span>円</span></p>
-          </div>
-          <div class="rate">
-            <div class="rate-text">
-              <h3>3缶目から</h3>
-              <p class="rate-note">1缶につき　／　3缶以上は電話で</p>
-            </div>
-            <p class="rate-price">+3,000<span>円</span></p>
           </div>
         </div>
 
-        <div class="rate-actions">
-          <a class="btn" href="tel:08079621018">電話で注文する　080-7962-1018</a>
-          <a class="btn btn-ghost btn-online-order" href="#" hidden>ネットで注文する</a>
-        </div>
-      </div>
-    </section>
+        <h3 class="subhead">料金</h3>
+        <p class="note">すべて税込。出張費・配送料・設置費込み。追加料金なし。</p>
 
-    <section class="block" id="flow">
-      <div class="wrap wrap-s">
-        <h2 class="heading">ご利用の流れ</h2>
+        <div class="price-panel" role="table" aria-label="あったか灯油便の料金">
+          <div class="price-row" role="row">
+            <div class="price-row__main" role="cell">
+              <p class="price-row__name">1缶パック</p>
+              <p class="price-row__meta">18L　／　税込・すべて込み</p>
+            </div>
+            <p class="price-row__yen" role="cell">4,500<span>円</span></p>
+          </div>
+          <div class="price-row price-row--accent" role="row">
+            <div class="price-row__main" role="cell">
+              <p class="price-row__badge">おすすめ</p>
+              <p class="price-row__name">2缶パック</p>
+              <p class="price-row__meta">36L　／　1缶あたり 3,750円</p>
+            </div>
+            <p class="price-row__yen" role="cell">7,500<span>円</span></p>
+          </div>
+          <div class="price-row" role="row">
+            <div class="price-row__main" role="cell">
+              <p class="price-row__name">3缶目から</p>
+              <p class="price-row__meta">1缶につき　／　3缶以上は電話で</p>
+            </div>
+            <p class="price-row__yen" role="cell">+3,000<span>円</span></p>
+          </div>
+        </div>
+
         <ol class="steps">
-          <li>
-            <span>1</span>
-            <div>
-              <h3>お電話でご注文</h3>
-              <p>お名前・ご住所・日時・缶数を伺います。</p>
-            </div>
-          </li>
-          <li>
-            <span>2</span>
-            <div>
-              <h3>空のポリタンクを玄関先へ</h3>
-              <p>予約の1時間前までに、外へ出しておいてください。</p>
-            </div>
-          </li>
-          <li>
-            <span>3</span>
-            <div>
-              <h3>回収・給油・お届け</h3>
-              <p>非対面で回収し、満タンにして届けます。インターホンでお知らせ後、お支払いで完了。</p>
-            </div>
-          </li>
+          <li><span>1</span><div><strong>電話で注文</strong><p>お名前・住所・日時・缶数を伺います。</p></div></li>
+          <li><span>2</span><div><strong>空タンクを玄関先へ</strong><p>予約の1時間前までに、外へ出してください。</p></div></li>
+          <li><span>3</span><div><strong>回収・給油・お届け</strong><p>非対面で回収し、満タンにして届けます。インターホン後にお支払い。</p></div></li>
         </ol>
-        <p class="pay-line">お支払い：現金（お届け時）または銀行振込（発行日から3日以内・振込手数料はお客様負担）。振込先は領収書に記載します。</p>
-      </div>
-    </section>
 
-    <section class="block block-trust" id="trust">
-      <div class="wrap">
-        <h2 class="heading">安心のポイント</h2>
-        <ul class="trusts">
-          <li><strong>お部屋・指定場所まで運搬</strong></li>
-          <li><strong>黒ナンバー・任意保険加入済み</strong></li>
-          <li><strong>追加料金なし・見積もり無料</strong></li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="block" id="faq">
-      <div class="wrap wrap-s">
-        <h2 class="heading">よくあるご質問</h2>
-        <div class="faq">
-          <details>
-            <summary>どのくらいで届きますか？</summary>
-            <p>ご希望の日時に伺います。当日も、状況によりお受けできる場合があります。</p>
-          </details>
-          <details>
-            <summary>留守でも頼めますか？</summary>
-            <p>空タンクを玄関先（外）に出しておけば、非対面で回収・お届けできます。お届け後にインターホンでお知らせします。</p>
-          </details>
-          <details>
-            <summary>ポリタンクがなくても頼めますか？</summary>
-            <p>はい。初回特典のポリタンク無料もあります。お電話でご案内します。</p>
-          </details>
-          <details>
-            <summary>見積もりだけでもよいですか？</summary>
-            <p>はい。お見積もり・ご相談は無料です。</p>
-          </details>
+        <div class="cta-row">
+          <a class="btn btn--primary js-book-phone" href="tel:08079621018" data-service="touyu">灯油便を電話で予約</a>
+          <a class="btn btn--quiet js-book-jump" href="#booking" data-service="touyu">予約フォームへ</a>
+          <a class="btn btn--ghost js-stripe" href="#" data-service="touyu" hidden>ネットで注文する</a>
         </div>
       </div>
     </section>
 
-    <section class="block block-end" id="contact">
-      <div class="wrap wrap-s end-inner">
-        <h2 class="heading heading-light">まずは、お電話ください。</h2>
-        <p class="end-lead">「ホームページを見た」とお伝えください。<br>お見積もり・ご相談は無料です。</p>
-        <a class="btn btn-on-dark" href="tel:08079621018">電話で注文する　080-7962-1018</a>
-        <p class="end-meta">24時間対応　／　担当：桜井 凜太郎</p>
+    <!-- Wash -->
+    <section class="section" id="wash" data-service-section="wash">
+      <div class="shell">
+        <div class="section__head">
+          <p class="eyebrow">サービス 02</p>
+          <h2 class="section__title">高圧洗浄</h2>
+          <p class="section__desc">汚れの種類や広さによって作業が変わります。内容と料金は、確認のうえご案内します。</p>
+        </div>
+
+        <div class="info-panel">
+          <ul class="info-list">
+            <li>作業前に、場所とご希望を伺います</li>
+            <li>料金は現場の状況により異なります</li>
+            <li>見積もりのご相談だけでも受け付けます</li>
+          </ul>
+          <p class="note">※料金表は準備中です。公開までの間は、お電話またはメールでご案内します。</p>
+        </div>
+
+        <div class="cta-row">
+          <a class="btn btn--primary js-book-phone" href="tel:08079621018" data-service="wash">高圧洗浄を電話で相談</a>
+          <a class="btn btn--quiet js-book-jump" href="#booking" data-service="wash">予約フォームへ</a>
+          <a class="btn btn--ghost js-stripe" href="#" data-service="wash" hidden>ネットで予約する</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Booking -->
+    <section class="section section--panel" id="booking">
+      <div class="shell shell--narrow">
+        <div class="section__head">
+          <h2 class="section__title">予約・相談</h2>
+          <p class="section__desc">サービスを選んでからお申し込みください。灯油便と高圧洗浄は、別の予約として受け付けます。</p>
+        </div>
+
+        <fieldset class="service-pick">
+          <legend class="service-pick__legend">どのサービスですか？</legend>
+          <label class="service-pick__opt">
+            <input type="radio" name="service" value="touyu" checked>
+            <span>あったか灯油便</span>
+          </label>
+          <label class="service-pick__opt">
+            <input type="radio" name="service" value="wash">
+            <span>高圧洗浄</span>
+          </label>
+        </fieldset>
+
+        <div class="booking-actions">
+          <a class="btn btn--primary" id="booking-phone" href="tel:08079621018">電話で予約する　080-7962-1018</a>
+          <p class="booking-hint" id="booking-phone-hint">電話の最初に「灯油便です」とお伝えください。</p>
+        </div>
+
+        <div class="booking-mail" id="booking-mail" hidden>
+          <h3 class="subhead">メールで予約する</h3>
+          <p class="note">送信前に内容を確認できます。件名にサービス名が入ります。</p>
+          <form class="mail-form" id="mail-form">
+            <label>お名前<input type="text" name="name" required autocomplete="name"></label>
+            <label>お電話番号<input type="tel" name="tel" required autocomplete="tel"></label>
+            <label>ご希望の日時<input type="text" name="when" placeholder="例：土曜の午前" required></label>
+            <label>缶数・場所など<textarea name="detail" rows="3" placeholder="灯油便なら缶数、高圧洗浄なら場所や汚れの様子"></textarea></label>
+            <button class="btn btn--primary" type="submit">メールアプリを開く</button>
+          </form>
+        </div>
+        <p class="note" id="booking-mail-pending">メール予約の宛先は準備中です。いまはお電話ください。</p>
+
+        <div class="pay-box">
+          <h3 class="subhead">お支払い</h3>
+          <ul class="plain">
+            <li>現金（作業・お届け時）</li>
+            <li>銀行振込（発行日から3日以内・振込手数料はお客様負担）</li>
+            <li>振込先は領収書に記載します（サイトには口座番号を載せません）</li>
+            <li>カードなどのネット決済は、準備ができ次第ご案内します</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <div class="shell shell--narrow">
+        <div class="section__head">
+          <h2 class="section__title">よくあるご質問</h2>
+        </div>
+        <div class="faq-tabs" role="tablist" aria-label="サービスの切り替え">
+          <button type="button" class="faq-tab is-active" role="tab" aria-selected="true" data-faq="touyu">灯油便</button>
+          <button type="button" class="faq-tab" role="tab" aria-selected="false" data-faq="wash">高圧洗浄</button>
+        </div>
+
+        <div class="faq-panel is-active" data-faq-panel="touyu">
+          <details><summary>どのくらいで届きますか？</summary><p>ご希望の日時に伺います。当日も、状況によりお受けできる場合があります。</p></details>
+          <details><summary>留守でも頼めますか？</summary><p>空タンクを玄関先（外）に出しておけば、非対面で回収・お届けできます。お届け後にインターホンでお知らせします。</p></details>
+          <details><summary>ポリタンクがなくても頼めますか？</summary><p>はい。初回特典のポリタンク無料もあります。お電話でご案内します。</p></details>
+          <details><summary>見積もりだけでもよいですか？</summary><p>はい。お見積もり・ご相談は無料です。</p></details>
+        </div>
+
+        <div class="faq-panel" data-faq-panel="wash" hidden>
+          <details><summary>料金はいくらですか？</summary><p>場所や汚れの状態で変わります。確認のうえ、お見積もりします。</p></details>
+          <details><summary>見積もりだけでもよいですか？</summary><p>はい。お見積もり・ご相談は無料です。</p></details>
+          <details><summary>灯油便と同じ日に頼めますか？</summary><p>別の予約として受け付けます。空き状況により、同日対応できる場合もあります。お電話でご相談ください。</p></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- End -->
+    <section class="section section--end" id="contact">
+      <div class="shell shell--narrow end">
+        <h2 class="section__title section__title--light">まずは、お電話ください</h2>
+        <p class="end__text">「ホームページを見た」とお伝えください。<br>サービス名（灯油便／高圧洗浄）も添えていただけると助かります。</p>
+        <a class="btn btn--on-dark" href="tel:08079621018">電話する　080-7962-1018</a>
+        <p class="end__meta">24時間対応　／　担当：桜井 凜太郎</p>
       </div>
     </section>
   </main>
 
-  <footer class="foot">
-    <div class="wrap wrap-s">
-      <p class="logo foot-logo"><span class="logo-a">あったか</span><span class="logo-b">灯油便</span></p>
-      <p>担当：桜井 凜太郎　／　<a href="tel:08079621018">080-7962-1018</a></p>
-      <p class="foot-note">特定商取引法に基づく表記は準備中です</p>
-      <p class="foot-copy"><small>&copy; <span id="year"></span> あったか灯油便</small></p>
+  <footer class="footer">
+    <div class="shell footer__in">
+      <p class="footer__brand">くらしサポート</p>
+      <p>担当：桜井 凜太郎</p>
+      <p><a href="tel:08079621018">080-7962-1018</a>（24時間）</p>
+      <p class="footer__services">あったか灯油便　／　高圧洗浄</p>
+      <p class="footer__note">特定商取引法に基づく表記は準備中です</p>
+      <p class="footer__copy"><small>&copy; <span id="year"></span> くらしサポート</small></p>
     </div>
   </footer>
 
-  <div class="dock" aria-label="電話で注文">
-    <a class="dock-btn" href="tel:08079621018">電話で注文する　080-7962-1018</a>
+  <div class="dock" aria-label="電話予約">
+    <a class="dock__btn" id="dock-phone" href="tel:08079621018">電話で予約　080-7962-1018</a>
   </div>
 
+  <script src="js/config.js" defer></script>
   <script src="js/main.js" defer></script>
 </body>
 </html>
