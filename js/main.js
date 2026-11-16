@@ -29,7 +29,11 @@
     var phoneBtn = document.getElementById("booking-phone");
     if (phoneBtn) {
       phoneBtn.href = "tel:" + phoneTel;
-      phoneBtn.textContent = serviceName(id) + "を電話で予約　" + phoneDisplay;
+      phoneBtn.innerHTML =
+        serviceName(id) +
+        "を電話で予約<br class=\"sp\"><span class=\"btn__sub\">" +
+        phoneDisplay +
+        "</span>";
     }
 
     var hint = document.getElementById("booking-phone-hint");
@@ -38,7 +42,12 @@
     var dock = document.getElementById("dock-phone");
     if (dock) {
       dock.href = "tel:" + phoneTel;
-      dock.textContent = serviceName(id) + "を電話予約　" + phoneDisplay;
+      dock.innerHTML =
+        '<span class="dock__main">' +
+        serviceName(id) +
+        "を電話予約</span><span class=\"dock__num\">" +
+        phoneDisplay +
+        "</span>";
     }
 
     document.querySelectorAll(".js-stripe").forEach(function (btn) {
@@ -81,7 +90,7 @@
     });
   });
 
-  document.querySelectorAll(".js-book-jump, .service-link").forEach(function (el) {
+  document.querySelectorAll(".js-book-jump, .card").forEach(function (el) {
     el.addEventListener("click", function () {
       var id = el.getAttribute("data-service");
       if (id) setSelected(id);
@@ -140,19 +149,18 @@
       var id = tab.getAttribute("data-faq");
       tabs.forEach(function (t) {
         var on = t === tab;
-        t.classList.toggle("is-active", on);
+        t.classList.toggle("is-on", on);
         t.setAttribute("aria-selected", on ? "true" : "false");
       });
       panels.forEach(function (p) {
         var on = p.getAttribute("data-faq-panel") === id;
-        p.classList.toggle("is-active", on);
+        p.classList.toggle("is-on", on);
         p.hidden = !on;
       });
       if (id) setSelected(id);
     });
   });
 
-  // Header elevation
   var header = document.querySelector("[data-elevate]");
   function onScroll() {
     if (!header) return;
@@ -160,31 +168,6 @@
   }
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
-
-  // Reveal on scroll
-  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var revealTargets = document.querySelectorAll(
-    ".band-head, .service-link, .offer, .price-block, .process li, .quiet-list, .picker, .faq details"
-  );
-  if (!reduceMotion && "IntersectionObserver" in window) {
-    revealTargets.forEach(function (el) {
-      el.classList.add("reveal");
-    });
-    var io = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-in");
-            io.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
-    );
-    revealTargets.forEach(function (el) {
-      io.observe(el);
-    });
-  }
 
   setSelected(selected);
 })();
