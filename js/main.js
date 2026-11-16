@@ -43,9 +43,10 @@
 
     document.querySelectorAll(".js-stripe").forEach(function (btn) {
       var sid = btn.getAttribute("data-service");
-      var url = services[sid] && services[sid].stripeUrl
-        ? String(services[sid].stripeUrl).trim()
-        : "";
+      var url =
+        services[sid] && services[sid].stripeUrl
+          ? String(services[sid].stripeUrl).trim()
+          : "";
       if (url) {
         btn.hidden = false;
         btn.href = url;
@@ -80,7 +81,7 @@
     });
   });
 
-  document.querySelectorAll(".js-book-jump, .service-tile").forEach(function (el) {
+  document.querySelectorAll(".js-book-jump, .service-link").forEach(function (el) {
     el.addEventListener("click", function () {
       var id = el.getAttribute("data-service");
       if (id) setSelected(id);
@@ -94,7 +95,6 @@
     });
   });
 
-  // Mail booking
   var mailWrap = document.getElementById("booking-mail");
   var mailPending = document.getElementById("booking-mail-pending");
   if (email) {
@@ -110,7 +110,6 @@
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       if (!email) return;
-
       var fd = new FormData(form);
       var svc = services[selected] || {};
       var subject = svc.mailSubject || "【予約】くらしサポート";
@@ -122,9 +121,8 @@
         "内容：",
         fd.get("detail") || "",
         "",
-        "※このメールはホームページの予約フォームから作成されました。",
+        "※ホームページの予約フォームから作成",
       ].join("\n");
-
       window.location.href =
         "mailto:" +
         encodeURIComponent(email) +
@@ -135,9 +133,8 @@
     });
   }
 
-  // FAQ tabs
-  var tabs = document.querySelectorAll(".faq-tab");
-  var panels = document.querySelectorAll(".faq-panel");
+  var tabs = document.querySelectorAll(".tab");
+  var panels = document.querySelectorAll(".faq");
   tabs.forEach(function (tab) {
     tab.addEventListener("click", function () {
       var id = tab.getAttribute("data-faq");
@@ -154,6 +151,40 @@
       if (id) setSelected(id);
     });
   });
+
+  // Header elevation
+  var header = document.querySelector("[data-elevate]");
+  function onScroll() {
+    if (!header) return;
+    header.classList.toggle("is-elevated", window.scrollY > 8);
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  // Reveal on scroll
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var revealTargets = document.querySelectorAll(
+    ".band-head, .service-link, .offer, .price-block, .process li, .quiet-list, .picker, .faq details"
+  );
+  if (!reduceMotion && "IntersectionObserver" in window) {
+    revealTargets.forEach(function (el) {
+      el.classList.add("reveal");
+    });
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-in");
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
+    );
+    revealTargets.forEach(function (el) {
+      io.observe(el);
+    });
+  }
 
   setSelected(selected);
 })();
