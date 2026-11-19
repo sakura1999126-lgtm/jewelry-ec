@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css?v=20251119b">
 </head>
 <body>
   <a class="skip" href="#main">本文へ</a>
@@ -140,20 +140,20 @@
         <h3 class="block-title">料金・ネット決済</h3>
         <p class="block-note">すべて税込・出張費／配送料／設置費込みです。</p>
         <ul class="price-tags" aria-hidden="true">
-          <li>1缶 4,500円</li>
-          <li>2缶 7,500円</li>
-          <li>3缶目以降 +3,000円／缶</li>
+          <li>1缶パック 4,500円</li>
+          <li>2缶パック 7,500円</li>
+          <li>3缶パック 10,500円</li>
         </ul>
 
         <div class="can-order" id="can-order">
           <p class="can-order__label">何缶お届けしますか？</p>
           <div class="can-order__picker">
-            <button type="button" class="can-order__btn" id="can-minus" aria-label="減らす">−</button>
+            <button type="button" class="can-order__btn" id="can-minus" data-can-step="-1" aria-label="減らす">−</button>
             <p class="can-order__count"><span id="can-count">2</span><span class="can-order__unit">缶</span></p>
-            <button type="button" class="can-order__btn" id="can-plus" aria-label="増やす">+</button>
+            <button type="button" class="can-order__btn" id="can-plus" data-can-step="1" aria-label="増やす">+</button>
           </div>
           <div class="can-order__summary" aria-live="polite">
-            <p class="can-order__breakdown" id="can-breakdown">2缶パック</p>
+            <p class="can-order__breakdown" id="can-breakdown">2缶パック（36L）</p>
             <p class="can-order__total">合計 <strong id="can-total">7,500</strong>円</p>
           </div>
           <a
@@ -162,8 +162,8 @@
             href="https://buy.stripe.com/9B67sMeYL4ah0pneux2oE02"
             target="_blank"
             rel="noopener noreferrer"
-          >この内容でまとめてネット決済</a>
-          <p class="can-order__hint" id="can-hint">1回の決済で完了します。</p>
+          >この内容でネット決済</a>
+          <p class="can-order__hint" id="can-hint">1〜3缶まで、1回の決済で完了します。</p>
         </div>
 
         <ol class="steps">
@@ -395,7 +395,7 @@
     </a>
   </div>
 
-  <script src="js/config.js" defer></script>
-  <script src="js/main.js" defer></script>
+  <script src="js/config.js?v=20251119b" defer></script>
+  <script src="js/main.js?v=20251119b" defer></script>
 </body>
 </html>

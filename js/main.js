@@ -156,16 +156,23 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
-  /* 灯油便：缶数を選んで1回の決済（または電話）へ */
-  (function initCanOrder() {
+  /* 灯油便：1〜3缶を選んで、対応するStripeへ1回決済 */
+  function initCanOrder() {
     var root = document.getElementById("can-order");
     if (!root) return;
+
     var touyu = services.touyu || {};
-    var packs = touyu.packs || {};
-    var setLinks = touyu.setLinks || {};
+    var packByCans = touyu.packByCans || {};
+    var packPrices = touyu.packPrices || { 1: 4500, 2: 7500, 3: 10500 };
+    var labels = {
+      1: "1缶パック（18L）",
+      2: "2缶パック（36L）",
+      3: "3缶パック（54L）",
+    };
     var min = 1;
-    var max = 6;
+    var max = 3;
     var count = 2;
+
     var countEl = document.getElementById("can-count");
     var breakdownEl = document.getElementById("can-breakdown");
     var totalEl = document.getElementById("can-total");
@@ -174,87 +181,71 @@
     var minus = document.getElementById("can-minus");
     var plus = document.getElementById("can-plus");
 
+    if (!countEl || !breakdownEl || !totalEl || !checkout || !minus || !plus) {
+      return;
+    }
+
     function yen(n) {
       return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
-    function priceFor(n) {
-      if (n <= 1) return 4500;
-      return 7500 + Math.max(0, n - 2) * 3000;
-    }
-
-    function breakdown(n) {
-      if (n <= 1) return "1缶パック（18L）";
-      if (n === 2) return "2缶パック（36L）";
-      return (
-        "2缶パック 7,500円 ＋ 追加" +
-        (n - 2) +
-        "缶 " +
-        yen((n - 2) * 3000) +
-        "円"
-      );
-    }
-
-    function checkoutFor(n) {
-      if (n <= 1 && packs.one) {
-        return { type: "stripe", url: packs.one, hint: "1回の決済で完了します。" };
-      }
-      if (n === 2 && packs.two) {
-        return { type: "stripe", url: packs.two, hint: "1回の決済で完了します。" };
-      }
-      var setUrl = setLinks[n] ? String(setLinks[n]).trim() : "";
-      if (setUrl) {
-        return {
-          type: "stripe",
-          url: setUrl,
-          hint: n + "缶分を、1回の決済でまとめます。",
-        };
-      }
-      return {
-        type: "tel",
-        url: "tel:" + phoneTel,
-        hint:
-          n +
-          "缶はいま電話だと1件で受付できます（メールが分かれません）。Stripeに" +
-          n +
-          "缶セットの決済リンクを追加すれば、ネットでも1回決済にできます。",
-      };
-    }
-
     function render() {
+      var price = packPrices[count] || 0;
+      var url = packByCans[count] ? String(packByCans[count]).trim() : "";
+
       countEl.textContent = String(count);
-      breakdownEl.textContent = breakdown(count);
-      totalEl.textContent = yen(priceFor(count));
-      var next = checkoutFor(count);
-      checkout.href = next.url;
-      if (next.type === "stripe") {
+      breakdownEl.textContent = labels[count] || count + "缶";
+      totalEl.textContent = yen(price);
+
+      if (url) {
+        checkout.href = url;
         checkout.target = "_blank";
         checkout.rel = "noopener noreferrer";
-        checkout.textContent = "この内容でまとめてネット決済";
+        checkout.textContent = "この内容でネット決済";
+        if (hint) hint.textContent = "1回の決済で完了します。";
       } else {
+        checkout.href = "tel:" + phoneTel;
         checkout.removeAttribute("target");
         checkout.removeAttribute("rel");
-        checkout.textContent = "電話でまとめて申し込む（1件）";
+        checkout.textContent = "電話で申し込む";
+        if (hint) hint.textContent = "この缶数の決済リンク準備中です。お電話ください。";
       }
-      hint.textContent = next.hint;
+
       minus.disabled = count <= min;
       plus.disabled = count >= max;
+      minus.setAttribute("aria-disabled", count <= min ? "true" : "false");
+      plus.setAttribute("aria-disabled", count >= max ? "true" : "false");
     }
 
-    minus.addEventListener("click", function () {
-      if (count > min) {
-        count -= 1;
-        render();
-      }
-    });
-    plus.addEventListener("click", function () {
-      if (count < max) {
-        count += 1;
-        render();
-      }
-    });
-    render();
-  })();
+    function step(delta) {
+      var next = count + delta;
+      if (next < min || next > max) return;
+      count = next;
+      render();
+    }
 
+    function onStepClick(e) {
+      var btn = e.target.closest("[data-can-step]");
+      if (!btn || !root.contains(btn)) return;
+      e.preventDefault();
+      var delta = parseInt(btn.getAttribute("data-can-step"), 10);
+      if (!delta) return;
+      step(delta);
+    }
+
+    root.addEventListener("click", onStepClick);
+    minus.addEventListener("click", function (e) {
+      e.preventDefault();
+      step(-1);
+    });
+    plus.addEventListener("click", function (e) {
+      e.preventDefault();
+      step(1);
+    });
+
+    render();
+  }
+
+  initCanOrder();
   setSelected(selected);
 })();
