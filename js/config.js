@@ -17,7 +17,12 @@ window.KURASHI_CONFIG = {
       id: "touyu",
       name: "あったか灯油便",
       short: "灯油のお届け",
-      stripeUrl: "",
+      stripeUrl: "https://buy.stripe.com/aFa9AU17V4ah8VT0DH2oE01",
+      packs: {
+        one: "https://buy.stripe.com/aFa9AU17V4ah8VT0DH2oE01",
+        two: "https://buy.stripe.com/9B67sMeYL4ah0pneux2oE02",
+        extra: "https://buy.stripe.com/00w7sM8AnbCJ6NL2LP2oE03",
+      },
       mailSubject: "【予約】あったか灯油便",
     },
     wash: {

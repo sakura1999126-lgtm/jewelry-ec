@@ -146,28 +146,52 @@
           <li>追加料金なし</li>
         </ul>
 
-        <div class="price-sheet" role="table" aria-label="料金">
-          <div class="price-line" role="row">
-            <div role="cell">
-              <p class="price-line__name">1缶パック</p>
-              <p class="price-line__meta">18L</p>
+        <div class="price-sheet" role="list" aria-label="料金プラン">
+          <div class="price-line" role="listitem">
+            <div class="price-line__main">
+              <div>
+                <p class="price-line__name">1缶パック</p>
+                <p class="price-line__meta">18L</p>
+              </div>
+              <p class="price-line__yen">4,500<span>円</span></p>
             </div>
-            <p class="price-line__yen" role="cell">4,500<span>円</span></p>
+            <a
+              class="btn btn--fill btn--block price-line__buy"
+              href="https://buy.stripe.com/aFa9AU17V4ah8VT0DH2oE01"
+              target="_blank"
+              rel="noopener noreferrer"
+            >申し込む</a>
           </div>
-          <div class="price-line price-line--best" role="row">
-            <div role="cell">
-              <p class="price-line__badge">おすすめ</p>
-              <p class="price-line__name">2缶パック</p>
-              <p class="price-line__meta">36L<br>1缶あたり 3,750円</p>
+          <div class="price-line price-line--best" role="listitem">
+            <div class="price-line__main">
+              <div>
+                <p class="price-line__badge">おすすめ</p>
+                <p class="price-line__name">2缶パック</p>
+                <p class="price-line__meta">36L<br>1缶あたり 3,750円</p>
+              </div>
+              <p class="price-line__yen">7,500<span>円</span></p>
             </div>
-            <p class="price-line__yen" role="cell">7,500<span>円</span></p>
+            <a
+              class="btn btn--fill btn--block price-line__buy"
+              href="https://buy.stripe.com/9B67sMeYL4ah0pneux2oE02"
+              target="_blank"
+              rel="noopener noreferrer"
+            >申し込む</a>
           </div>
-          <div class="price-line" role="row">
-            <div role="cell">
-              <p class="price-line__name">3缶目から</p>
-              <p class="price-line__meta">1缶につき<br>3缶以上は電話で</p>
+          <div class="price-line" role="listitem">
+            <div class="price-line__main">
+              <div>
+                <p class="price-line__name">追加1缶</p>
+                <p class="price-line__meta">3缶目以降<br>1缶につき</p>
+              </div>
+              <p class="price-line__yen">3,000<span>円</span></p>
             </div>
-            <p class="price-line__yen" role="cell">+3,000<span>円</span></p>
+            <a
+              class="btn btn--fill btn--block price-line__buy"
+              href="https://buy.stripe.com/00w7sM8AnbCJ6NL2LP2oE03"
+              target="_blank"
+              rel="noopener noreferrer"
+            >申し込む</a>
           </div>
         </div>
 
@@ -291,11 +315,10 @@
         <div class="pay">
           <h3 class="block-title">お支払い</h3>
           <ul class="plain">
-            <li>現金（作業・お届け時）</li>
-            <li>銀行振込（発行日から3日以内）</li>
-            <li>振込手数料はお客様負担です</li>
-            <li>振込先は領収書に記載します</li>
-            <li>ネット決済は準備でき次第ご案内します</li>
+            <li>クレジットカード（Stripe決済）</li>
+            <li>Apple Pay</li>
+            <li>銀行振込（振込手数料はお客様負担）</li>
+            <li>当日現金払い</li>
           </ul>
         </div>
       </div>
@@ -342,13 +365,54 @@
     </section>
   </main>
 
+  <section class="section section--legal" id="tokushoho">
+    <div class="wrap wrap--s">
+      <p class="section__label">法令表記</p>
+      <h2 class="section__title">特定商取引法に基づく表記</h2>
+      <dl class="legal">
+        <div class="legal__row">
+          <dt>事業者名</dt>
+          <dd>桜井凜太郎（屋号：あったか灯油便）</dd>
+        </div>
+        <div class="legal__row">
+          <dt>所在地</dt>
+          <dd>東京都青梅市（請求があった場合には遅滞なく開示します）</dd>
+        </div>
+        <div class="legal__row">
+          <dt>電話番号</dt>
+          <dd><a href="tel:08079621018">080-7962-1018</a></dd>
+        </div>
+        <div class="legal__row">
+          <dt>販売価格</dt>
+          <dd>各プラン表示価格（税込・出張費・配送料・設置費込み）</dd>
+        </div>
+        <div class="legal__row">
+          <dt>商品代金以外の必要料金</dt>
+          <dd>銀行振込の場合の振込手数料</dd>
+        </div>
+        <div class="legal__row">
+          <dt>お支払い方法</dt>
+          <dd>クレジットカード（Stripe決済）・Apple Pay・銀行振込・当日現金払い</dd>
+        </div>
+        <div class="legal__row">
+          <dt>引き渡し時期</dt>
+          <dd>ご注文確認後、ご希望の指定日時に配達</dd>
+        </div>
+        <div class="legal__row">
+          <dt>返品・キャンセルについて</dt>
+          <dd>商品の性質上、給油・納品後の返品は不可。配達予定時刻の1時間前までのご連絡でキャンセル可能。</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
   <footer class="footer">
     <div class="wrap footer__in">
       <p class="footer__brand">くらしサポート</p>
       <p>あったか灯油便　／　高圧洗浄</p>
       <p>担当：桜井 凜太郎</p>
       <p><a href="tel:08079621018">080-7962-1018</a>（24時間）</p>
-      <p class="footer__note">特定商取引法に基づく表記は準備中です</p>
+      <p class="footer__note"><a href="#tokushoho">特定商取引法に基づく表記</a></p>
       <p><small>&copy; <span id="year"></span> くらしサポート</small></p>
     </div>
   </footer>
