@@ -138,7 +138,7 @@
         </div>
 
         <h3 class="block-title">料金・ネット決済</h3>
-        <p class="block-note">すべて税込です。下のオレンジボタンからネット決済できます。</p>
+        <p class="block-note">すべて税込です。まず缶数のプランを選んでください。</p>
         <ul class="price-tags" aria-hidden="true">
           <li>出張費込み</li>
           <li>配送料込み</li>
@@ -146,15 +146,13 @@
           <li>追加料金なし</li>
         </ul>
 
-        <div class="price-sheet" role="list" aria-label="料金プランとネット決済">
+        <div class="price-sheet" role="list" aria-label="基本プラン">
           <div class="price-line" role="listitem">
-            <div class="price-line__main">
-              <div>
-                <p class="price-line__name">1缶パック</p>
-                <p class="price-line__meta">18L</p>
-              </div>
+            <div class="price-line__head">
+              <p class="price-line__name">1缶パック</p>
               <p class="price-line__yen">4,500<span>円</span></p>
             </div>
+            <p class="price-line__meta">18L　／　1缶だけ欲しい方向け</p>
             <a
               class="btn btn--fill btn--block price-line__buy"
               href="https://buy.stripe.com/aFa9AU17V4ah8VT0DH2oE01"
@@ -163,14 +161,12 @@
             >ネット決済で申し込む</a>
           </div>
           <div class="price-line price-line--best" role="listitem">
-            <div class="price-line__main">
-              <div>
-                <p class="price-line__badge">おすすめ</p>
-                <p class="price-line__name">2缶パック</p>
-                <p class="price-line__meta">36L<br>1缶あたり 3,750円</p>
-              </div>
+            <p class="price-line__badge">おすすめ</p>
+            <div class="price-line__head">
+              <p class="price-line__name">2缶パック</p>
               <p class="price-line__yen">7,500<span>円</span></p>
             </div>
+            <p class="price-line__meta">36L　／　1缶あたり 3,750円</p>
             <a
               class="btn btn--fill btn--block price-line__buy"
               href="https://buy.stripe.com/9B67sMeYL4ah0pneux2oE02"
@@ -178,21 +174,39 @@
               rel="noopener noreferrer"
             >ネット決済で申し込む</a>
           </div>
-          <div class="price-line" role="listitem">
-            <div class="price-line__main">
-              <div>
-                <p class="price-line__name">追加1缶</p>
-                <p class="price-line__meta">3缶目以降<br>1缶につき</p>
-              </div>
+        </div>
+
+        <div class="price-addon">
+          <h3 class="block-title">3缶以上の方</h3>
+          <p class="block-note">
+            ネット決済は1回で1プランです。<br>
+            3缶以上は、下の順番で<strong>2回</strong>お申し込みください。
+          </p>
+          <ol class="price-addon__steps">
+            <li><span>1</span><p>まず<strong>2缶パック</strong>を申し込む</p></li>
+            <li><span>2</span><p>つづけて<strong>追加1缶</strong>を必要な本数だけ申し込む</p></li>
+          </ol>
+          <div class="price-addon__example">
+            <p><strong>例：3缶ほしいとき</strong></p>
+            <p>2缶パック 7,500円 ＋ 追加1缶 3,000円 ＝ <strong>合計 10,500円</strong></p>
+          </div>
+          <div class="price-line price-line--addon" role="group" aria-label="追加1缶">
+            <div class="price-line__head">
+              <p class="price-line__name">追加1缶</p>
               <p class="price-line__yen">3,000<span>円</span></p>
             </div>
+            <p class="price-line__meta">3缶目以降の追加分（1缶あたり）</p>
             <a
               class="btn btn--fill btn--block price-line__buy"
               href="https://buy.stripe.com/00w7sM8AnbCJ6NL2LP2oE03"
               target="_blank"
               rel="noopener noreferrer"
-            >ネット決済で申し込む</a>
+            >追加1缶をネット決済</a>
           </div>
+          <p class="price-addon__hint">
+            まとめて1回で申し込みたい場合は、お電話ください。<br>
+            <a href="tel:08079621018">080-7962-1018</a>
+          </p>
         </div>
 
         <ol class="steps">
