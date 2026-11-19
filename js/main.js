@@ -178,6 +178,7 @@
     var totalEl = document.getElementById("can-total");
     var checkout = document.getElementById("can-checkout");
     var hint = document.getElementById("can-hint");
+    var badgeEl = document.getElementById("can-badge");
     var minus = document.getElementById("can-minus");
     var plus = document.getElementById("can-plus");
 
@@ -196,6 +197,10 @@
       countEl.textContent = String(count);
       breakdownEl.textContent = labels[count] || count + "缶";
       totalEl.textContent = yen(price);
+
+      if (badgeEl) {
+        badgeEl.hidden = count !== 2;
+      }
 
       if (url) {
         checkout.href = url;
@@ -224,23 +229,14 @@
       render();
     }
 
-    function onStepClick(e) {
+    // 二重発火防止：委譲だけ使う
+    root.addEventListener("click", function (e) {
       var btn = e.target.closest("[data-can-step]");
-      if (!btn || !root.contains(btn)) return;
+      if (!btn || !root.contains(btn) || btn.disabled) return;
       e.preventDefault();
       var delta = parseInt(btn.getAttribute("data-can-step"), 10);
       if (!delta) return;
       step(delta);
-    }
-
-    root.addEventListener("click", onStepClick);
-    minus.addEventListener("click", function (e) {
-      e.preventDefault();
-      step(-1);
-    });
-    plus.addEventListener("click", function (e) {
-      e.preventDefault();
-      step(1);
     });
 
     render();

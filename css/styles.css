@@ -700,6 +700,21 @@ p, h1, h2, h3 { margin: 0; }
   padding: 0.9rem 1rem;
   margin-bottom: 0.9rem;
 }
+.can-order__badge {
+  display: inline-block;
+  width: fit-content;
+  margin: 0 0 0.4rem;
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radius-s);
+  background: var(--warm);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.can-order__badge[hidden] {
+  display: none !important;
+}
 .can-order__breakdown {
   margin: 0 0 0.35rem;
   color: var(--mute);
